@@ -6,11 +6,22 @@
  * Date: 10/04/2016
  * Time: 19:24
  */
-
 use Jacwright\RestServer\RestException;
 
 class puntsController
 {
+    /**
+     * Checks whether user is authorised
+     */
+    public function authorize()
+    {
+        $db = new \DB();
+        $this->user = ($_SERVER['REMOTE_USER']);
+
+        //$this->user = getUserFromDatabase()
+        return true;
+    }
+
     /**
      * Returns a JSON string object to the browser when hitting the root of the domain
      *
@@ -18,7 +29,7 @@ class puntsController
      */
     public function test()
     {
-        return "Hello World";
+        return "Hello World" . $this->user;
     }
 
     /**

@@ -5,4 +5,11 @@ Order allow,deny
 Allow from all
 Deny from env=passreq
 Satisfy any
-DirectoryIndex main.php
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+RewriteCond %{REQUEST_URI} !^/app/
+RewriteRule ^(.*)$ /app/$1 [NC]
+ReWriteRule ^/$ /app/ [NC]
+</IfModule>

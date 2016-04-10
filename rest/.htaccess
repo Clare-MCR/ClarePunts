@@ -1,4 +1,12 @@
 # Apache needs to let you overrite this (AllowOverride Indexes or AllowOverride All)
+#SetEnvIf Host clarepunts.soc.srcf.net/ passreq
+AuthType Ucam-WebAuth
+Require valid-user
+#Order allow,deny
+#Allow from all
+#Deny from env=passreq
+#Satisfy any
+
 DirectoryIndex index.php
 <IfModule mod_rewrite.c>
 	# Turn Rewrite Engine on
