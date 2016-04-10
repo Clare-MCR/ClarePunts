@@ -6,7 +6,7 @@
  * Time: 19:20
  */
 
-require __DIR__ . 'vendor/jacwright/restserver/source/Jacwright/RestServer/RestServer.php';
+require __DIR__ . '/vendor/jacwright/restserver/source/Jacwright/RestServer/RestServer.php';
 require 'puntsController.php';
 
 spl_autoload_register(); // don't load our classes unless we use them
