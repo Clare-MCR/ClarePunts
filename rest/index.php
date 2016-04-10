@@ -10,7 +10,7 @@ require 'vendor/autoload.php';
 require 'puntsController.php';
 
 spl_autoload_register(); // don't load our classes unless we use them
-
+var_dump(get_declared_classes());
 $mode = 'production'; // 'debug' or 'production'
 $server = new \Jacwright\RestServer\RestServer($mode);
 // $server->refreshCache(); // uncomment momentarily to clear the cache if classes change in production mode
