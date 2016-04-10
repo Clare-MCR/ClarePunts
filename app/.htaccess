@@ -1,0 +1,3 @@
+DirectoryIndex main.php
+AuthType Ucam-WebAuth
+Require valid-user
