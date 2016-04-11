@@ -4,7 +4,7 @@
 
 var puntsControllers = angular.module('puntsControllers', []);
 
-puntsControllers.controller('PuntsStatus', ['$scope', 'Punts',
+puntsControllers.controller('PuntsStatus', ['$scope', 'Punts', 'Users',
   function($scope, Punts, Users) {
     $scope.punts = Punts.query();
     $scope.user = Users.query();
