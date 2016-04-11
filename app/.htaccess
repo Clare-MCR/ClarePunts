@@ -5,4 +5,4 @@ Order allow,deny
 Allow from all
 Deny from env=passreq
 Satisfy any
-DirectoryIndex main.php
+DirectoryIndex index.html

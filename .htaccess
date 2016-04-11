@@ -1,4 +1,4 @@
-SetEnvIf Host clarepunts.soc.srcf.net/ passreq
+SetEnvIf Host clarepunts.soc.srcf.net passreq
 AuthType Ucam-WebAuth
 Require valid-user
 Order allow,deny
