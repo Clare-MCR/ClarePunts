@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.version', [
+angular.module('puntsApp.version', [
         'puntsApp.version.interpolate-filter',
         'puntsApp.version.version-directive'
 ])
