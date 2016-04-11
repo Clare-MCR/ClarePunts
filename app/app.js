@@ -1,12 +1,30 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
-angular.module('puntsApp', [
+/* App Module */
+
+var phonecatApp = angular.module('puntsApp', [
   'ngRoute',
-  'puntsApp.view1',
-  'puntsApp.view2',
+  'puntsAnimations',
+
+  'puntsControllers',
+  'puntsFilters',
+  'puntsServices',
+  
   'puntsApp.version'
-]).
-config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+]);
+
+phonecatApp.config(['$routeProvider',
+  function($routeProvider) {
+    $routeProvider.
+      when('/status', {
+        templateUrl: 'templates/phone-list.html',
+        controller: 'PuntsStatus'
+      }).
+      when('/phones/:phoneId', {
+        templateUrl: 'templates/phone-detail.html',
+        controller: 'PhoneDetailCtrl'
+      }).
+      otherwise({
+        redirectTo: '/status'
+      });
+  }]);
