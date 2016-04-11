@@ -8,6 +8,7 @@ phonecatControllers.controller('PuntsStatus', ['$scope', 'Punts',
   function($scope, Punts, Users) {
     $scope.punts = Punts.query();
     $scope.user = Users.query();
+    console.log($scope.user);
   }]);
 
 phonecatControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 'Phone',
