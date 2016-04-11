@@ -4,10 +4,15 @@
 
 var puntsControllers = angular.module('puntsControllers', []);
 
-puntsControllers.controller('PuntsStatus', ['$scope', 'Punts', 'Users',
-  function($scope, Punts, Users) {
-    $scope.punts = Punts.query();
-    $scope.user = Users.query();
+puntsControllers.controller('PuntsStatus', ['$scope', 'Punts', 'Users', 'Bookings',
+    function ($scope, Punts, Users, Bookings) {
+        $scope.user = Users.query();
+        $scope.punts = Punts.query({}, function (punts) {
+            for (var i = 0; i < punts.length; i++) {
+          
+            }
+        });
+        $scope.bookings = Bookings.query();
   }]);
 
 puntsControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 'Phone',

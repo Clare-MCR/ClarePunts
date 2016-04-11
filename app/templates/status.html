@@ -13,4 +13,22 @@
     </div>
 </div>
 
-<p>landing page</p>
+<div class="note punt-status">
+    <h2>Current Punt Status</h2>
+    <table border="0" class="display_info" id="punt_status">
+        <thead>
+        <tr>
+            <th>Punt Name</th>
+            <th>Punt Status</th>
+            <th>Present Booking Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="x in punts">
+            <td>{{x.name}}</td>
+            <td>{{''|puntActive:x.available_from:x.available_to}}</td>
+            <td class="Inactive">{{bookings| filter:{puntid:x.puntid}}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
