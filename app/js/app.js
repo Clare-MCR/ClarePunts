@@ -17,7 +17,7 @@ phonecatApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/status', {
-        templateUrl: 'templates/phone-list.html',
+        templateUrl: 'templates/status.html',
         controller: 'PuntsStatus'
       }).
       when('/phones/:phoneId', {
