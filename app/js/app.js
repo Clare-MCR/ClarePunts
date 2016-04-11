@@ -5,6 +5,7 @@
 var puntsApp = angular.module('puntsApp', [
   'ngRoute',
   //'puntsAnimations',
+  'ui.bootstrap',
 
   'puntsControllers',
   'puntsFilters',
@@ -19,8 +20,10 @@ puntsApp.config(['$routeProvider',
       when('/status', {
         templateUrl: 'templates/status.html',
         controller: 'PuntsStatus'
-      }).
-      when('/phones/:phoneId', {
+      }).when('/book', {
+      templateUrl: 'templates/bookpunt.html',
+      controller: 'PuntsBook'
+    }).when('/phones/:phoneId', {
         templateUrl: 'templates/phone-detail.html',
         controller: 'PhoneDetailCtrl'
       }).
