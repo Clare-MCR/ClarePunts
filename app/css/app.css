@@ -35,10 +35,10 @@
 .userWelcome {
     font-weight: bold;
     margin-bottom: 2em;
-    background-color: #f0aa00;
     background-color: #F7B900;
     line-height: 1.8em;
     padding-left: 0.6em;
+    overflow: auto;
 }
 
 .userWelcome h2 {
@@ -47,7 +47,7 @@
 
 .menu {
   list-style: none;
-  border-bottom: 0.1em solid black;
+    /*border-bottom: 0.1em solid black;*/
   margin-bottom: 2em;
   padding: 0 0 0.5em;
     float: right;
