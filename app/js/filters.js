@@ -9,27 +9,60 @@ puntsFilter.filter('checkmark', function () {
     };
 });
 
+puntsFilter.filter('activeInactive', function () {
+    return function (input) {
+        return input ? 'Active' : 'Inactive';
+    };
+});
+
 puntsFilter.filter('puntActive', function () {
-    return function (items, from, to) {
-        var df = Date.parse(from);
-        var dt = Date.parse(to);
+    return function (items) {
+        var df = new Date(items.available_from);
+        var dt = new Date(items.available_to);
         var now = Date.now();
         if (now > df && now < dt) {
-            return 'Active';
+            return true;
         }
-        return 'Inactive'
+        return false
+    };
+});
+
+puntsFilter.filter('puntBookings', function () {
+    return function (items, puntid, date, restrictTime) {
+        var results = [];
+        var thisDate = new Date(date);
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].puntid == puntid) {
+                var df = new Date(items[i].time_from);
+                var dt = new Date(items[i].time_to);
+                if (thisDate.setHours(0, 0, 0, 0) >= df.setHours(0, 0, 0, 0) && thisDate.setHours(0, 0, 0, 0) <= dt.setHours(0, 0, 0, 0)) {
+                    results.push(items[i]);
+                }
+            }
+        }
+        return results;
+
     };
 });
 
 puntsFilter.filter('puntInUse', function () {
-    return function (items, from, to) {
-        var df = Date.parse(from);
-        var dt = Date.parse(to);
-        var now = Date.now();
-        if (now > df && now < dt) {
-            return 'Active';
+    return function (items, puntid, active) {
+        if (!active) {
+            return 'Inactive';
         }
-        return 'Inactive'
+        var now = Date.now();
+
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].puntid == puntid) {
+                var df = Date.parse(items[i].available_from);
+                var dt = Date.parse(items[i].available_to);
+
+                if (now > df && now < dt) {
+                    return 'In Use';
+                }
+            }
+        }
+        return 'Available';
     };
 });
 
