@@ -1,4 +1,22 @@
 /* app css stylesheet */
+body {
+    padding-left: 15%;
+    padding-right: 10%;
+    padding-top: 20px;
+    margin: 0;
+    font-family: "Verdana", "Arial", sans-serif;
+    font-size: 13px;
+    color: #121259;
+    line-height: 1.3;
+    background-image: url("clare_crest_small.png");
+    background-size: 10%;
+    background-repeat: no-repeat;
+    background-position: 3% 20px;
+    background-color: white;
+    position: relative; /* provides reference for positioning */
+    max-width: 80%;
+}
+
 .headerRibbon {
 
 }
@@ -23,6 +41,9 @@
     padding-left: 0.6em;
 }
 
+.userWelcome h2 {
+    float: left;
+}
 
 .menu {
   list-style: none;
