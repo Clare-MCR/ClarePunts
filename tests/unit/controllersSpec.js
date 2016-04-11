@@ -62,7 +62,52 @@ describe('Punts controllers', function () {
                         "available_to": "2015-11-14 00:00:00"
                     }
                 ]);
-
+            $httpBackend.when('GET', 'rest/bookings')
+                .respond([
+                    {
+                        "id": "713877",
+                        "puntid": "2",
+                        "user_type": "MCR",
+                        "booker": "wmw25",
+                        "name": "W.M. Wynell-Mayow",
+                        "mobile": "07838438883",
+                        "time_from": "2014-06-27 20:00:00",
+                        "time_to": "2014-06-27 23:00:00"
+                    },
+                    {
+                        "id": "714222",
+                        "puntid": "2",
+                        "user_type": "MCR",
+                        "booker": "tb405",
+                        "name": "Jac Davis",
+                        "mobile": "07949180438",
+                        "time_from": "2015-04-11 09:00:00",
+                        "time_to": "2015-04-11 17:00:00"
+                    },
+                    {
+                        "id": "714103",
+                        "puntid": "1",
+                        "user_type": "MCR",
+                        "booker": "sml58",
+                        "name": "S.M. Lowe",
+                        "mobile": "07432719973",
+                        "time_from": "2014-08-18 13:00:00",
+                        "time_to": "2014-08-18 15:00:00"
+                    }
+                ]);
+            $httpBackend.when('GET', 'rest/bookings/1')
+                .respond([
+                    {
+                        "id": "713877",
+                        "puntid": "2",
+                        "user_type": "MCR",
+                        "booker": "wmw25",
+                        "name": "W.M. Wynell-Mayow",
+                        "mobile": "07838438883",
+                        "time_from": "2014-06-27 20:00:00",
+                        "time_to": "2014-06-27 23:00:00"
+                    }
+                ]);
             scope = $rootScope.$new();
             ctrl = $controller('PuntsStatus', {$scope: scope});
         }));
@@ -115,6 +160,44 @@ describe('Punts controllers', function () {
                     "available_from": "2015-11-06 00:00:00",
                     "available_to": "2015-11-14 00:00:00"
                 }]);
+        });
+
+        it('should find 3 bookings fetched from REST', function () {
+            expect(scope.bookings).toEqualData([]);
+            $httpBackend.flush();
+
+            expect(scope.bookings).toEqualData([
+                {
+                    "id": "713877",
+                    "puntid": "2",
+                    "user_type": "MCR",
+                    "booker": "wmw25",
+                    "name": "W.M. Wynell-Mayow",
+                    "mobile": "07838438883",
+                    "time_from": "2014-06-27 20:00:00",
+                    "time_to": "2014-06-27 23:00:00"
+                },
+                {
+                    "id": "714222",
+                    "puntid": "2",
+                    "user_type": "MCR",
+                    "booker": "tb405",
+                    "name": "Jac Davis",
+                    "mobile": "07949180438",
+                    "time_from": "2015-04-11 09:00:00",
+                    "time_to": "2015-04-11 17:00:00"
+                },
+                {
+                    "id": "714103",
+                    "puntid": "1",
+                    "user_type": "MCR",
+                    "booker": "sml58",
+                    "name": "S.M. Lowe",
+                    "mobile": "07432719973",
+                    "time_from": "2014-08-18 13:00:00",
+                    "time_to": "2014-08-18 15:00:00"
+                }
+            ]);
         });
 
     });

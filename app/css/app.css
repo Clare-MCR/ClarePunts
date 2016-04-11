@@ -39,6 +39,7 @@
     line-height: 1.8em;
     padding-left: 0.6em;
     overflow: auto;
+    font-size: 1.25vw;
 }
 
 .userWelcome h2 {

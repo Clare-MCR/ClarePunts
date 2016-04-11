@@ -14,4 +14,9 @@ describe('service', function () {
     it('check the existence of Users factory', inject(function (Users) {
         expect(Users).toBeDefined();
     }));
+
+    // Test service availability
+    it('check the existence of Users factory', inject(function (Bookings) {
+        expect(Bookings).toBeDefined();
+    }));
 });
