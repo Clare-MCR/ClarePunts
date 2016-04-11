@@ -1,5 +1,5 @@
 /* app css stylesheet */
-body {
+.view-container {
     padding-left: 15%;
     padding-right: 10%;
     padding-top: 20px;
@@ -23,7 +23,7 @@ body {
 
 .headerRibbon #title {
     font-family: "Arial", sans-serif;
-    font-size: 2em;
+    font-size: 1vw;
     margin: 0;
     line-height: 0.8em;
     background-color: #000;
