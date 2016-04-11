@@ -3,10 +3,15 @@
 describe('service', function () {
 
     // load modules
-    beforeEach(module('phonecatApp'));
+    beforeEach(module('puntsApp'));
 
     // Test service availability
-    it('check the existence of Phone factory', inject(function (Phone) {
-        expect(Phone).toBeDefined();
+    it('check the existence of Punts factory', inject(function (Punts) {
+        expect(Punts).toBeDefined();
+    }));
+
+    // Test service availability
+    it('check the existence of Users factory', inject(function (Users) {
+        expect(Users).toBeDefined();
     }));
 });

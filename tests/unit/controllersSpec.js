@@ -1,71 +1,120 @@
 'use strict';
 
 /* jasmine specs for controllers go here */
-describe('PhoneCat controllers', function () {
+describe('Punts controllers', function () {
 
     beforeEach(function () {
-        this.addMatchers({
-            toEqualData: function (expected) {
-                return angular.equals(this.actual, expected);
+        jasmine.addMatchers({
+            toEqualData: function (util, customEqualityTesters) {
+                return {
+                    compare: function (actual, expected) {
+                        return {
+                            pass: angular.equals(actual, expected)
+                        };
+                    }
+                };
             }
         });
     });
 
-    beforeEach(module('phonecatApp'));
-    beforeEach(module('phonecatServices'));
+    beforeEach(module('puntsApp'));
+    beforeEach(module('puntsServices'));
 
-    describe('PhoneListCtrl', function () {
+    describe('PuntsStatus', function () {
         var scope, ctrl, $httpBackend;
 
         beforeEach(inject(function (_$httpBackend_, $rootScope, $controller) {
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET('phones/phones.json').respond([{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
+            $httpBackend.when('GET', 'rest/users')
+                .respond(200, {
+                    "crsid": "rjg70",
+                    "name": "Richard Gunning",
+                    "phone": "07557090952",
+                    "type": "MCR",
+                    "authorised": "1",
+                    "admin": "0",
+                    "ID": "1"
+                });
+            $httpBackend.when('GET', 'rest/punts')
+                .respond([
+                    {
+                        "id": "1",
+                        "name": "Silence of the Cam",
+                        "available_from": "2015-11-06 00:00:00",
+                        "available_to": "2015-11-14 00:00:00"
+                    },
+                    {
+                        "id": "2",
+                        "name": "MCArk",
+                        "available_from": "2015-11-06 00:00:00",
+                        "available_to": "2015-11-14 00:00:00"
+                    },
+                    {
+                        "id": "3",
+                        "name": "Clare De lune",
+                        "available_from": "2015-11-06 00:00:00",
+                        "available_to": "2015-11-14 00:00:00"
+                    },
+                    {
+                        "id": "4",
+                        "name": "clarebuoyant",
+                        "available_from": "2015-11-06 00:00:00",
+                        "available_to": "2015-11-14 00:00:00"
+                    }
+                ]);
 
             scope = $rootScope.$new();
-            ctrl = $controller('PhoneListCtrl', {$scope: scope});
+            ctrl = $controller('PuntsStatus', {$scope: scope});
         }));
 
 
-        it('should create "phones" model with 2 phones fetched from xhr', function () {
-            expect(scope.phones).toEqualData([]);
+        it('should create 1 user fetched from REST', function () {
+            expect(scope.user).toEqualData({});
             $httpBackend.flush();
 
-            expect(scope.phones).toEqualData(
-                [{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
+            expect(scope.user).toEqualData(
+                {
+                    "crsid": "rjg70",
+                    "name": "Richard Gunning",
+                    "phone": "07557090952",
+                    "type": "MCR",
+                    "authorised": "1",
+                    "admin": "0",
+                    "ID": "1"
+                });
         });
 
-
-        it('should set the default value of orderProp model', function () {
-            expect(scope.orderProp).toBe('age');
-        });
-    });
-
-
-    describe('PhoneDetailCtrl', function () {
-        var scope, $httpBackend, ctrl,
-            xyzPhoneData = function () {
-                return {
-                    name: 'phone xyz',
-                    images: ['image/url1.png', 'image/url2.png']
-                }
-            };
-
-
-        beforeEach(inject(function (_$httpBackend_, $rootScope, $routeParams, $controller) {
-            $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET('phones/xyz.json').respond(xyzPhoneData());
-
-            $routeParams.phoneId = 'xyz';
-            scope = $rootScope.$new();
-            ctrl = $controller('PhoneDetailCtrl', {$scope: scope});
-        }));
-
-
-        it('should fetch phone detail', function () {
-            expect(scope.phone).toEqualData({});
+        it('should create 4 punts fetched from REST', function () {
+            expect(scope.punts).toEqualData([]);
             $httpBackend.flush();
 
-            expect(scope.phone).toEqualData(xyzPhoneData());
+            expect(scope.punts).toEqualData([
+                {
+                    "id": "1",
+                    "name": "Silence of the Cam",
+                    "available_from": "2015-11-06 00:00:00",
+                    "available_to": "2015-11-14 00:00:00"
+                },
+                {
+                    "id": "2",
+                    "name": "MCArk",
+                    "available_from": "2015-11-06 00:00:00",
+                    "available_to": "2015-11-14 00:00:00"
+                },
+                {
+                    "id": "3",
+                    "name": "Clare De lune",
+                    "available_from": "2015-11-06 00:00:00",
+                    "available_to": "2015-11-14 00:00:00"
+                },
+                {
+                    "id": "4",
+                    "name": "clarebuoyant",
+                    "available_from": "2015-11-06 00:00:00",
+                    "available_to": "2015-11-14 00:00:00"
+                }]);
         });
+
     });
+
 });

@@ -4,7 +4,7 @@
 
 var puntsApp = angular.module('puntsApp', [
   'ngRoute',
-  'puntsAnimations',
+  //'puntsAnimations',
 
   'puntsControllers',
   'puntsFilters',
