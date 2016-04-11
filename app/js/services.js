@@ -4,9 +4,16 @@
 
 var puntsServices = angular.module('puntsServices', ['ngResource']);
 
-phonecatServices.factory('Punts', ['$resource',
+puntsServices.factory('Punts', ['$resource',
   function($resource){
-    return $resource('punts/:puntsId', {}, {
+    return $resource('rest/punts/:puntsId', {}, {
       query: {method:'GET', params:{puntId:'punt'}, isArray:true}
+    });
+  }]);
+
+puntsServices.factory('Users', ['$resource',
+  function($resource){
+    return $resource('rest/users/:userId', {}, {
+      query: {method:'GET', params:{userId:'user'}, isArray:true}
     });
   }]);
