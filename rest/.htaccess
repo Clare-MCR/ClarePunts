@@ -6,6 +6,10 @@ Require valid-user
 #Allow from all
 #Deny from env=passreq
 #Satisfy any
+<files config.php>
+order allow,deny
+deny from all
+</files>
 
 DirectoryIndex index.php
 <IfModule mod_rewrite.c>
