@@ -5,8 +5,9 @@
 var puntsControllers = angular.module('puntsControllers', []);
 
 phonecatControllers.controller('PuntsStatus', ['$scope', 'Punts',
-  function($scope, Punts) {
+  function($scope, Punts, Users) {
     $scope.punts = Punts.query();
+    $scope.user = Users.query();
   }]);
 
 phonecatControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 'Phone',
