@@ -82,6 +82,8 @@ describe('Punts controllers', function () {
                     "admin": "0",
                     "ID": "1"
                 });
+            expect(scope.user.name).toEqualData("Richard Gunning");
+            expect(scope.user.admin).toEqualData('0')
         });
 
         it('should create 4 punts fetched from REST', function () {
