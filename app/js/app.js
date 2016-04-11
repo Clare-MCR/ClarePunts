@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var phonecatApp = angular.module('puntsApp', [
+var puntsApp = angular.module('puntsApp', [
   'ngRoute',
   'puntsAnimations',
 
@@ -13,7 +13,7 @@ var phonecatApp = angular.module('puntsApp', [
   'puntsApp.version'
 ]);
 
-phonecatApp.config(['$routeProvider',
+puntsApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/status', {
