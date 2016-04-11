@@ -1,10 +1,35 @@
 /* app css stylesheet */
+.headerRibbon {
+
+}
+
+.headerRibbon #title {
+    font-family: "Arial", sans-serif;
+    font-size: 2em;
+    margin: 0;
+    line-height: 0.8em;
+    background-color: #000;
+    color: #F7B900;
+    padding: 0.5em 0.2em 0.3em 0.3em;
+    border-bottom-style: none;
+}
+
+.userWelcome {
+    font-weight: bold;
+    margin-bottom: 2em;
+    background-color: #f0aa00;
+    background-color: #F7B900;
+    line-height: 1.8em;
+    padding-left: 0.6em;
+}
+
 
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;
   margin-bottom: 2em;
   padding: 0 0 0.5em;
+    float: right;
 }
 
 .menu:before {
