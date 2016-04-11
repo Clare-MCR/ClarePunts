@@ -34,7 +34,7 @@ puntsFilter.filter('puntInUse', function () {
 });
 
 
-function parseDate(input) {
+/*function parseDate(input) {
     var parts = input.split('-');
     return new Date(parts[2], parts[1] - 1, parts[0]);
 }
@@ -54,3 +54,5 @@ nameSpace.filter("myfilter", function () {
         return result;
     };
 });
+
+ */
