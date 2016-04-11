@@ -4,10 +4,9 @@
 
 var puntsControllers = angular.module('puntsControllers', []);
 
-phonecatControllers.controller('PhoneListCtrl', ['$scope', 'Phone',
-  function($scope, Phone) {
-    $scope.phones = Phone.query();
-    $scope.orderProp = 'age';
+phonecatControllers.controller('PuntsStatus', ['$scope', 'Punts',
+  function($scope, Punts) {
+    $scope.punts = Punts.query();
   }]);
 
 phonecatControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams', 'Phone',
