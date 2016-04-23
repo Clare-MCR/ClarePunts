@@ -1,0 +1,92 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "0e4151930ab7891f9114fba2082c2dc7",
+    "content-hash": "a33b97d5cfd53949e6a4cd00df5f80e5",
+    "packages": [
+        {
+            "name": "indieteq/indieteq-php-my-sql-pdo-database-class",
+            "version": "v1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/indieteq/indieteq-php-my-sql-pdo-database-class.git",
+                "reference": "eeef1ae69098a728f5cf37033a0c2ee833cb6a3f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/indieteq/indieteq-php-my-sql-pdo-database-class/zipball/eeef1ae69098a728f5cf37033a0c2ee833cb6a3f",
+                "reference": "eeef1ae69098a728f5cf37033a0c2ee833cb6a3f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2014-12-15 14:53:56"
+        },
+        {
+            "name": "jacwright/restserver",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jacwright/RestServer.git",
+                "reference": "d95356301bc4254694893f84c2f94ce54a463d64"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jacwright/RestServer/zipball/d95356301bc4254694893f84c2f94ce54a463d64",
+                "reference": "d95356301bc4254694893f84c2f94ce54a463d64",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Jacwright\\RestServer": "source/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jacob Wright",
+                    "email": "jacwright@gmail.com",
+                    "homepage": "http://jacwright.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php rest server for very light-weight REST APIs",
+            "homepage": "https://github.com/jacwright/RestServer",
+            "keywords": [
+                "http",
+                "json",
+                "light-weight",
+                "mit",
+                "php",
+                "rest",
+                "rest-server"
+            ],
+            "time": "2016-02-15 20:41:57"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "jacwright/restserver": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.3.3"
+    },
+    "platform-dev": []
+}
