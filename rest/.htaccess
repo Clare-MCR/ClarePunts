@@ -1,14 +1,14 @@
 # Apache needs to let you overrite this (AllowOverride Indexes or AllowOverride All)
-SetEnvIf Host clarepunts.soc.srcf.net passreq
-AuthType Ucam-WebAuth
-Require valid-user
-Order allow,deny
-Allow from all
-Deny from env=passreq
-Satisfy any
+ AuthType Ucam-WebAuth
+  #Require valid-user
+  Require user rjg70
+  order deny,allow
+  deny from all
+  Satisfy any
+
 <files config.php>
-order allow,deny
-deny from all
+    order allow,deny
+    deny from all
 </files>
 
 DirectoryIndex index.php
@@ -16,5 +16,8 @@ DirectoryIndex index.php
 	# Turn Rewrite Engine on
 	RewriteEngine On
 	# Send all requests to index.php (index.php will parse the request url and routes accordingly)
-	RewriteRule ^.*$ index.php [QSA,L]
+	RewriteRule ^$ index.php [QSA,L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
