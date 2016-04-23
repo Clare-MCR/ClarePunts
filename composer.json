@@ -1,0 +1,41 @@
+{
+  "name": "rgunning/punts-angular",
+  "version": "0.0.0",
+  "type": "project",
+  "description": "Punts AngularJS project",
+  "keywords": [
+    "php",
+    "rest",
+    "rest-server",
+    "light-weight",
+    "http",
+    "json",
+    "mit"
+  ],
+  "homepage": "https://github.com/Clare-MCR/punts-angular",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Richard Gunning",
+      "email": "rjgunning@gmail.com",
+      "homepage": "http://rjgunning.com",
+      "role": "Developer"
+    }
+  ],
+  "config": {
+    "vendor-dir": "rest/vendor"
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.3.3",
+    "jacwright/restserver": "dev-master",
+    "indieteq/indieteq-php-my-sql-pdo-database-class": "^1.0"
+  },
+  "scripts": {
+    "test": [
+      "@clearCache",
+      "phpunit"
+    ],
+    "clearCache": "rm -rf cache/*"
+  }
+}
