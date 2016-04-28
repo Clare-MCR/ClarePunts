@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('puntsApp.version.version-directive', [])
 
 .directive('appVersion', ['version', function(version) {
