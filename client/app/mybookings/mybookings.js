@@ -10,7 +10,7 @@ angular.module('puntsApp.bookings', ['ngRoute'])
         });
     }])
 
-    .controller('PuntsBookings', [function () {
+    .controller('PuntsBookings', ['$scope', function ($scope) {
         $scope.form = [];
         $scope.deleteBooking = function () {
 

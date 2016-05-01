@@ -10,6 +10,6 @@ angular.module('puntsApp.admin.bookings', ['ngRoute'])
         });
     }])
 
-    .controller('AdminBookings', [function () {
+    .controller('AdminBookings', ['$scope', function ($scope) {
 
     }]);

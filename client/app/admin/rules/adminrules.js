@@ -12,6 +12,9 @@ angular.module('puntsApp.admin.rules', ['ngRoute', 'puntsServices', 'ngSanitize'
 
     .controller('AdminRules', ['$scope', '$sce', 'Rules',
         function ($scope, $sce, Rules) {
-            $scope.rules = Rules;
+            $scope.updateRules = function () {
+                Rules.update({}, {rules: $scope.rules});
+            }
+
         }
     ]);

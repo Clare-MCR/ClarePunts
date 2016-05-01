@@ -60,7 +60,7 @@ class puntsController
      */
     public function getUser($id = null)
     {
-        if ((!$this->admin && $id)) {
+        if ((!$this->admin && $id) || !$id) {
             $id = $this->user;
         }
 
@@ -141,7 +141,7 @@ class puntsController
     public function addUsers($data)
     {
         if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Rules');
+            throw new RestException(404, 'User Must be admin to modify Punt Users');
         }
 
         if (!isset($data->type)) {
@@ -184,7 +184,7 @@ class puntsController
     public function purgeUsers($type = null)
     {
         if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Rules');
+            throw new RestException(404, 'User Must be admin to modify Punt users');
         }
 
         if (isset($type)) {
@@ -206,7 +206,7 @@ class puntsController
     public function deleteUser($id)
     {
         if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Rules');
+            throw new RestException(404, 'User Must be admin to modify Punt Users');
         }
 
         if (isset($id)) {
@@ -235,7 +235,7 @@ class puntsController
     {
         $this->db->query('SELECT value FROM options WHERE item="rules"');
         $row = $this->db->single();
-        return $row["value"];
+        return $row;
     }
 
     /**

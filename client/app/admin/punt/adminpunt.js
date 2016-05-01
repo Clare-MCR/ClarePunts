@@ -5,7 +5,7 @@ angular.module('puntsApp.admin.punts', ['ngRoute', 'puntsServices', 'ngSanitize'
 
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/admin/punts', {
-            templateUrl: 'admin/punt/adminpunt.js',
+            templateUrl: 'admin/punt/adminpunt.html',
             controller: 'AdminPunts'
         });
     }])
@@ -16,7 +16,7 @@ angular.module('puntsApp.admin.punts', ['ngRoute', 'puntsServices', 'ngSanitize'
             $scope.dtfrom = new Date().setHours(0, 0, 0, 0);
             $scope.dtto = new Date().setHours(0, 0, 0, 0);
         };
-        $scope.today();
+        $scope.today1();
 
         $scope.clear = function () {
             $scope.dtfrom = null;
@@ -24,7 +24,6 @@ angular.module('puntsApp.admin.punts', ['ngRoute', 'puntsServices', 'ngSanitize'
         };
 
         $scope.dateOptions = {
-            customClass: getDayClass,
             formatYear: 'yy',
             startingDay: 1
         };

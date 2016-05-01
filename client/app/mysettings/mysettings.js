@@ -7,7 +7,7 @@ angular.module('puntsApp.settings', ['ngRoute'])
         });
     }])
 
-    .controller('PuntsSettings', [function () {
+    .controller('PuntsSettings', ['$scope', function ($scope) {
         $scope.updateUser = function () {
 
         };

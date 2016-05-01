@@ -1,0 +1,51 @@
+<a href="#/status">
+    <img src="../../content/img/ClareCollegeCrest.png" alt="Clare College Crest"/>
+</a>
+<nav role="navigation">
+    <ul class="nav nav-justified nav-pills">
+        <li>
+            <a href="#/status">Clare Punts</a>
+        </li>
+        <li>
+            <a href="#/book">Book A Punt</a>
+        </li>
+        <li uib-dropdown="" is-open="status.isopen">
+            <button id="menu-button" uib-dropdown-toggle="" type="button" ng-click="menuOpen=!menuOpen">Menu <span
+                    class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu="" aria-labelledby="menu-button">
+                <li role="menuitem">
+                    <a href="#/status">Home</a>
+                </li>
+                <li role="menuitem">
+                    <a href="#/book">Book A Punt</a>
+                </li>
+                <li role="menuitem">
+                    <a href="#/mybookings">My Bookings</a>
+                </li>
+                <li role="menuitem">
+                    <a href="#/mysettings">My Settings</a>
+                </li>
+                <li role="menuitem">
+                    <a href="#/rules">Punt Rules</a>
+                </li>
+                <li class="dropdown-header" ng-if="user.admin === '1'">Admin</li>
+                <li ng-if="user.admin === '1'" role="menuitem">
+                    <a href="#/admin">Admin</a>
+                </li>
+                <li ng-if="user.admin === '1'" role="menuitem">
+                    <a href="#/admin/punts">Admin Punts</a>
+                </li>
+                <li ng-if="user.admin === '1'" role="menuitem">
+                    <a href="#/admin/users">Admin Users</a>
+                </li>
+                <li ng-if="user.admin === '1'" role="menuitem">
+                    <a href="#/admin/bookings">Admin Bookings</a>
+                </li>
+                <li ng-if="user.admin === '1'" role="menuitem">
+                    <a href="#/admin/rules">Admin Punt Rules</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>

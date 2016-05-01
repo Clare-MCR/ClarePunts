@@ -7,6 +7,6 @@ angular.module('puntsApp.status', ['ngRoute'])
         });
     }])
 
-    .controller('PuntsStatus', [function () {
+    .controller('PuntsStatus', ['$scope', function ($scope) {
 
     }]);

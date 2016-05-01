@@ -9,6 +9,6 @@ angular.module('puntsApp.rules', ['ngRoute', 'puntsServices', 'ngSanitize'])
 
     .controller('PuntsRules', ['$scope', '$sce', 'Rules',
         function ($scope, $sce, Rules) {
-            $scope.rules = Rules;
+
         }
     ]);

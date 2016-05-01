@@ -10,6 +10,6 @@ angular.module('puntsApp.admin.users', ['ngRoute'])
         });
     }])
 
-    .controller('AdminUsers', [function () {
+    .controller('AdminUsers', ['$scope', function ($scope) {
 
     }]);

@@ -2,7 +2,7 @@
 
 /* https://github.com/angular/protractor/blob/master/docs/toc.md */
 
-describe('my app', function () {
+describe('my client', function () {
 
 
     it('should automatically redirect to /view1 when location hash/fragment is empty', function () {
