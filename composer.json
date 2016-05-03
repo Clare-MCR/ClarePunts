@@ -1,8 +1,8 @@
 {
-  "name": "rgunning/punts-angular",
+  "name": "rgunning/clarePunts",
   "version": "0.0.0",
   "type": "project",
-  "description": "Punts AngularJS project",
+  "description": "clare Punts AngularJS project",
   "keywords": [
     "php",
     "rest",
@@ -23,7 +23,7 @@
     }
   ],
   "config": {
-    "vendor-dir": "rest/vendor"
+    "vendor-dir": "src/rest/vendor"
   },
   "minimum-stability": "dev",
   "require": {

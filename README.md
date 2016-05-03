@@ -1,297 +1,268 @@
-# angular-seed — the seed for AngularJS apps
+# clarePunts
 
-This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app.
-You can use it to quickly bootstrap your angular webapp projects and dev environment for these
-projects.
+**Generated from HotTowel Angular**
 
-The seed contains a sample AngularJS application and is preconfigured to install the Angular
-framework and a bunch of development and testing tools for instant web development gratification.
+>*Opinionated Angular style guide for teams by [@john_papa](//twitter.com/john_papa)*
 
-The seed app doesn't do much, just shows how to wire two controllers and views together.
+>More details about the styles and patterns used in this app can be found in my [Angular Style Guide](https://github.com/johnpapa/angularjs-styleguide) and my [Angular Patterns: Clean Code](http://jpapa.me/ngclean) course at [Pluralsight](http://pluralsight.com/training/Authors/Details/john-papa) and working in teams.
 
+## Prerequisites
 
-## Getting Started
+1. Install [Node.js](http://nodejs.org)
+ - on OSX use [homebrew](http://brew.sh) `brew install node`
+ - on Windows use [chocolatey](https://chocolatey.org/) `choco install nodejs`
 
-To get you started you can simply clone the angular-seed repository and install the dependencies:
+2. Install Yeoman `npm install -g yo`
 
-### Prerequisites
+3. Install these NPM packages globally
 
-You need git to clone the angular-seed repository. You can get git from
-[http://git-scm.com/](http://git-scm.com/).
+    ```bash
+    npm install -g bower gulp nodemon
+    ```
 
-We also use a number of node.js tools to initialize and test angular-seed. You must have node.js and
-its package manager (npm) installed.  You can get them from [http://nodejs.org/](http://nodejs.org/).
+    >Refer to these [instructions on how to not require sudo](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md)
 
-### Clone angular-seed
+## Running HotTowel
 
-Clone the angular-seed repository using [git][git]:
+### Linting
+ - Run code analysis using `gulp vet`. This runs jshint, jscs, and plato.
 
-```
-git clone https://github.com/angular/angular-seed.git
-cd angular-seed
-```
+### Tests
+ - Run the unit tests using `gulp test` (via karma, mocha, sinon).
 
-If you just want to start a new project without the angular-seed commit history then you can do:
+### Running in dev mode
+ - Run the project with `gulp serve-dev`
 
-```bash
-git clone --depth=1 https://github.com/angular/angular-seed.git <your-project-name>
-```
+ - opens it in a browser and updates the browser with any files changes.
 
-The `depth=1` tells git to only pull down one commit worth of historical data.
+### Building the project
+ - Build the optimized project using `gulp build`
+ - This create the optimized code for the project and puts it in the build folder
 
-### Install Dependencies
+### Running the optimized code
+ - Run the optimize project from the build folder with `gulp serve-build`
 
-We have two kinds of dependencies in this project: tools and angular framework code.  The tools help
-us manage and test the application.
+## Exploring HotTowel
+HotTowel Angular starter project
 
-* We get the tools we depend upon via `npm`, the [node package manager][npm].
-* We get the angular code via `bower`, a [client-side code package manager][bower].
+### Structure
+The structure also contains a gulpfile.js and a server folder. The server is there just so we can serve the app using node. Feel free to use any server you wish.
 
-We have preconfigured `npm` to automatically run `bower` so we can simply do:
+	/src
+		/client
+			/app
+			/content
 
-```
-npm install
-```
+### Installing Packages
+When you generate the project it should run these commands, but if you notice missing packages, run these again:
 
-Behind the scenes this will also call `bower install`.  You should find that you have two new
-folders in your project.
+ - `npm install`
+ - `bower install`
 
-* `node_modules` - contains the npm packages for the tools we need
-* `app/bower_components` - contains the angular framework files
-
-*Note that the `bower_components` folder would normally be installed in the root folder but
-angular-seed changes this location through the `.bowerrc` file.  Putting it in the app folder makes
-it easier to serve the files by a webserver.*
-
-### Run the Application
-
-We have preconfigured the project with a simple development web server.  The simplest way to start
-this server is:
+### The Modules
+The app has 4 feature modules and depends on a series of external modules and custom but cross-app modules
 
 ```
-npm start
+app --> [
+        app.admin --> [
+            app.core,
+            app.widgets
+        ],
+        app.dashboard --> [
+            app.core,
+            app.widgets
+        ],
+        app.layout --> [
+            app.core
+        ],
+        app.widgets,
+		app.core --> [
+			ngAnimate,
+			ngSanitize,
+			ui.router,
+			blocks.exception,
+			blocks.logger,
+			blocks.router
+		]
+    ]
 ```
 
-Now browse to the app at `http://localhost:8000/app/index.html`.
+#### core Module
+Core modules are ones that are shared throughout the entire application and may be customized for the specific application. Example might be common data services.
 
+This is an aggregator of modules that the application will need. The `core` module takes the blocks, common, and Angular sub-modules as dependencies.
 
+#### blocks Modules
+Block modules are reusable blocks of code that can be used across projects simply by including them as dependencies.
 
-## Directory Layout
+##### blocks.logger Module
+The `blocks.logger` module handles logging across the Angular app.
 
-```
-app/                    --> all of the source files for the application
-  app.css               --> default stylesheet
-  components/           --> all app specific modules
-    version/              --> version related components
-      version.js                 --> version module declaration and basic "version" value service
-      version_test.js            --> "version" value service tests
-      version-directive.js       --> custom directive that returns the current app version
-      version-directive_test.js  --> version directive tests
-      interpolate-filter.js      --> custom interpolation filter
-      interpolate-filter_test.js --> interpolate filter tests
-  view1/                --> the view1 view template and logic
-    view1.html            --> the partial template
-    view1.js              --> the controller logic
-    view1_test.js         --> tests of the controller
-  view2/                --> the view2 view template and logic
-    view2.html            --> the partial template
-    view2.js              --> the controller logic
-    view2_test.js         --> tests of the controller
-  app.js                --> main application module
-  index.html            --> app layout file (the main html template file of the app)
-  index-async.html      --> just like index.html, but loads js files asynchronously
-karma.conf.js         --> config file for running unit tests with Karma
-e2e-tests/            --> end-to-end tests
-  protractor-conf.js    --> Protractor config file
-  scenarios.js          --> end-to-end scenarios to be run by Protractor
-```
+##### blocks.exception Module
+The `blocks.exception` module handles exceptions across the Angular app.
 
-## Testing
+It depends on the `blocks.logger` module, because the implementation logs the exceptions.
 
-There are two kinds of tests in the angular-seed application: Unit tests and End to End tests.
+##### blocks.router Module
+The `blocks.router` module contains a routing helper module that assists in adding routes to the $routeProvider.
 
-### Running Unit Tests
+## Gulp Tasks
 
-The angular-seed app comes preconfigured with unit tests. These are written in
-[Jasmine][jasmine], which we run with the [Karma Test Runner][karma]. We provide a Karma
-configuration file to run them.
+### Task Listing
 
-* the configuration is found at `karma.conf.js`
-* the unit tests are found next to the code they are testing and are named as `..._test.js`.
+- `gulp help`
 
-The easiest way to run the unit tests is to use the supplied npm script:
+    Displays all of the available gulp tasks.
 
-```
-npm test
-```
+### Code Analysis
 
-This script will start the Karma test runner to execute the unit tests. Moreover, Karma will sit and
-watch the source and test files for changes and then re-run the tests whenever any of them change.
-This is the recommended strategy; if your unit tests are being run every time you save a file then
-you receive instant feedback on any changes that break the expected code functionality.
+- `gulp vet`
 
-You can also ask Karma to do a single run of the tests and then exit.  This is useful if you want to
-check that a particular version of the code is operating as expected.  The project contains a
-predefined script to do this:
+    Performs static code analysis on all javascript files. Runs jshint and jscs.
 
-```
-npm run test-single-run
-```
+- `gulp vet --verbose`
 
+    Displays all files affected and extended information about the code analysis.
 
-### End to end testing
+- `gulp plato`
 
-The angular-seed app comes with end-to-end tests, again written in [Jasmine][jasmine]. These tests
-are run with the [Protractor][protractor] End-to-End test runner.  It uses native events and has
-special features for Angular applications.
+    Performs code analysis using plato on all javascript files. Plato generates a report in the reports folder.
 
-* the configuration is found at `e2e-tests/protractor-conf.js`
-* the end-to-end tests are found in `e2e-tests/scenarios.js`
+### Testing
 
-Protractor simulates interaction with our web app and verifies that the application responds
-correctly. Therefore, our web server needs to be serving up the application, so that Protractor
-can interact with it.
+- `gulp serve-specs`
 
-```
-npm start
-```
+    Serves and browses to the spec runner html page and runs the unit tests in it. Injects any changes on the fly and re runs the tests. Quick and easy view of tests as an alternative to terminal via `gulp test`.
 
-In addition, since Protractor is built upon WebDriver we need to install this.  The angular-seed
-project comes with a predefined script to do this:
+- `gulp test`
 
-```
-npm run update-webdriver
-```
+    Runs all unit tests using karma runner, mocha, chai and sinon with phantomjs. Depends on vet task, for code analysis.
 
-This will download and install the latest version of the stand-alone WebDriver tool.
+- `gulp test --startServers`
 
-Once you have ensured that the development web server hosting our application is up and running
-and WebDriver is updated, you can run the end-to-end tests using the supplied npm script:
+    Runs all unit tests and midway tests. Cranks up a second node process to run a server for the midway tests to hit a web api.
 
-```
-npm run protractor
-```
+- `gulp autotest`
 
-This script will execute the end-to-end tests against the application being hosted on the
-development server.
+    Runs a watch to run all unit tests.
 
+- `gulp autotest --startServers`
 
-## Updating Angular
+    Runs a watch to run all unit tests and midway tests. Cranks up a second node process to run a server for the midway tests to hit a web api.
 
-Previously we recommended that you merge in changes to angular-seed into your own fork of the project.
-Now that the angular framework library code and tools are acquired through package managers (npm and
-bower) you can use these tools instead to update the dependencies.
+### Cleaning Up
 
-You can update the tool dependencies by running:
+- `gulp clean`
 
-```
-npm update
-```
+    Remove all files from the build and temp folders
 
-This will find the latest versions that match the version ranges specified in the `package.json` file.
+- `gulp clean-images`
 
-You can update the Angular dependencies by running:
+    Remove all images from the build folder
 
-```
-bower update
-```
+- `gulp clean-code`
 
-This will find the latest versions that match the version ranges specified in the `bower.json` file.
+    Remove all javascript and html from the build folder
 
+- `gulp clean-fonts`
 
-## Loading Angular Asynchronously
+    Remove all fonts from the build folder
 
-The angular-seed project supports loading the framework and application scripts asynchronously.  The
-special `index-async.html` is designed to support this style of loading.  For it to work you must
-inject a piece of Angular JavaScript into the HTML page.  The project has a predefined script to help
-do this.
+- `gulp clean-styles`
 
-```
-npm run update-index-async
-```
+    Remove all styles from the build folder
 
-This will copy the contents of the `angular-loader.js` library file into the `index-async.html` page.
-You can run this every time you update the version of Angular that you are using.
+### Fonts and Images
 
+- `gulp fonts`
 
-## Serving the Application Files
+    Copy all fonts from source to the build folder
 
-While angular is client-side-only technology and it's possible to create angular webapps that
-don't require a backend server at all, we recommend serving the project files using a local
-webserver during development to avoid issues with security restrictions (sandbox) in browsers. The
-sandbox implementation varies between browsers, but quite often prevents things like cookies, xhr,
-etc to function properly when an html page is opened via `file://` scheme instead of `http://`.
+- `gulp images`
 
+    Copy all images from source to the build folder
 
-### Running the App during Development
+### Styles
 
-The angular-seed project comes preconfigured with a local development webserver.  It is a node.js
-tool called [http-server][http-server].  You can start this webserver with `npm start` but you may choose to
-install the tool globally:
+- `gulp styles`
 
-```
-sudo npm install -g http-server
-```
+    Compile less files to CSS, add vendor prefixes, and copy to the build folder
 
-Then you can start your own development web server to serve static files from a folder by
-running:
+### Bower Files
 
-```
-http-server -a localhost -p 8000
-```
+- `gulp wiredep`
 
-Alternatively, you can choose to configure your own webserver, such as apache or nginx. Just
-configure your server to serve the files under the `app/` directory.
+    Looks up all bower components' main files and JavaScript source code, then adds them to the `index.html`.
 
+    The `.bowerrc` file also runs this as a postinstall task whenever `bower install` is run.
 
-### Running the App in Production
+### Angular HTML Templates
 
-This really depends on how complex your app is and the overall infrastructure of your system, but
-the general rule is that all you need in production are all the files under the `app/` directory.
-Everything else should be omitted.
+- `gulp templatecache`
 
-Angular apps are really just a bunch of static html, css and js files that just need to be hosted
-somewhere they can be accessed by browsers.
+    Create an Angular module that adds all HTML templates to Angular's $templateCache. This pre-fetches all HTML templates saving XHR calls for the HTML.
 
-If your Angular app is talking to the backend server via xhr or other means, you need to figure
-out what is the best way to host the static files to comply with the same origin policy if
-applicable. Usually this is done by hosting the files by the backend server or through
-reverse-proxying the backend server(s) and webserver(s).
+- `gulp templatecache --verbose`
 
+    Displays all files affected by the task.
 
-## Continuous Integration
+### Serving Development Code
 
-### Travis CI
+- `gulp serve-dev`
 
-[Travis CI][travis] is a continuous integration service, which can monitor GitHub for new commits
-to your repository and execute scripts such as building the app or running tests. The angular-seed
-project contains a Travis configuration file, `.travis.yml`, which will cause Travis to run your
-tests when you push to GitHub.
+    Serves the development code and launches it in a browser. The goal of building for development is to do it as fast as possible, to keep development moving efficiently. This task serves all code from the source folders and compiles less to css in a temp folder.
 
-You will need to enable the integration between Travis and GitHub. See the Travis website for more
-instruction on how to do this.
+- `gulp serve-dev --nosync`
 
-### CloudBees
+    Serves the development code without launching the browser.
 
-CloudBees have provided a CI/deployment setup:
+- `gulp serve-dev --debug`
 
-<a href="https://grandcentral.cloudbees.com/?CB_clickstart=https://raw.github.com/CloudBees-community/angular-js-clickstart/master/clickstart.json">
-<img src="https://d3ko533tu1ozfq.cloudfront.net/clickstart/deployInstantly.png"/></a>
+    Launch debugger with node-inspector.
 
-If you run this, you will get a cloned version of this repo to start working on in a private git repo,
-along with a CI service (in Jenkins) hosted that will run unit and end to end tests in both Firefox and Chrome.
+- `gulp serve-dev --debug-brk`
 
+    Launch debugger and break on 1st line with node-inspector.
 
-## Contact
+### Building Production Code
 
-For more information on AngularJS please check out http://angularjs.org/
+- `gulp optimize`
 
-[git]: http://git-scm.com/
-[bower]: http://bower.io
-[npm]: https://www.npmjs.org/
-[node]: http://nodejs.org
-[protractor]: https://github.com/angular/protractor
-[jasmine]: http://jasmine.github.io
-[karma]: http://karma-runner.github.io
-[travis]: https://travis-ci.org/
-[http-server]: https://github.com/nodeapps/http-server
+    Optimize all javascript and styles, move to a build folder, and inject them into the new index.html
+
+- `gulp build`
+
+    Copies all fonts, copies images and runs `gulp optimize` to build the production code to the build folder.
+
+### Serving Production Code
+
+- `gulp serve-build`
+
+    Serve the optimized code from the build folder and launch it in a browser.
+
+- `gulp serve-build --nosync`
+
+    Serve the optimized code from the build folder and manually launch the browser.
+
+- `gulp serve-build --debug`
+
+    Launch debugger with node-inspector.
+
+- `gulp serve-build --debug-brk`
+
+    Launch debugger and break on 1st line with node-inspector.
+
+### Bumping Versions
+
+- `gulp bump`
+
+    Bump the minor version using semver.
+    --type=patch // default
+    --type=minor
+    --type=major
+    --type=pre
+    --ver=1.2.3 // specific version
+
+## License
+
+MIT

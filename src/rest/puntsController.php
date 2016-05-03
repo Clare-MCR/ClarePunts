@@ -266,8 +266,8 @@ class puntsController
     {
 
         $puntid = test_input($data->puntid);
-        $booker = test_input($data->booker);
-        $type = test_input($data->type);
+        $booker = $data->booker? test_input($data->booker): $this->user;
+        $type = $data->type? test_input($data->type): $this->type;
         $name = test_input($data->name);
         $mobile = test_input($data->mobile);
         $timeFrom = test_input($data->time_from);
