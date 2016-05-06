@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div class="row top-buffer">
+    <div class="col-xs-12">
+      <cp-widget-container label-text="vm.title">
+
+        <formly-form form="vm.thisForm" model="vm.form" fields="vm.formFields" class="form-horizontal" novalidate>
+          <div class="form-group">
+            <div class="text-center col-sm-12">
+              <button type="submit" ng-click="vm.updateUser(vm.form)" ng-disabled="vm.thisForm.$invalid"
+                      class="btn btn-primary submit-button">Submit
+              </button>
+            </div>
+          </div>
+        </formly-form>
+      </cp-widget-container>
+    </div>
+  </div>
+</div>

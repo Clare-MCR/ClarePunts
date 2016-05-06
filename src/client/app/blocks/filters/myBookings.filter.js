@@ -8,8 +8,8 @@
     .module('blocks.filter')
     .filter('myBookings', myBookings);
 
-
   function myBookings() {
+    /*jshint camelcase: false */
     return function (bookings, crsid, type) {
       var now = new Date();
       bookings = bookings.filter(function (booking) {
