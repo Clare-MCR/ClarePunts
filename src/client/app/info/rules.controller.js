@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('app.mySettings')
+    .module('app.info')
     .controller('RulesController', RulesController);
 
   RulesController.$inject = ['settingsPrepServices'];

@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('app.mySettings')
+    .module('app.info')
     .run(appRun);
 
   appRun.$inject = ['routerHelper'];
@@ -17,7 +17,7 @@
         state: 'rules',
         config: {
           url: '/rules',
-          templateUrl: 'app/mySettings/rules.html',
+          templateUrl: 'app/info/rules.html',
           controller: 'RulesController',
           controllerAs: 'vm',
           title: 'rules',
