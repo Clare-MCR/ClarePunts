@@ -7,7 +7,6 @@
  * @example <cp-widget-punt-status></cp-widget-punt-status>
  */
 
-
 (function () {
   'use strict';
 
@@ -27,8 +26,7 @@
     var directive = {
       scope: {
         'punts': '=',
-        'bookings': '=',
-        'title': '='
+        'bookings': '='
       },
       templateUrl: 'app/widgets/widget-punt-status.html',
       restrict: 'EA',
@@ -50,6 +48,7 @@
       }
 
       function getStatus() {
+        /*jshint camelcase: false */
         var now = new Date();
         var midnight = new Date().setHours(24, 0, 0, 0);
         var currentBookings = vm.bookings.filter(function (booking) {
@@ -64,7 +63,6 @@
             punt.currentStatus = '';
             punt.currentBooking = '';
             punt.nextBooking = '';
-
 
             var availableFrom = new Date(punt.available_from);
             var availableTo = new Date(punt.available_to);
@@ -117,6 +115,7 @@
   }
 
   function bookingSimple($filter) {
+    /*jshint camelcase: false */
     return function (input) {
       var output = '';
       if (input) {

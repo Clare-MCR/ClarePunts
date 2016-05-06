@@ -33,7 +33,7 @@ class puntsController
     public function authorize()
     {
         $this->db = new Database();
-        $this->user = ($_SERVER['REMOTE_USER']);
+        $this->user = 'rjg70';//($_SERVER['REMOTE_USER']);
         $this->db->query('SELECT * FROM user WHERE crsid = :id');
         $this->db->bind(':id', $this->user);
         $row = $this->db->single();
@@ -60,25 +60,31 @@ class puntsController
      */
     public function getUser($id = null)
     {
-        if ((!$this->admin && $id)) {
+        if ((!$this->admin && $id) || !$id) {
             $id = $this->user;
         }
 
-        $this->db->query('SELECT * FROM user WHERE crsid = :id');
-        $this->db->bind(':id', $id);
-        $row = $this->db->single();
+        if ($id == '*') {
+          $this->db->query('SELECT * FROM user');
+          $row = $this->db->resultset();
+          return $row;
+        } else {
+          $this->db->query('SELECT * FROM user WHERE crsid = :id');
+          $this->db->bind(':id', $id);
+          $row = $this->db->single();
 
-        if (!$row["name"]) {
-            $ds = ldap_connect("ldap.lookup.cam.ac.uk");
-            $lsearch = ldap_search($ds, "ou=people,o=University of Cambridge,dc=cam,dc=ac,dc=uk", "uid=" . $id . "");
-            $info = ldap_get_entries($ds, $lsearch);
-            $name = $info[0]["cn"][0];
-            $this->db->query('UPDATE user SET name=:name WHERE crsid=:id');
-            $this->db->bind(':id', $id);
-            $this->db->bind(':name', $name);
-            $this->db->execute();
+          if (!$row["name"]) {
+              $ds = ldap_connect("ldap.lookup.cam.ac.uk");
+              $lsearch = ldap_search($ds, "ou=people,o=University of Cambridge,dc=cam,dc=ac,dc=uk", "uid=" . $id . "");
+              $info = ldap_get_entries($ds, $lsearch);
+              $name = $info[0]["cn"][0];
+              $this->db->query('UPDATE user SET name=:name WHERE crsid=:id');
+              $this->db->bind(':id', $id);
+              $this->db->bind(':name', $name);
+              $this->db->execute();
+          }
+          return $row;
         }
-        return $row;
     }
 
     /**
@@ -141,7 +147,7 @@ class puntsController
     public function addUsers($data)
     {
         if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Rules');
+            throw new RestException(404, 'User Must be admin to modify Punt Users');
         }
 
         if (!isset($data->type)) {
@@ -175,41 +181,29 @@ class puntsController
     }
 
     /**
-     * Purge the user database by user_type
+     * Delete the user by id or current user
      *
-     * @url DELETE /user
-     * @url DELETE /user/type
-     * @url DELETE /user/type/$type
+     * @url DELETE /user/$id
+     * @url DELETE /user/$id/$type
      */
-    public function purgeUsers($type = null)
+    public function deleteUser($id = '*', $type = null)
     {
         if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Rules');
+            throw new RestException(404, 'User Must be admin to modify Users');
         }
 
-        if (isset($type)) {
+        if (!isset($id)) {
+          throw new RestException(204, 'No Content');
+        }
+
+        if ($id === '*' && isset($type)){
             $this->db->query('DELETE FROM user WHERE type=:type and admin=0');
             $this->db->bind('type', test_input($type));
             $this->db->execute();
-        } else {
-            $this->db->query('DELETE FROM user WHERE admin=0');
-            $this->db->execute();
-        }
-        return;
-    }
-
-    /**
-     * Delete the user by id or current user
-     *
-     * @url DELETE /user/id/$id
-     */
-    public function deleteUser($id)
-    {
-        if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Rules');
-        }
-
-        if (isset($id)) {
+        } elseif ($id === '*' && !isset($type)){
+          $this->db->query('DELETE FROM user WHERE admin=0');
+          $this->db->execute();
+        }else{
             $this->db->query('DELETE FROM user WHERE crsid=:crsid');
             $this->db->bind(':crsid', $id);
             try {
@@ -217,8 +211,6 @@ class puntsController
             } catch (PDOException $e) {
                 $error = true;
             }
-        } else {
-            throw new RestException(204, 'No Content');
         }
         if ($error) {
             throw new RestException(404, 'Not Found');
@@ -227,32 +219,40 @@ class puntsController
     }
 
     /**
-     * Gets the punt rules
+     * Gets the punt settings
      *
-     * @url GET /rules
+     * @url GET /settings
+     * @url GET /settings/$type
      */
-    public function getRules()
-    {
-        $this->db->query('SELECT value FROM options WHERE item="rules"');
+    public function getRules($type = "rules") {
+        if (!isset($type)){
+          $type = "rules";
+        }
+        $this->db->query('SELECT value FROM options WHERE item=:type');
+        $this->db->bind(':type',$type);
         $row = $this->db->single();
-        return $row["value"];
+        return $row;
     }
 
     /**
      * Update the punt rules
      *
-     * @url PUT /rules
+     * @url PUT /settings
+     * @url PUT /settings/$type
      */
-    public function putRules($data)
+    public function putRules($type = "rules" ,$data)
     {
         if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Rules');
+            throw new RestException(404, 'User Must be admin to modify Punt Settings');
         }
-        if (!$data->rules) {
+
+        if (!isset($type) || !$data->value) {
             throw new RestException(204, 'No Content received');
         }
-        $this->db->query('update options set  value=:rules  where item="rules";');
-        $this->db->bind(':rules', $data->rules);
+
+        $this->db->query('update options set  value=:value  where item=:type;');
+        $this->db->bind(':value', $data->value);
+        $this->db->bind(':type', $type);
         $this->db->execute();
         return;
     }
@@ -266,24 +266,23 @@ class puntsController
     {
 
         $puntid = test_input($data->puntid);
-        $booker = $data->booker? test_input($data->booker): $this->user;
-        $type = $data->type? test_input($data->type): $this->type;
+        $booker = test_input($data->booker);
+        $type = test_input($data->type);
         $name = test_input($data->name);
-        $mobile = test_input($data->mobile);
-        $timeFrom = test_input($data->time_from);
-        $timeTo = test_input($data->time_to);
+        $mobile = test_input($data->phone);
+        $timeFrom = test_input($data->timeFrom);
+        $timeTo = test_input($data->timeTo);
 
         if ($booker != $this->user && $this->admin == 0 && $this->type != "PORTER") {
             throw new RestException(404, 'Invalid permissions');
         };
 
-        if (!($puntid && $booker && $name && $mobile && $timeFrom && $timeTo)) {
+        if (empty($puntid) || empty($booker) || empty($name) || empty($mobile) || empty($timeFrom) || empty($timeTo)) {
             throw new RestException(404, 'Missing Data');
         }
 
         if ($this->type === "PORTER" || $this->admin) {
-            $permissions = $this->getPunts($puntid, $timeFrom, $timeTo) and
-            !$this->getBookings($puntid, $timeFrom, $timeTo);
+            $permissions = (bool) $this->getPunts($puntid, $timeFrom, $timeTo) && !(bool) $this->getBookings($puntid, $timeFrom, $timeTo);
         } else {
             $upcoming = $this->getBookings(null, $timeFrom, null, null, $booker);
             $notAtLimit = true;
@@ -293,20 +292,19 @@ class puntsController
                     $notAtLimit = false;
                 }
             }
-            $permissions = !$upcoming and $notAtLimit and $this->getPunts($puntid, $timeFrom, $timeTo) and
-            !$this->getBookings($puntid, $timeFrom, $timeTo);
+            $permissions = !(bool) $upcoming && $notAtLimit && (bool) $this->getPunts($puntid, $timeFrom, $timeTo) && !(bool) $this->getBookings($puntid, $timeFrom, $timeTo);
         }
         if ($permissions) {
             $this->db->query('INSERT INTO bookings (puntid, booker, name, user_type, phone, time_from, time_to)
  								VALUES (:id,:crsid,:name,:type,:mobile,:from, :to)');
-            $this->database->bind(':id', $puntid);
-            $this->database->bind(':crsid', $booker);
-            $this->database->bind(':name', $name);
-            $this->database->bind(':type', $type);
-            $this->database->bind(':mobile', $mobile);
-            $this->database->bind(':from', strftime('%Y-%m-%d %H:%M:%S', $timeFrom));
-            $this->database->bind(':to', strftime('%Y-%m-%d %H:%M:%S', $timeTo));
-            $this->database->execute();
+            $this->db->bind(':id', $puntid);
+            $this->db->bind(':crsid', $booker);
+            $this->db->bind(':name', $name);
+            $this->db->bind(':type', $type);
+            $this->db->bind(':mobile', $mobile);
+            $this->db->bind(':from', strftime('%Y-%m-%d %H:%M:%S', $timeFrom));
+            $this->db->bind(':to', strftime('%Y-%m-%d %H:%M:%S', $timeTo));
+            $this->db->execute();
         } else {
             throw new RestException(409, 'Permissions Invalid');
         }
@@ -357,6 +355,7 @@ class puntsController
         if ($to) {
             $to = strftime('%Y-%m-%d %H:%M:%S', $to);
         }
+        if ($id === '*'){$id = null;}
 
         if ($id && $from && $to) {
             $this->db->query('SELECT * FROM bookings WHERE puntid=:puntid AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
@@ -370,6 +369,9 @@ class puntsController
         } elseif ($id) {
             $this->db->query('SELECT * FROM bookings WHERE puntid=:puntid ORDER BY time_from DESC');
             $this->db->bind(':puntid', $id);
+        } elseif ($from ) {
+           $this->db->query('SELECT * FROM bookings WHERE time_to>=:from ORDER BY time_from DESC');
+           $this->db->bind(':from', $from);
         } elseif ($type && $from && $to) {
             $this->db->query('SELECT * FROM bookings WHERE user_type=:type AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':type', $type);
@@ -452,7 +454,7 @@ class puntsController
         $this->db->bind(':from', strftime('%Y-%m-%d %H:%M:%S', test_input($data->from)));
         $this->db->bind(':to', strftime('%Y-%m-%d %H:%M:%S', test_input($data->to)));
         $this->db->execute();
-        return;
+        return $this->db->lastInsertId();
     }
 
     /**

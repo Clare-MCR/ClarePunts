@@ -1,28 +1,25 @@
-<div class="contentLabel">{{vm.title}}</div>
-<div class="contentBox">
-  <table>
-    <thead>
-    <tr>
-      <th>Punt</th>
-      <th>Current Booking</th>
-      <th>Next Booking</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="punt in vm.punts">
-      <td class="puntstatus" tooltip-placement="bottom" tooltip-append-to-body="true"
-          uib-tooltip="{{punt.currentStatus}}">
-        <div class="{{punt.currentStatus|statusCircle}}"></div>
-        {{punt.name}}
-      </td>
-      <td tooltip-placement="bottom" tooltip-append-to-body="true"
-          uib-tooltip="{{punt.currentBooking | bookingTooltip}}">
-        {{punt.currentBooking | bookingSimple}}
-      </td>
-      <td tooltip-placement="bottom" tooltip-append-to-body="true" uib-tooltip="{{punt.nextBooking | bookingTooltip}}">
-        {{punt.nextBooking | bookingSimple}}
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+<table>
+  <thead>
+  <tr>
+    <th>Punt</th>
+    <th>Current Booking</th>
+    <th>Next Booking</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="punt in vm.punts">
+    <td class="puntstatus" tooltip-placement="bottom" tooltip-append-to-body="true"
+        uib-tooltip="{{punt.currentStatus}}">
+      <div class="{{punt.currentStatus|statusCircle}}"></div>
+      {{punt.name}}
+    </td>
+    <td tooltip-placement="bottom" tooltip-append-to-body="true"
+        uib-tooltip="{{punt.currentBooking | bookingTooltip}}">
+      {{punt.currentBooking | bookingSimple}}
+    </td>
+    <td tooltip-placement="bottom" tooltip-append-to-body="true" uib-tooltip="{{punt.nextBooking | bookingTooltip}}">
+      {{punt.nextBooking | bookingSimple}}
+    </td>
+  </tr>
+  </tbody>
+</table>

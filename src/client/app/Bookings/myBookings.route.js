@@ -14,13 +14,13 @@
   function getStates() {
     return [
       {
-        state: 'bookAPunt',
+        state: 'myBookings',
         config: {
-          url: '/book',
-          templateUrl: 'app/bookings/bookAPunt.html',
-          controller: 'BookAPuntController',
+          url: '/mybookings',
+          templateUrl: 'app/bookings/myBookings.html',
+          controller: 'MyBookingsController',
           controllerAs: 'vm',
-          title: 'bookAPunt',
+          title: 'myBookings',
           resolve: {
             /* @ngInject */
             puntsPrepService: puntsPrepService,
@@ -29,7 +29,7 @@
           },
           settings: {
             nav: 2,
-            content: '<i class="fa fa-ship"></i> Book A Punt'
+            content: '<i class="fa fa-calendar-o"></i> My Bookings'
           }
         }
       }

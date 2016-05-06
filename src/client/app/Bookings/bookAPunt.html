@@ -1,118 +1,59 @@
-{{vm.form.start|date:'medium'}}<br>
-{{vm.form.end |date:'medium'}}<br>
-{{vm.form}}<br>
-{{bookingForm}}
 <section id="book-a-punt-view">
+  <pre>{{vm.form |json}}</pre>
   <div class="container-fluid">
     <div class="row topbuffer">
+      <div class="col-sm-12">
+        <cp-widget-container label-text="vm.title.dates">
+          <table>
+            <thead>
+            <tr>
+              <td>Michaelmas Term</td>
+              <td>Lent Term</td>
+              <td>Easter Term</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><span>{{vm.MichaelmasTerm.start | date:'fullDate'}}</span> - <span>{{vm.MichaelmasTerm.end | date:'mediumDate'}}</span>
+              </td>
+              <td><span>{{vm.LentTerm.start| date:'mediumDate'}}</span> -
+                <span>{{vm.LentTerm.end| date:'mediumDate'}}</span></td>
+              <td><span>{{vm.EasterTerm.start| date:'mediumDate'}}</span> - <span>{{vm.EasterTerm.end| date:'mediumDate'}}</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </cp-widget-container>
+      </div>
+    </div>
+
+    <div class="row topbuffer">
       <div class="col-sm-6">
-        <div class="contentLabel">Choose Date</div>
-        <div class="contentBox calendar">
-          <uib-datepicker ng-model="vm.form.start" class="well well-sm"
+        <cp-widget-container label-text="vm.title.calendar">
+          <uib-datepicker ng-model="vm.form.timeFrom" class="well well-sm"
                           datepicker-options="vm.options" ng-change="vm.changeInDate()"></uib-datepicker>
-        </div>
+        </cp-widget-container>
       </div>
 
       <div class="col-sm-6">
-        <form name="bookingForm" novalidate>
-          <div class="contentLabel">Book A Punt</div>
-          <div class="contentBox padded-container">
-            <div ng-if="vm.user.type ==='PORTER'" class="form-group form-group-sm row">
-              <label class="col-sm-4 form-control-label" for="CRSIDInput">CRSID:</label>
-              <div class="col-sm-8" ng-class="{ 'has-error': bookingForm.crsid.$invalid && bookingForm.crsid.$touched}">
-
-                <input class="form-control" type="text" ng-model="vm.form.crsid" id="CRSIDInput" name="crsid"
-                       placeholder="CRSID" ng-required="vm.user.type ==='PORTER'">
-
-                <span class="help-block" ng-show="bookingForm.crsid.$error.required">Required</span>
-              </div>
-            </div>
-            <div ng-if="vm.user.type ==='PORTER'" class="form-group form-group-sm row">
-              <label class="col-sm-4 form-control-label" for="TypeSelect">Type:</label>
-              <div class="col-sm-8" ng-class="{ 'has-error': bookingForm.type.$invalid && bookingForm.type.$touched}">
-                <select class="form-control" id="TypeSelect" ng-model="vm.form.type" name="type"
-                        ng-options="x for x in userTypes" ng-required="vm.user.type ==='PORTER'"></select>
-                <span class="help-block" ng-show="bookingForm.type.$error.required">Required</span>
-              </div>
-            </div>
-            <div class="form-group form-group-sm row">
-              <label class="col-sm-4 form-control-label" for="NameInput">Name:</label>
-              <div class="col-sm-8" ng-class="{ 'has-error': bookingForm.name.$invalid && bookingForm.name.$touched}">
-                <input class="form-control" type="text" ng-model="vm.form.name" id="NameInput" name="name"
-                       placeholder="Name" required>
-                <span class="help-block" ng-show="bookingForm.name.$error.required">Required</span>
-              </div>
-            </div>
-            <div class="form-group form-group-sm row">
-              <label class="col-sm-4 form-control-label" for="MobileInput">Mobile:</label>
-              <div class="col-sm-8"
-                   ng-class="{ 'has-error': bookingForm.mobile.$invalid && bookingForm.mobile.$touched}">
-                <input class="form-control" type="text" id="MobileInput" ng-model="vm.form.mobile" name="mobile"
-                       placeholder="Mobile" required>
-                <span class="help-block" ng-show="bookingForm.mobile.$error.required">Required</span>
-              </div>
-            </div>
-            <div class="form-group form-group-sm row">
-              <label class="col-sm-4 form-control-label" for="PuntSelect">Punt:</label>
-              <div class="col-sm-8" ng-class="{ 'has-error': bookingForm.punt.$invalid && bookingForm.punt.$touched}">
-                <select class="form-control" id="PuntSelect" ng-model="vm.form.punt" name="punt"
-                        ng-options="p.id as p.name for p in vm.punts| puntActive:vm.form.start" required></select>
-                <span class="help-block" ng-show="bookingForm.punt.$error.required">Required</span>
-              </div>
-            </div>
-            <div class="form-group form-group-sm row">
-              <label class="col-sm-4 form-control-label" for="timeFrom">Time From:</label>
-              <div class="col-sm-8" uib-dropdown auto-close="outsideClick"
-                   ng-class="{ 'has-error': bookingForm.start.$invalid && bookingForm.start.$touched}">
-                <input type="text" class="form-control" id="timeFrom" uib-dropdown-toggle
-                       value="{{vm.form.start|date:'shortTime'}}">
-                <span class="help-block" ng-show="bookingForm.start.$error.required">Required</span>
-                <ul uib-dropdown-menu>
-                  <li>
-                    <uib-timepicker name="start" ng-model="vm.form.start" ng-change="vm.updateDuration()" hour-step="1"
-                                    minute-step="15" min="vm.options.minTime" show-meridian="true"
-                                    required></uib-timepicker>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {{vm.options.minTime|date:'medium'}}
-            <div class="form-group form-group-sm row">
-              <label class="col-sm-4 form-control-label" for="timeTo">Time End:</label>
-              <div class="col-sm-8" uib-dropdown auto-close="outsideClick"
-                   ng-class="{ 'has-error': bookingForm.end.$invalid && bookingForm.end.$touched}">
-                <input type="text" id="timeTo" class="form-control" uib-dropdown-toggle
-                       value="{{vm.form.end|date:'shortTime'}}">
-                <span class="help-block" ng-show="bookingForm.end.$error.required">Required</span>
-                <ul uib-dropdown-menu>
-                  <li>
-                    <uib-timepicker ng-model="vm.form.end" name="end" max="vm.options.durationMax"
-                                    min="vm.options.durationMin" hour-step="1" minute-step="15" show-meridian="true"
-                                    required></uib-timepicker>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="form-group row">
+        <cp-widget-container label-text="vm.title.form">
+          <formly-form form="vm.thisForm" model="vm.form" fields="vm.formFields" class="form-horizontal" novalidate>
+            <span class="has-error" ng-if="!vm.canBook">{{vm.bookingErrorMessage}}</span>
+            <div class="form-group">
               <div class="text-center col-sm-12">
-                <button type="submit"
-                        ng-disabled="bookingForm.$dirty && bookingForm.$invalid || (conflicts).length >= 1 || vm.user.hasUpcoming"
-                        ng-click="vm.submit()" class="btn btn-default">Submit
+                <button type="submit" ng-disabled="vm.thisForm.$invalid || !vm.canBook" ng-click="vm.onSubmit(vm.form)"
+                        class="btn btn-primary submit-button">Submit
                 </button>
               </div>
             </div>
-            <div class="has-error" ng-show="vm.user.hasUpcoming"><span class="help-block">You are limited to 1 future booking</span>
-            </div>
-          </div>
-        </form>
-
+          </formly-form>
+        </cp-widget-container>
       </div>
-
     </div>
+
     <div class="row top-buffer">
       <div class="col-xs-12">
-        <div class="contentLabel">Conflicts</div>
-        <div class="contentBox">
+        <cp-widget-container label-text="vm.title.conflicts">
           <table>
             <thead>
             <tr>
@@ -124,7 +65,7 @@
             </thead>
             <tbody>
             <tr
-              ng-repeat="booking in conflicts=(vm.bookings| conflictBookings:vm.form.start:vm.form.end | bookingsByPunt:vm.form.punt) | orderBy:'time_from'">
+              ng-repeat="booking in vm.bookings| conflictBookings:vm.form.timeFrom:vm.form.timeTo | bookingsByPunt:vm.form.punt | orderBy:'time_from'">
               <td>{{ booking.puntid | puntidToName:vm.punts }}</td>
               <td>{{ booking.user_type }}</td>
               <td>{{ booking.time_from |dateParse |date:'shortTime'}}</td>
@@ -132,7 +73,7 @@
             </tr>
             </tbody>
           </table>
-        </div>
+        </cp-widget-container>
       </div>
     </div>
   </div>
