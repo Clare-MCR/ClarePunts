@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row top-buffer">
+    <div class="col-xs-12">
+      <cp-widget-container label-text="vm.title">
+
+        <form>
+          <table class="bottomRow">
+            <thead>
+            <tr>
+              <th class="checkColumn"></th>
+              <th>Punt</th>
+              <th ng-if="vm.user.type === 'PORTER'">Name</th>
+              <th>Date</th>
+              <th>From</th>
+              <th>To</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="booking in vm.user.bookings |orderBy:'time_from' track by $index">
+              <td class="checkColumn"><input type="checkbox" checklist-model="vm.form" checklist-value="booking.id">
+              </td>
+              <td>{{ booking.puntid | puntidToName:vm.punts }}</td>
+              <td ng-if="vm.user.type === 'PORTER'">
+                {{booking.name}}
+              </td>
+              <td>{{ booking.time_from |dateParse |date:'mediumDate'}}</td>
+              <td>{{ booking.time_from |dateParse |date:'shortTime'}}</td>
+              <td>{{ booking.time_to |dateParse |date:'shortTime'}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="form-group row">
+            <div class="text-center col-xs-12">
+              <button type="submit" class="btn btn-primary" ng-click="vm.deleteBooking()">Delete</button>
+            </div>
+          </div>
+        </form>
+      </cp-widget-container>
+    </div>
+  </div>
+</div>

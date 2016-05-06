@@ -8,7 +8,6 @@
     .module('blocks.filter')
     .filter('bookingsByPunt', bookingsByPunt);
 
-
   function bookingsByPunt() {
     return function (bookings, puntid) {
       return bookings.filter(function (booking) {
@@ -21,5 +20,3 @@
     };
   }
 })();
-
-

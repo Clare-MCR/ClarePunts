@@ -3,15 +3,17 @@
 
   angular
     .module('app.data')
-    .factory('bookingServices', bookingServices);
+    .factory('BookingServices', BookingServices);
 
-  bookingServices.$inject = ['$resource'];
+  BookingServices.$inject = ['$resource'];
 
   /* @ngInject */
-  function bookingServices($resource) {
-    return $resource('http://rjg70.user.srcf.net/rest/booking/:Id/:from/:to', null, {
-      'get': {method: 'GET', isArray: true}
-    });
+  function BookingServices($resource) {
+    return $resource('http://rjg70.user.srcf.net/rest/booking/:Id/:from/:to',
+      {Id: '*', from: new Date().getTime() / 1000},
+      {
+        'get': {method: 'GET', isArray: true}
+      });
   }
 
 })();

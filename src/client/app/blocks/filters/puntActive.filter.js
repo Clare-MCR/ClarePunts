@@ -8,8 +8,8 @@
     .module('blocks.filter')
     .filter('puntActive', puntActive);
 
-
   function puntActive() {
+    /*jshint camelcase: false */
     return function (input, dt) {
       var date = new Date(dt);
       input = input.filter(function (punt) {

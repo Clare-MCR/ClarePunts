@@ -8,7 +8,6 @@
     .module('blocks.filter')
     .filter('dateParse', dateParse);
 
-
   function dateParse() {
     return function (date) {
       return new Date(date);

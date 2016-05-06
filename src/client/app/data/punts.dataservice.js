@@ -3,12 +3,12 @@
 
   angular
     .module('app.data')
-    .factory('puntsServices', puntsServices);
+    .factory('PuntsServices', PuntsServices);
 
-  puntsServices.$inject = ['$resource'];
+  PuntsServices.$inject = ['$resource'];
 
   /* @ngInject */
-  function puntsServices($resource) {
+  function PuntsServices($resource) {
     return $resource('http://rjg70.user.srcf.net/rest/punts/:puntsId', null, {
       'get': {method: 'GET', isArray: true},
       update: {method: 'PUT'}

@@ -8,7 +8,6 @@
     .module('blocks.filter')
     .filter('puntidToName', puntidToName);
 
-
   function puntidToName() {
     return function (puntid, punts) {
       for (var i = 0; i < punts.length; i++) {

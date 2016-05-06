@@ -3,13 +3,13 @@
 
   angular
     .module('app.data')
-    .factory('userServices', userServices);
+    .factory('UserServices', UserServices);
 
-  userServices.$inject = ['$resource'];
+  UserServices.$inject = ['$resource'];
 
   /* @ngInject */
-  function userServices($resource) {
-    return $resource('http://rjg70.user.srcf.net/rest/user/:Id', null, {
+  function UserServices($resource) {
+    return $resource('http://rjg70.user.srcf.net/rest/user/:Id/:Type', null, {
       update: {method: 'PUT'}
     });
   }
