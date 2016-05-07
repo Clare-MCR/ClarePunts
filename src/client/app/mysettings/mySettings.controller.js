@@ -49,7 +49,7 @@
     function updateUser(data) {
       UserServices.update({Id: vm.user.crsid}, data, function () {
         logger.success('Settings Updated');
-      }, function (error) {
+      }, function () {
         logger.error('Something went wrong updating your settings');
       });
 

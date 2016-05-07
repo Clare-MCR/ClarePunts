@@ -5,17 +5,22 @@
     .module('app.bookings')
     .controller('BookAPuntController', BookAPuntController);
 
-  BookAPuntController.$inject = ['$scope', '$filter', 'BookingServices', 'bookingsPrepService',
+  BookAPuntController.$inject = ['$filter', 'BookingServices', 'bookingsPrepService',
     'puntsPrepService', 'userPrepService', 'logger'];
   /* @ngInject */
-  function BookAPuntController($scope, $filter, BookingServices, bookingsPrepService,
+  function BookAPuntController($filter, BookingServices, bookingsPrepService,
                                puntsPrepService, userPrepService, logger) {
     var vm = this;
 
     vm.changeInDate = changeInDate;
     vm.onSubmit = onSubmit;
 
-    vm.title = {calendar: 'Choose A Date', form: 'Book A Punt', conflicts: 'Conflicts', dates: 'Term Dates'};
+    vm.title = {
+      calendar: 'Choose A Date',
+      form: 'Book A Punt',
+      conflicts: 'Conflicts',
+      dates: 'Term Dates'
+    };
     vm.now = new Date();
     vm.MichaelmasTerm = {start: '', end: ''};
     vm.LentTerm = {start: '', end: ''};
@@ -55,7 +60,6 @@
     };
     vm.form.timeFrom.setHours(0, 0, 0, 0);
     vm.form.timeTo.setHours(7, 0, 0, 0);
-
 
     vm.options = {
       datepickerMode: 'day',
@@ -98,7 +102,7 @@
           }
         },
         watcher: {
-          listener: function (field, newValue, oldValue, scope, stopWatching) {
+          listener: function (field, newValue) {
             if (newValue) {
               bookingAllowed();
             }
@@ -121,7 +125,7 @@
           return vm.user.type !== 'PORTER';
         },
         watcher: {
-          listener: function (field, newValue, oldValue, scope, stopWatching) {
+          listener: function (field, newValue) {
             if (newValue) {
               bookingAllowed();
             }
@@ -138,16 +142,16 @@
         type: 'phone',
         templateOptions: {
           type: 'text',
-          label: 'Mobile',
+          label: 'Mobile:',
           placeholder: 'Enter mobile',
           required: true
-        },
+        }
       },
       {
         key: 'puntid',
         type: 'horizontalSelect',
         templateOptions: {
-          label: 'punt',
+          label: 'Punt:',
           options: [],
           required: true
         },
@@ -165,7 +169,7 @@
         key: 'timeFrom',
         type: 'timepicker',
         templateOptions: {
-          label: 'Start Time',
+          label: 'Start Time:',
           hourStep: 1,
           minuteStep: 15,
           showMeridian: true,
@@ -174,7 +178,7 @@
           readonlyInput: true
         },
         watcher: {
-          listener: function (field, newValue, oldValue, scope, stopWatching) {
+          listener: function (field, newValue) {
             if (newValue) {
               bookingAllowed();
             }
@@ -191,14 +195,14 @@
         key: 'timeTo',
         type: 'timepicker',
         templateOptions: {
-          label: 'Finish Time',
+          label: 'Finish Time:',
           hourStep: 1,
           minuteStep: 15,
           showMeridian: true,
           readonlyInput: true
         },
         watcher: {
-          listener: function (field, newValue, oldValue, scope, stopWatching) {
+          listener: function (field, newValue) {
             if (newValue) {
               bookingAllowed();
             }
@@ -239,7 +243,6 @@
       }
     ];
 
-
     activate();
 
     function activate() {
@@ -250,14 +253,15 @@
     function userHasUpcoming(crsid) {
       return vm.bookings.filter(function (booking) {
           /*jshint camelcase: false */
-          var output = false;
           return new Date(booking.time_to) >= vm.now && booking.booker === crsid;
         }).length !== 0;
     }
 
     function conflictBookings() {
       return vm.bookings.filter(function (booking) {
-        return new Date(booking.time_from) <= vm.form.timeTo && new Date(booking.time_to) >= vm.form.timeFrom;
+        /*jshint camelcase: false */
+        return new Date(booking.time_from) <= vm.form.timeTo &&
+          new Date(booking.time_to) >= vm.form.timeFrom;
       });
     }
 
@@ -343,7 +347,6 @@
       } else {
         vm.canBook = true;
       }
-
     }
 
     function changeInDate() {
