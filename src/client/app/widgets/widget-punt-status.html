@@ -8,15 +8,18 @@
   </thead>
   <tbody>
   <tr ng-repeat="punt in vm.punts">
+    <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
     <td class="puntstatus" tooltip-placement="bottom" tooltip-append-to-body="true"
         uib-tooltip="{{punt.currentStatus}}">
       <div class="{{punt.currentStatus|statusCircle}}"></div>
       {{punt.name}}
     </td>
+    <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
     <td tooltip-placement="bottom" tooltip-append-to-body="true"
         uib-tooltip="{{punt.currentBooking | bookingTooltip}}">
       {{punt.currentBooking | bookingSimple}}
     </td>
+    <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
     <td tooltip-placement="bottom" tooltip-append-to-body="true" uib-tooltip="{{punt.nextBooking | bookingTooltip}}">
       {{punt.nextBooking | bookingSimple}}
     </td>

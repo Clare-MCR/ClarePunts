@@ -62,7 +62,6 @@
       ngModelAttrs[camelize(attr)] = {attribute: attr};
     });
 
-
     // bindings
     var bindings = [
       'datepicker-mode',
@@ -121,41 +120,15 @@
       }
     });
 
-
-    formlyConfigProvider.setType({
-      name: 'datepicker',
-      templateUrl: 'app/core/formlytemplates/datepicker.html',
-      wrapper: ['horizontalBootstrapLabel', 'bootstrapHasError'],
-      defaultOptions: {
-        ngModelAttrs: ngModelAttrs,
-        templateOptions: {
-          datepickerOptions: {
-            format: 'MM.dd.yyyy',
-            initDate: new Date()
-          }
-        }
-      },
-      controller: ['$scope', function ($scope) {
-        $scope.datepicker = {};
-
-        $scope.datepicker.opened = false;
-
-        $scope.datepicker.open = function ($event) {
-          $scope.datepicker.opened = !$scope.datepicker.opened;
-        };
-      }]
-    });
-
-
     formlyConfigProvider.setWrapper({
       name: 'horizontalBootstrapLabel',
       template: [
-        '<label for="{{::id}}" class="col-sm-offset-1 col-sm-2 form-control-label">',
+        '<label for="{{::id}}" class="col-xs-offset-1 col-xs-4 col-md-3 form-control-label">',
         '{{to.label}} {{to.required ? "*" : ""}}',
         '</label>',
-        '<div class="col-sm-8">',
+        '<div class="col-xs-6 col-md-7">',
         '<formly-transclude></formly-transclude>',
-        '</div>',
+        '</div>'
       ].join(' ')
     });
 
@@ -200,7 +173,14 @@
           mobile: {
             expression: function (viewValue, modelValue) {
               var value = modelValue || viewValue;
-              var phonePattern = /^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}|\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3})|\d{5}\)?[\s-]?\d{4,5}|8(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))(?:(?:[\s-]?(?:x|ext\.?\s?|\#)\d+)?)$/;
+              var phonePattern = new RegExp([
+                '^\(?(?:(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?',
+                '[\s-]?\(?(?:0\)?[\s-]?\(?)?|0)(?:\d{2}\)?',
+                '[\s-]?\d{4}[\s-]?\d{4}|\d{3}\)?[\s-]?\d{3}',
+                '[\s-]?\d{3,4}|\d{4}\)?[\s-]?(?:\d{5}|\d{3}',
+                '[\s-]?\d{3})|\d{5}\)?[\s-]?\d{4,5}|8',
+                '(?:00[\s-]?11[\s-]?11|45[\s-]?46[\s-]?4\d))',
+                '(?:(?:[\s-]?(?:x|ext\.?\s?|\#)\d+)?)$'].join(''));
               return phonePattern.test(value);
             }
           }
@@ -211,12 +191,5 @@
         }
       }
     });
-
-
   }
-
-
 })();
-
-
-

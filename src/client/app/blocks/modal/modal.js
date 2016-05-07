@@ -50,7 +50,7 @@
           $scope.modalOptions.ok = function (result) {
             $uibModalInstance.close(result);
           };
-          $scope.modalOptions.close = function (result) {
+          $scope.modalOptions.close = function () {
             $uibModalInstance.dismiss('cancel');
           };
         };
