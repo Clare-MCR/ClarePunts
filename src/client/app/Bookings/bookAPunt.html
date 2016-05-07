@@ -30,17 +30,21 @@
     <div class="row topbuffer">
       <div class="col-sm-6">
         <cp-widget-container label-text="vm.title.calendar">
-          <uib-datepicker ng-model="vm.form.timeFrom" class="well well-sm"
+          <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
+          <uib-datepicker ng-model="vm.form.timeFrom" class="well well-sm cp-calendar"
                           datepicker-options="vm.options" ng-change="vm.changeInDate()"></uib-datepicker>
         </cp-widget-container>
       </div>
 
       <div class="col-sm-6">
         <cp-widget-container label-text="vm.title.form">
-          <formly-form form="vm.thisForm" model="vm.form" fields="vm.formFields" class="form-horizontal" novalidate>
+          <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
+          <formly-form form="vm.thisForm" model="vm.form" fields="vm.formFields"
+                       class="padded-container form-horizontal" novalidate>
             <span class="has-error" ng-if="!vm.canBook">{{vm.bookingErrorMessage}}</span>
             <div class="form-group">
               <div class="text-center col-sm-12">
+                <!--suppress HtmlUnknownAttribute -->
                 <button type="submit" ng-disabled="vm.thisForm.$invalid || !vm.canBook" ng-click="vm.onSubmit(vm.form)"
                         class="btn btn-primary submit-button">Submit
                 </button>
@@ -51,7 +55,7 @@
       </div>
     </div>
 
-    <div class="row top-buffer">
+    <div class="row topbuffer">
       <div class="col-xs-12">
         <cp-widget-container label-text="vm.title.conflicts">
           <table>

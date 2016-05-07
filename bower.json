@@ -32,7 +32,8 @@
     "angular-formly": "^8.2.0",
     "angular-formly-templates-bootstrap": "^6.3.2",
     "angular-daterangepicker": "^0.2.2",
-    "textAngular": "^1.5.1"
+    "textAngular": "^1.5.1",
+    "angular-google-chart": "^0.1.0"
   },
   "resolutions": {
     "angular": "1.5.3"
