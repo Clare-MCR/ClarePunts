@@ -5,15 +5,20 @@
     .module('app.info')
     .controller('RulesController', RulesController);
 
-  RulesController.$inject = ['settingsPrepServices'];
+  RulesController.$inject = ['settingsPrepServices', 'logger'];
 
   /* @ngInject */
-  function RulesController(settingsPrepServices) {
+  function RulesController(settingsPrepServices, logger) {
     var vm = this;
 
     vm.title = 'Punt Rules';
     vm.rules = settingsPrepServices;
-    console.log(vm.rules);
+
+    activate();
+
+    function activate() {
+      logger.info('Viewing Punt Rules');
+    }
   }
 })();
 
