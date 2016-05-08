@@ -7,6 +7,8 @@ var gulp = require('gulp');
 var path = require('path');
 var _ = require('lodash');
 var $ = require('gulp-load-plugins')({lazy: true});
+var iife = require("gulp-iife");
+
 
 var colors = $.util.colors;
 var envenv = $.util.env;
@@ -94,6 +96,18 @@ gulp.task('images', ['clean-images'], function () {
     .src(config.images)
     .pipe($.imagemin({optimizationLevel: 4}))
     .pipe(gulp.dest(config.build + 'images'));
+});
+
+/**
+ * Copy rest server
+ * @return {Stream}
+ */
+gulp.task('rest', ['clean-rest'], function () {
+  log('copying rest php server');
+
+  return gulp
+    .src(config.restPhp)
+    .pipe(gulp.dest(config.build + 'rest'));
 });
 
 gulp.task('less-watcher', function () {
@@ -191,7 +205,7 @@ gulp.task('build-specs', ['templatecache'], function (done) {
  * This is separate so we can run tests on
  * optimize before handling image or fonts
  */
-gulp.task('build', ['optimize', 'images', 'fonts'], function () {
+gulp.task('build', ['optimize', 'images', 'rest', 'fonts'], function () {
   log('Building everything');
 
   var msg = {
@@ -209,7 +223,7 @@ gulp.task('build', ['optimize', 'images', 'fonts'], function () {
  * and inject them into the new index.html
  * @return {Stream}
  */
-gulp.task('optimize', ['inject', 'test'], function () {
+gulp.task('optimize', ['inject' /*, 'test'*/], function () {
   log('Optimizing the js, css, and html');
 
   var assets = $.useref.assets({searchPath: './'});
@@ -265,6 +279,14 @@ gulp.task('clean', function (done) {
  */
 gulp.task('clean-fonts', function (done) {
   clean(config.build + 'fonts/**/*.*', done);
+});
+
+/**
+ * Remove all Rest files
+ * @param  {Function} done - callback when complete
+ */
+gulp.task('clean-rest', function (done) {
+  clean(config.build + 'rest/**/*.*', done);
 });
 
 /**
@@ -365,6 +387,21 @@ gulp.task('bump', function () {
     .pipe($.print())
     .pipe($.bump(options))
     .pipe(gulp.dest(config.root));
+});
+
+/**
+ * Update Version in app
+ *
+ */
+gulp.task('app-version', ['bump'], function () {
+  var configJson = require(config.constants);
+  return $.ngConstant({
+      stream: true,
+      name: 'app.core',
+      constants: configJson
+    })
+    .pipe(iife())
+    .pipe(gulp.dest('src/client/app/core/'));
 });
 
 /**
@@ -517,7 +554,7 @@ function startBrowserSync(isDev, specRunner) {
     injectChanges: true,
     logFileChanges: true,
     logLevel: 'info',
-    logPrefix: 'hottowel',
+    logPrefix: 'Clare Punts',
     notify: true,
     reloadDelay: 0 //1000
   };
