@@ -312,7 +312,7 @@
           default:
             term = {start: null, end: null};
         }
-        return BookingServices.get({Id: '*', from: term.start, to: term.end}, function (data) {
+        return BookingServices.query({Id: '*', from: term.start, to: term.end}, function (data) {
           return data.filter(function (item) {
               return item.booker === crsid;
             }) >= 0;
