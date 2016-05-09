@@ -24,7 +24,7 @@
       delete: 'purge users',
       view: 'View users'
     };
-    vm.viewForm = {type: 'admin'};
+    vm.viewForm = {type: 'admin', user: []};
     vm.addForm = {};
     vm.deleteForm = {};
     vm.viewFormFields = [];

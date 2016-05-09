@@ -16,8 +16,8 @@
     vm.user = userPrepService;
     vm.punts = puntsPrepService;
     vm.bookings = bookingsPrepService;
-    vm.title = 'Admin Bookings';
-    vm.form = {};
+    vm.title = 'Admin bookings';
+    vm.form = {booking: []};
     vm.formFields = [];
 
     activate();

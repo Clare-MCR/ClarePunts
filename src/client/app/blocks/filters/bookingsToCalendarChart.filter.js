@@ -13,8 +13,7 @@
       var results = {}, rarr = [], i, date;
       for (i = 0; i < bookings.length; i++) {
         // get the date
-        /*jshint camelcase: false */
-        var dt = new Date(bookings[i].time_from);
+        var dt = new Date(bookings[i].timeFrom);
         date = [dt.getFullYear(), dt.getMonth(), dt.getDate()].join('-');
         results[date] = results[date] || 0;
         results[date]++;

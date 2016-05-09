@@ -92,8 +92,8 @@
       if (data.name) {
         PuntsServices.save(data, function () {
           /*jshint camelcase: false */
-          data.available_from = data.from;
-          data.available_to = data.to;
+          // data.available_from = data.from;
+          // data.available_to = data.to;
           vm.punts.push(data);
           logger.success('Punt Submitted Successfully');
         }, function () {

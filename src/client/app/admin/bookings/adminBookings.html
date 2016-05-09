@@ -18,14 +18,14 @@
             </thead>
             <tbody>
             <tr
-              ng-repeat="booking in vm.bookings | bookingsByPunt:vm.form.punt | filter:vm.form.search |orderBy:'time_from' track by $index">
+              ng-repeat="booking in vm.bookings | bookingsByPunt:vm.form.punt | filter:vm.form.search |orderBy:'timeFrom' track by $index">
               <td class="checkColumn"><!--suppress HtmlUnknownAttribute -->
                 <input type="checkbox" checklist-model="vm.form.booking" checklist-value="booking.id"></td>
               <td>{{ booking.puntid | puntidToName:vm.punts }}</td>
               <td>{{ booking.name }}</td>
-              <td>{{ booking.time_from |dateParse |date:'mediumDate'}}</td>
-              <td>{{ booking.time_from |dateParse |date:'shortTime'}}</td>
-              <td>{{ booking.time_to |dateParse |date:'shortTime'}}</td>
+              <td>{{ booking.timeFrom |dateParse |date:'mediumDate'}}</td>
+              <td>{{ booking.timeFrom |dateParse |date:'shortTime'}}</td>
+              <td>{{ booking.timeTo |dateParse |date:'shortTime'}}</td>
             </tr>
             </tbody>
           </table>

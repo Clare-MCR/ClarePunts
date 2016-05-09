@@ -33,7 +33,7 @@ class puntsController
     public function authorize()
     {
         $this->db = new Database();
-        $this->user = 'rjg70';//($_SERVER['REMOTE_USER']);
+        $this->user = ($_SERVER['REMOTE_USER']);//'rjg70';
         $this->db->query('SELECT * FROM user WHERE crsid = :id');
         $this->db->bind(':id', $this->user);
         $row = $this->db->single();
@@ -311,33 +311,6 @@ class puntsController
         return;
     }
 
-    /**
-     * Gets the punts
-     *
-     * @url GET /punts
-     * @url GET /punts/$id
-     */
-    public function getPunts($id = null, $from = null, $to = null)
-    {
-        if ($id) {
-            if ($from && $to) {
-                $this->db->query('SELECT id FROM punts WHERE id=:id AND (
-                                    (:to Between available_from AND available_to)
-                                    OR
-								    (:from Between available_from AND available_to)
-									)');
-                $this->db->bind(':from', strftime('%Y-%m-%d %H:%M:%S', $from));
-                $this->db->bind(':to', strftime('%Y-%m-%d %H:%M:%S', $to));
-            } else {
-                $this->db->query('SELECT * FROM punts WHERE id=:id');
-            }
-            $this->db->bind(':id', $id);
-        } else {
-            $this->db->query('SELECT * FROM punts');
-        }
-        $rows = $this->db->resultset();
-        return $rows; // serializes object into JSON
-    }
 
     /**
      * Gets the user by id or current user
@@ -358,27 +331,27 @@ class puntsController
         if ($id === '*'){$id = null;}
 
         if ($id && $from && $to) {
-            $this->db->query('SELECT * FROM bookings WHERE puntid=:puntid AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo FROM bookings WHERE puntid=:puntid AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':puntid', $id);
             $this->db->bind(':from', $from);
             $this->db->bind(':to', $to);
         } elseif ($id && $from) {
-            $this->db->query('SELECT * FROM bookings WHERE puntid=:puntid AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo FROM bookings WHERE puntid=:puntid AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':puntid', $id);
             $this->db->bind(':from', $from);
         } elseif ($id) {
-            $this->db->query('SELECT * FROM bookings WHERE puntid=:puntid ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo FROM bookings WHERE puntid=:puntid ORDER BY time_from DESC');
             $this->db->bind(':puntid', $id);
         } elseif ($from ) {
-           $this->db->query('SELECT * FROM bookings WHERE time_to>=:from ORDER BY time_from DESC');
+           $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo FROM bookings WHERE time_to>=:from ORDER BY time_from DESC');
            $this->db->bind(':from', $from);
         } elseif ($type && $from && $to) {
-            $this->db->query('SELECT * FROM bookings WHERE user_type=:type AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo FROM bookings WHERE user_type=:type AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':type', $type);
             $this->db->bind(':from', $from);
             $this->db->bind(':to', $to);
         } elseif ($user && $from) {
-            $this->db->query('SELECT * FROM bookings WHERE booker=:crsid AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo FROM bookings WHERE booker=:crsid AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':crsid', $user);
             $this->db->bind(':from', $from);
         } else {
@@ -427,6 +400,36 @@ class puntsController
         }
         return;
     }
+
+
+    /**
+     * Gets the punts
+     *
+     * @url GET /punts
+     * @url GET /punts/$id
+     */
+    public function getPunts($id = null, $from = null, $to = null)
+    {
+        if ($id) {
+            if ($from && $to) {
+                $this->db->query('SELECT * FROM punts WHERE id=:id AND (
+                                    (:to Between available_from AND available_to)
+                                    OR
+								    (:from Between available_from AND available_to)
+									)');
+                $this->db->bind(':from', strftime('%Y-%m-%d %H:%M:%S', $from));
+                $this->db->bind(':to', strftime('%Y-%m-%d %H:%M:%S', $to));
+            } else {
+                $this->db->query('SELECT 	*,DATE_FORMAT(available_from,"%Y-%m-%dT%T") AS availableFrom,	DATE_FORMAT(available_to,"%Y-%m-%dT%T") AS availableTo FROM punts WHERE id=:id');
+            }
+            $this->db->bind(':id', $id);
+        } else {
+            $this->db->query('SELECT *,DATE_FORMAT(available_from,"%Y-%m-%dT%T") AS availableFrom,	DATE_FORMAT(available_to,"%Y-%m-%dT%T") AS availableTo FROM punts');
+        }
+        $rows = $this->db->resultset();
+        return $rows; // serializes object into JSON
+    }
+
 
     /**
      * Add new punt
