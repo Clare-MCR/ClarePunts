@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('app.bookings')
+    .module('app.admin')
     .run(appRun);
 
   appRun.$inject = ['routerHelper'];
@@ -14,26 +14,32 @@
   function getStates() {
     return [
       {
-        state: 'bookAPunt',
+        state: 'adminBookings',
         config: {
-          url: '/book',
-          templateUrl: 'app/bookings/bookAPunt.html',
-          controller: 'BookAPuntController',
+          url: '/admin/bookings',
+          templateUrl: 'app/admin/bookings/adminBookings.html',
+          controller: 'AdminBookingsController',
           controllerAs: 'vm',
-          title: 'bookAPunt',
+          title: 'Admin Bookings',
           resolve: {
             /* @ngInject */
+            userPrepService: userPrepService,
             puntsPrepService: puntsPrepService,
-            bookingsPrepService: bookingsPrepService,
-            userPrepService: userPrepService
+            bookingsPrepService: bookingsPrepService
           },
           settings: {
-            nav: 2,
-            content: '<i class="fa fa-ship"></i> Book A Punt'
+            nav: 3,
+            content: '<i class="fa fa-lock"></i> Admin Bookings',
+            admin: true
           }
         }
       }
     ];
+  }
+
+  /* @ngInject */
+  function userPrepService(UserServices) {
+    return UserServices.get().$promise;
   }
 
   /* @ngInject */
@@ -45,10 +51,4 @@
   function bookingsPrepService(BookingServices) {
     return BookingServices.query().$promise;
   }
-
-  /* @ngInject */
-  function userPrepService(UserServices) {
-    return UserServices.get().$promise;
-  }
-
 })();

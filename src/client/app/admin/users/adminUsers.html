@@ -1,0 +1,75 @@
+<div class="container-fluid" ng-if="vm.user.admin==='1'">
+  <div class="row ">
+    <cp-widget-container class="col-sm-6" label-text="vm.title.add">
+      <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
+      <formly-form model="vm.addForm" fields="vm.addFormFields" class="form-horizontal padded-container" novalidate>
+        <div class="form-group row">
+          <div class="text-center col-xs-12">
+            <button type="submit" class="btn btn-primary" ng-click="vm.addUser(vm.addForm)">Add Users</button>
+          </div>
+        </div>
+      </formly-form>
+    </cp-widget-container>
+    <cp-widget-container class="col-sm-6" label-text="vm.title.delete">
+      <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
+      <formly-form model="vm.deleteForm" fields="vm.deleteFormFields" class="form-horizontal padded-container"
+                   novalidate>
+        <div class="form-group row">
+          <div class="text-center col-xs-12">
+            <button type="submit" class="btn btn-danger" ng-click="vm.purgeUsers(vm.deleteForm.type)">Delete Users
+            </button>
+          </div>
+        </div>
+      </formly-form>
+    </cp-widget-container>
+  </div>
+  <div class="row topbuffer">
+    <cp-widget-container class="col-xs-12" label-text="vm.title.view">
+      <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
+      <formly-form model="vm.viewForm" fields="vm.viewFormFields" class="form-horizontal padded-container" novalidate>
+        <table class="bottom-row-border top-row-border">
+          <thead>
+          <tr>
+            <th class="checkColumn"></th>
+            <th>CRSID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Authorised</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+            ng-repeat="user in vm.allUsers | usersByType:vm.viewForm.type | filter:vm.viewForm.search |orderBy:'crsid' track by $index">
+            <td class="checkColumn"><!--suppress HtmlUnknownAttribute -->
+              <input type="checkbox" checklist-model="vm.viewForm.user" checklist-value="user.crsid"></td>
+            <td>{{ user.crsid }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.type }}</td>
+            <td>{{ user.authorised | checkmark }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="form-group row">
+          <div class="text-center col-sm-4">
+            <!--suppress HtmlUnknownAttribute -->
+            <button type="submit" class="btn btn-primary" ng-disabled="vm.viewForm.user.length === 0"
+                    ng-click="vm.adminUser(vm.viewForm.user)">Toggle Admin
+            </button>
+          </div>
+          <div class="text-center col-sm-4">
+            <!--suppress HtmlUnknownAttribute -->
+            <button type="submit" class="btn btn-secondary" ng-disabled="vm.viewForm.user.length === 0"
+                    ng-click="vm.disableUser(vm.viewForm.user)">Toggle Authorised
+            </button>
+          </div>
+          <div class="text-center col-sm-4">
+            <!--suppress HtmlUnknownAttribute -->
+            <button type="submit" class="btn btn-danger" ng-disabled="vm.viewForm.user.length === 0"
+                    ng-click="vm.deleteUser(vm.viewForm.user)">Delete User
+            </button>
+          </div>
+        </div>
+      </formly-form>
+    </cp-widget-container>
+  </div>
+</div>

@@ -2,83 +2,76 @@
   <pre>{{vm.form |json}}</pre>
   <div class="container-fluid">
     <div class="row topbuffer">
-      <div class="col-sm-12">
-        <cp-widget-container label-text="vm.title.dates">
-          <table>
-            <thead>
-            <tr>
-              <td>Michaelmas Term</td>
-              <td>Lent Term</td>
-              <td>Easter Term</td>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td><span>{{vm.MichaelmasTerm.start | date:'fullDate'}}</span> - <span>{{vm.MichaelmasTerm.end | date:'mediumDate'}}</span>
-              </td>
-              <td><span>{{vm.LentTerm.start| date:'mediumDate'}}</span> -
-                <span>{{vm.LentTerm.end| date:'mediumDate'}}</span></td>
-              <td><span>{{vm.EasterTerm.start| date:'mediumDate'}}</span> - <span>{{vm.EasterTerm.end| date:'mediumDate'}}</span>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </cp-widget-container>
-      </div>
+      <cp-widget-container class="col-sm-12" label-text="vm.title.dates">
+        <table>
+          <thead>
+          <tr>
+            <td>Michaelmas Term</td>
+            <td>Lent Term</td>
+            <td>Easter Term</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><span>{{vm.MichaelmasTerm.start | date:'fullDate'}}</span> - <span>{{vm.MichaelmasTerm.end | date:'mediumDate'}}</span>
+            </td>
+            <td><span>{{vm.LentTerm.start| date:'mediumDate'}}</span> -
+              <span>{{vm.LentTerm.end| date:'mediumDate'}}</span></td>
+            <td><span>{{vm.EasterTerm.start| date:'mediumDate'}}</span> -
+              <span>{{vm.EasterTerm.end| date:'mediumDate'}}</span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </cp-widget-container>
     </div>
 
     <div class="row topbuffer">
-      <div class="col-sm-6">
-        <cp-widget-container label-text="vm.title.calendar">
-          <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
-          <uib-datepicker ng-model="vm.form.timeFrom" class="well well-sm cp-calendar"
-                          datepicker-options="vm.options" ng-change="vm.changeInDate()"></uib-datepicker>
-        </cp-widget-container>
-      </div>
+      <cp-widget-container class="col-sm-6" label-text="vm.title.calendar">
+        <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
+        <uib-datepicker ng-model="vm.form.timeFrom" class="well well-sm cp-calendar"
+                        datepicker-options="vm.options" ng-change="vm.changeInDate()"></uib-datepicker>
+      </cp-widget-container>
 
-      <div class="col-sm-6">
-        <cp-widget-container label-text="vm.title.form">
-          <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
-          <formly-form form="vm.thisForm" model="vm.form" fields="vm.formFields"
-                       class="padded-container form-horizontal" novalidate>
-            <span class="has-error" ng-if="!vm.canBook">{{vm.bookingErrorMessage}}</span>
-            <div class="form-group">
-              <div class="text-center col-sm-12">
-                <!--suppress HtmlUnknownAttribute -->
-                <button type="submit" ng-disabled="vm.thisForm.$invalid || !vm.canBook" ng-click="vm.onSubmit(vm.form)"
-                        class="btn btn-primary submit-button">Submit
-                </button>
-              </div>
+      <cp-widget-container class="col-sm-6" label-text="vm.title.form">
+        <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
+        <formly-form form="vm.thisForm" model="vm.form" fields="vm.formFields"
+                     class="padded-container form-horizontal" novalidate>
+          <span class="has-error" ng-if="!vm.canBook">{{vm.bookingErrorMessage}}</span>
+          <div class="form-group">
+            <div class="text-center col-sm-12">
+              <!--suppress HtmlUnknownAttribute -->
+              <button type="submit" ng-disabled="vm.thisForm.$invalid || !vm.canBook" ng-click="vm.onSubmit(vm.form)"
+                      class="btn btn-primary submit-button">Submit
+              </button>
             </div>
-          </formly-form>
-        </cp-widget-container>
-      </div>
+          </div>
+        </formly-form>
+      </cp-widget-container>
     </div>
 
     <div class="row topbuffer">
-      <div class="col-xs-12">
-        <cp-widget-container label-text="vm.title.conflicts">
-          <table>
-            <thead>
-            <tr>
-              <th>Punt</th>
-              <th>Booked By</th>
-              <th>From</th>
-              <th>To</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr
-              ng-repeat="booking in vm.bookings| conflictBookings:vm.form.timeFrom:vm.form.timeTo | bookingsByPunt:vm.form.punt | orderBy:'time_from'">
-              <td>{{ booking.puntid | puntidToName:vm.punts }}</td>
-              <td>{{ booking.user_type }}</td>
-              <td>{{ booking.time_from |dateParse |date:'shortTime'}}</td>
-              <td>{{ booking.time_to |dateParse |date:'shortTime'}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </cp-widget-container>
-      </div>
+      <cp-widget-container class="col-xs-12" label-text="vm.title.conflicts">
+        <table>
+          <thead>
+          <tr>
+            <th>Punt</th>
+            <th>Booked By</th>
+            <th>From</th>
+            <th>To</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+            ng-repeat="booking in vm.bookings| conflictBookings:vm.form.timeFrom:vm.form.timeTo | bookingsByPunt:vm.form.punt | orderBy:'time_from'">
+            <td>{{ booking.puntid | puntidToName:vm.punts }}</td>
+            <td>{{ booking.user_type }}</td>
+            <td>{{ booking.time_from |dateParse |date:'shortTime'}}</td>
+            <td>{{ booking.time_to |dateParse |date:'shortTime'}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </cp-widget-container>
     </div>
   </div>
 </section>
