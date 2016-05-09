@@ -13,7 +13,7 @@
     return function (input, dt) {
       var date = new Date(dt);
       input = input.filter(function (punt) {
-        return date >= new Date(punt.available_from) && date < new Date(punt.available_to);
+        return date >= new Date(punt.availableFrom) && date < new Date(punt.availableTo);
       });
       return input;
     };

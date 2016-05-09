@@ -15,9 +15,9 @@
       bookings = bookings.filter(function (booking) {
         var output = false;
         if (type === 'PORTER') {
-          output = new Date(booking.time_to) >= now;
+          output = new Date(booking.timeTo) >= now;
         } else {
-          output = new Date(booking.time_to) >= now && booking.booker === crsid;
+          output = new Date(booking.timeTo) >= now && booking.booker === crsid;
         }
         return output;
       });

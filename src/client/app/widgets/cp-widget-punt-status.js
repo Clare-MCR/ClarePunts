@@ -48,14 +48,13 @@
       }
 
       function getStatus() {
-        /*jshint camelcase: false */
         var now = new Date();
         var midnight = new Date().setHours(24, 0, 0, 0);
         var currentBookings = vm.bookings.filter(function (booking) {
-          return new Date(booking.time_from) <= now && new Date(booking.time_to) >= now;
+          return new Date(booking.timeFrom) <= now && new Date(booking.timeTo) >= now;
         });
         var nextBookings = vm.bookings.filter(function (booking) {
-          return new Date(booking.time_from) >= now && new Date(booking.time_to) <= midnight;
+          return new Date(booking.timeFrom) >= now && new Date(booking.timeTo) <= midnight;
         });
 
         return vm.punts.forEach(
@@ -64,8 +63,8 @@
             punt.currentBooking = '';
             punt.nextBooking = '';
 
-            var availableFrom = new Date(punt.available_from);
-            var availableTo = new Date(punt.available_to);
+            var availableFrom = new Date(punt.availableFrom);
+            var availableTo = new Date(punt.availableTo);
 
             if (now > availableFrom && now < availableTo) {
               punt.currentBooking = currentBookings.filter(function (booking) {
@@ -76,7 +75,7 @@
                 return booking.puntid === punt.id;
               });
               punt.nextBooking = punt.nextBooking.sort(function (a, b) {
-                return new Date(a.time_from) - new Date(b.time_from);
+                return new Date(a.timeFrom) - new Date(b.timeFrom);
               })[0];
 
               if (punt.currentBooking) {
@@ -115,12 +114,11 @@
   }
 
   function bookingSimple($filter) {
-    /*jshint camelcase: false */
     return function (input) {
       var output = '';
       if (input) {
-        var from = $filter('date')(new Date(input.time_from), 'shortTime');
-        var to = $filter('date')(new Date(input.time_to), 'shortTime');
+        var from = $filter('date')(new Date(input.timeFrom), 'shortTime');
+        var to = $filter('date')(new Date(input.timeTo), 'shortTime');
         output = input.booker + ': ' + from + ' - ' + to;
       }
       return output;
