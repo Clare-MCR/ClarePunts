@@ -17,7 +17,7 @@
         to.setHours(24, 0, 0, 0);
       }
       bookings = bookings.filter(function (booking) {
-        return new Date(booking.time_from) <= to && new Date(booking.time_to) >= from;
+        return new Date(booking.timeFrom) <= to && new Date(booking.timeTo) >= from;
       });
       return bookings;
     };

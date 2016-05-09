@@ -20,7 +20,7 @@
           templateUrl: 'app/admin/bookings/adminBookings.html',
           controller: 'AdminBookingsController',
           controllerAs: 'vm',
-          title: 'Admin Bookings',
+          title: 'Admin bookings',
           resolve: {
             /* @ngInject */
             userPrepService: userPrepService,
@@ -29,7 +29,7 @@
           },
           settings: {
             nav: 3,
-            content: '<i class="fa fa-lock"></i> Admin Bookings',
+            content: '<i class="fa fa-lock"></i> Admin bookings',
             admin: true
           }
         }

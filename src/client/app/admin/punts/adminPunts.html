@@ -47,14 +47,14 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="punt in vm.punts | orderBy:'available_to_from' track by punt.id">
+          <tr ng-repeat="punt in vm.punts | orderBy:'availableFrom' track by punt.id">
             <td class="checkColumn">
               <!--suppress HtmlUnknownAttribute -->
               <input type="checkbox" checklist-model="vm.deletePuntForm" checklist-value="punt.id">
             </td>
             <td>{{ punt.name }}</td>
-            <td>{{ punt.available_to |dateParse |date:'short'}}</td>
-            <td>{{ punt.available_from |dateParse |date:'short'}}</td>
+            <td>{{ punt.availableFrom |dateParse |date:'short'}}</td>
+            <td>{{ punt.availableTo |dateParse |date:'short'}}</td>
           </tr>
           </tbody>
         </table>
