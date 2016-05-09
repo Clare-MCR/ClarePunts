@@ -1,0 +1,27 @@
+<div class="container-fluid" ng-if="vm.user.admin === '1'">
+  <div class="row">
+    <cp-widget-container class="col-xs-12" label-text="vm.title.rules">
+      <form class="padded-container">
+        <div text-angular ng-model="vm.rules.value"></div>
+        <div class="form-group row topbuffer">
+          <div class="text-center col-xs-12">
+            <button type="submit" class="btn btn-primary" ng-click="vm.updateOptions('rules',vm.rules)">Update</button>
+          </div>
+        </div>
+      </form>
+    </cp-widget-container>
+  </div>
+  <div class="row topbuffer">
+    <cp-widget-container class="col-xs-12" label-text="vm.title.committee">
+      <form class="padded-container">
+        <div text-angular ng-model="vm.committee.value"></div>
+        <div class="form-group row topbuffer">
+          <div class="text-center col-xs-12">
+            <button type="submit" class="btn btn-primary" ng-click="vm.updateOptions('committee',vm.committee)">Update
+            </button>
+          </div>
+        </div>
+      </form>
+    </cp-widget-container>
+  </div>
+</div>

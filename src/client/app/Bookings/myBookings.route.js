@@ -38,12 +38,12 @@
 
   /* @ngInject */
   function puntsPrepService(PuntsServices) {
-    return PuntsServices.get().$promise;
+    return PuntsServices.query().$promise;
   }
 
   /* @ngInject */
   function bookingsPrepService(BookingServices) {
-    return BookingServices.get().$promise;
+    return BookingServices.query().$promise;
   }
 
   /* @ngInject */

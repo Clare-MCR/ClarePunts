@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('app.bookings')
+    .module('app.dashboard')
     .run(appRun);
 
   appRun.$inject = ['routerHelper'];
@@ -14,22 +14,21 @@
   function getStates() {
     return [
       {
-        state: 'bookAPunt',
+        state: 'dashboard',
         config: {
-          url: '/book',
-          templateUrl: 'app/bookings/bookAPunt.html',
-          controller: 'BookAPuntController',
+          url: '/',
+          templateUrl: 'app/dashboard/dashboard.html',
+          controller: 'DashboardController',
           controllerAs: 'vm',
-          title: 'bookAPunt',
+          title: 'dashboard',
           resolve: {
             /* @ngInject */
             puntsPrepService: puntsPrepService,
-            bookingsPrepService: bookingsPrepService,
-            userPrepService: userPrepService
+            bookingsPrepService: bookingsPrepService
           },
           settings: {
-            nav: 2,
-            content: '<i class="fa fa-ship"></i> Book A Punt'
+            nav: 1,
+            content: '<i class="fa fa-dashboard"></i> Dashboard'
           }
         }
       }
@@ -44,11 +43,6 @@
   /* @ngInject */
   function bookingsPrepService(BookingServices) {
     return BookingServices.query().$promise;
-  }
-
-  /* @ngInject */
-  function userPrepService(UserServices) {
-    return UserServices.get().$promise;
   }
 
 })();

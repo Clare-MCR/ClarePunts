@@ -5,9 +5,9 @@
     .module('app.charts')
     .controller('ChartsController', ChartsController);
 
-  ChartsController.$inject = ['$filter', 'BookingServices', 'UserServices'];
+  ChartsController.$inject = ['$filter', 'BookingServices', 'UserServices', 'logger'];
   /* @ngInject */
-  function ChartsController($filter, BookingServices, UserServices) {
+  function ChartsController($filter, BookingServices, UserServices, logger) {
     var vm = this;
     vm.title = 'My Usage';
     vm.user = {};
@@ -26,6 +26,7 @@
     activate();
 
     function activate() {
+      logger.info('Viewing my Charts');
       getUser();
     }
 
