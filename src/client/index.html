@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+  <style>
+    /* This helps the ng-show/ng-hide animations start at the right place. */
+    /* Since Angular has this but needs to load, this gives us the class early. */
+
+    .ng-hide {
+      display: none !important;
+    }
+  </style>
+  <title ng-bind="title">
+    Clare Punts
+  </title>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+  <base href="/">
+  <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+
+  <!-- build:css styles/lib.css -->
+  <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css"/>
+  <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css"/>
+  <link rel="stylesheet" href="/bower_components/toastr/toastr.css"/>
+  <link rel="stylesheet" href="/bower_components/bootstrap-daterangepicker/daterangepicker.css"/>
+  <link rel="stylesheet" href="/bower_components/textAngular/dist/textAngular.css"/>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css styles/app.css -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="/.tmp/styles.css">
+  <!-- endinject -->
+  <!-- endbuild -->
+</head>
+
+<body>
+<div>
+  <div ng-include="'app/layout/shell.html'"></div>
+  <div id="splash-page" ng-show="showSplash">
+    <div class="page-splash">
+      <div class="page-splash-message">
+        clare Punts
+      </div>
+      <div class="progress progress-striped active page-progress-bar">
+        <div class="bar progress-bar progress-bar-warning" role="progressbar"
+             aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- build:js js/lib.js -->
+<!-- bower:js -->
+<script src="/bower_components/jquery/dist/jquery.js"></script>
+<script src="/bower_components/angular/angular.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="/bower_components/extras.angular.plus/ngplus-overlay.js"></script>
+<script src="/bower_components/moment/moment.js"></script>
+<script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="/bower_components/toastr/toastr.js"></script>
+<script src="/bower_components/angular-animate/angular-animate.js"></script>
+<script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="/bower_components/angular-resource/angular-resource.js"></script>
+<script src="/bower_components/checklist-model/checklist-model.js"></script>
+<script src="/bower_components/api-check/dist/api-check.js"></script>
+<script src="/bower_components/angular-formly/dist/formly.js"></script>
+<script src="/bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
+<script src="/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="/bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+<script src="/bower_components/rangy/rangy-core.js"></script>
+<script src="/bower_components/rangy/rangy-classapplier.js"></script>
+<script src="/bower_components/rangy/rangy-highlighter.js"></script>
+<script src="/bower_components/rangy/rangy-selectionsaverestore.js"></script>
+<script src="/bower_components/rangy/rangy-serializer.js"></script>
+<script src="/bower_components/rangy/rangy-textrange.js"></script>
+<script src="/bower_components/textAngular/dist/textAngular.js"></script>
+<script src="/bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+<script src="/bower_components/textAngular/dist/textAngularSetup.js"></script>
+<script src="/bower_components/angular-google-chart/ng-google-chart.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js js/app.js -->
+<!-- inject:js -->
+<script src="/src/client/app/app.module.js"></script>
+<script src="/src/client/app/admin/admin.module.js"></script>
+<script src="/src/client/app/blocks/exception/exception.module.js"></script>
+<script src="/src/client/app/blocks/filters/filters.module.js"></script>
+<script src="/src/client/app/blocks/logger/logger.module.js"></script>
+<script src="/src/client/app/blocks/modal/modal.module.js"></script>
+<script src="/src/client/app/blocks/router/router.module.js"></script>
+<script src="/src/client/app/Bookings/bookings.module.js"></script>
+<script src="/src/client/app/charts/charts.module.js"></script>
+<script src="/src/client/app/core/core.module.js"></script>
+<script src="/src/client/app/dashboard/dashboard.module.js"></script>
+<script src="/src/client/app/data/data.module.js"></script>
+<script src="/src/client/app/info/info.module.js"></script>
+<script src="/src/client/app/layout/layout.module.js"></script>
+<script src="/src/client/app/mySettings/mySettings.module.js"></script>
+<script src="/src/client/app/widgets/widgets.module.js"></script>
+<script src="/src/client/app/admin/admin.controller.js"></script>
+<script src="/src/client/app/admin/admin.route.js"></script>
+<script src="/src/client/app/admin/bookings/adminBookings.controller.js"></script>
+<script src="/src/client/app/admin/bookings/adminBookings.route.js"></script>
+<script src="/src/client/app/admin/punts/adminPunts.controller.js"></script>
+<script src="/src/client/app/admin/punts/adminPunts.route.js"></script>
+<script src="/src/client/app/admin/settings/adminSettings.controller.js"></script>
+<script src="/src/client/app/admin/settings/adminSettings.route.js"></script>
+<script src="/src/client/app/admin/users/adminUsers.controller.js"></script>
+<script src="/src/client/app/admin/users/adminUsers.route.js"></script>
+<script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
+<script src="/src/client/app/blocks/exception/exception.js"></script>
+<script src="/src/client/app/blocks/filters/bookingsByPunt.filter.js"></script>
+<script src="/src/client/app/blocks/filters/bookingsToCalendarChart.filter.js"></script>
+<script src="/src/client/app/blocks/filters/checkmark.filter.js"></script>
+<script src="/src/client/app/blocks/filters/conflicts.filter.js"></script>
+<script src="/src/client/app/blocks/filters/dateParse.filter.js"></script>
+<script src="/src/client/app/blocks/filters/myBookings.filter.js"></script>
+<script src="/src/client/app/blocks/filters/puntActive.filter.js"></script>
+<script src="/src/client/app/blocks/filters/puntIdToName.filter.js"></script>
+<script src="/src/client/app/blocks/filters/usersByType.filter.js"></script>
+<script src="/src/client/app/blocks/logger/logger.js"></script>
+<script src="/src/client/app/blocks/modal/modal.js"></script>
+<script src="/src/client/app/blocks/router/router-helper.provider.js"></script>
+<script src="/src/client/app/Bookings/bookAPunt.controller.js"></script>
+<script src="/src/client/app/Bookings/bookAPunt.route.js"></script>
+<script src="/src/client/app/Bookings/myBookings.controller.js"></script>
+<script src="/src/client/app/Bookings/myBookings.route.js"></script>
+<script src="/src/client/app/charts/myCharts.controller.js"></script>
+<script src="/src/client/app/charts/myCharts.route.js"></script>
+<script src="/src/client/app/core/config.js"></script>
+<script src="/src/client/app/core/constants.js"></script>
+<script src="/src/client/app/core/core.route.js"></script>
+<script src="/src/client/app/core/formly.config.js"></script>
+<script src="/src/client/app/core/ngConstants.js"></script>
+<script src="/src/client/app/dashboard/dashboard.controller.js"></script>
+<script src="/src/client/app/dashboard/dashboard.route.js"></script>
+<script src="/src/client/app/data/booking.dataservice.js"></script>
+<script src="/src/client/app/data/punts.dataservice.js"></script>
+<script src="/src/client/app/data/settings.dataservice.js"></script>
+<script src="/src/client/app/data/user.dataservice.js"></script>
+<script src="/src/client/app/info/contact.controller.js"></script>
+<script src="/src/client/app/info/contact.route.js"></script>
+<script src="/src/client/app/info/rules.controller.js"></script>
+<script src="/src/client/app/info/rules.route.js"></script>
+<script src="/src/client/app/layout/cp-top-nav.directive.js"></script>
+<script src="/src/client/app/layout/shell.controller.js"></script>
+<script src="/src/client/app/mySettings/mySettings.controller.js"></script>
+<script src="/src/client/app/mySettings/mySettings.route.js"></script>
+<script src="/src/client/app/widgets/cp-widget-container.js"></script>
+<script src="/src/client/app/widgets/cp-widget-datetimpicker-patch.directive.js"></script>
+<script src="/src/client/app/widgets/cp-widget-form.js"></script>
+<script src="/src/client/app/widgets/cp-widget-punt-status.js"></script>
+<!-- endinject -->
+
+<!-- inject:templates:js -->
+<!-- endinject -->
+<!-- endbuild -->
+</body>
+
+</html>

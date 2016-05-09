@@ -24,6 +24,7 @@
     activate();
 
     function activate() {
+      logger.info('Viewing My Bookings');
       vm.user.bookings = hasUpcoming();
     }
 

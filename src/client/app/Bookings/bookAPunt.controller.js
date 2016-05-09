@@ -246,6 +246,7 @@
     activate();
 
     function activate() {
+      logger.info('Viewing Book A Punt');
       setTerm();
       bookingAllowed();
     }

@@ -17,7 +17,7 @@
     activate();
 
     function activate() {
-      logger.info('Viewing Punt Rules');
+      logger.info('Viewing Punt Committee');
     }
   }
 })();

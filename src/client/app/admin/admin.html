@@ -1,0 +1,22 @@
+<div class="container-fluid" ng-if="vm.user.admin === '1'">
+  <div class="row">
+    <cp-widget-container class="col-xs-12" label-text="vm.title">
+      <div class="padded-container">
+        <h1>Welcome Admiral {{vm.user.name}}</h1>
+
+        <h2>Where would you like to go?</h2>
+        <ul>
+          <li ng-repeat="r in vm.adminRoutes">
+            <a ui-sref="{{r.name}}" ng-bind-html="r.settings.content"></a>
+          </li>
+        </ul>
+
+        <h2>TODO:</h2>
+        <ul>
+          <li ng-repeat="item in vm.todo">{{item}}</li>
+        </ul>
+      </div>
+
+    </cp-widget-container>
+  </div>
+</div>

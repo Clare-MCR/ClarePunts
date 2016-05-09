@@ -398,9 +398,10 @@ gulp.task('app-version', ['bump'], function () {
   return $.ngConstant({
       stream: true,
       name: 'app.core',
-      constants: configJson
+      constants: configJson,
+      deps: false,
+      templatePath: 'gulp_tpls/constant.tpl.ejs'
     })
-    .pipe(iife())
     .pipe(gulp.dest('src/client/app/core/'));
 });
 

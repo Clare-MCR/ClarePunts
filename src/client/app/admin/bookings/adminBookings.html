@@ -1,0 +1,44 @@
+<div class="container-fluid" ng-if="vm.user.admin==='1'">
+  <div class="row top-buffer">
+    <div class="col-xs-12">
+      <cp-widget-container label-text="vm.title">
+        <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
+        <formly-form form="vm.thisForm" model="vm.form" fields="vm.formFields" class="form-horizontal padded-container"
+                     novalidate>
+          <table class="bottom-row-border top-row-border">
+            <thead>
+            <tr>
+              <th class="checkColumn"></th>
+              <th>Punt</th>
+              <th>Name</th>
+              <th>Date</th>
+              <th>From</th>
+              <th>To</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+              ng-repeat="booking in vm.bookings | bookingsByPunt:vm.form.punt | filter:vm.form.search |orderBy:'time_from' track by $index">
+              <td class="checkColumn"><!--suppress HtmlUnknownAttribute -->
+                <input type="checkbox" checklist-model="vm.form.booking" checklist-value="booking.id"></td>
+              <td>{{ booking.puntid | puntidToName:vm.punts }}</td>
+              <td>{{ booking.name }}</td>
+              <td>{{ booking.time_from |dateParse |date:'mediumDate'}}</td>
+              <td>{{ booking.time_from |dateParse |date:'shortTime'}}</td>
+              <td>{{ booking.time_to |dateParse |date:'shortTime'}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="form-group row topbuffer">
+            <div class="text-center col-xs-12">
+              <!--suppress HtmlUnknownAttribute -->
+              <button type="submit" class="btn btn-primary" ng-disabled="vm.form.booking.length === 0"
+                      ng-click="vm.deleteBooking()">Delete Booking
+              </button>
+            </div>
+          </div>
+        </formly-form>
+      </cp-widget-container>
+    </div>
+  </div>
+</div>
