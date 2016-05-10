@@ -121,6 +121,7 @@
     }
 
     function deleteUser(users) {
+      vm.viewForm.user = [];
       var modalOptions = {
         closeButtonText: 'Cancel',
         actionButtonText: 'Delete Users',
@@ -131,7 +132,12 @@
         modalOptions.bodyText = 'Deleting: ' + user;
         modalService.showModal({}, modalOptions).then(function () {
           UserServices.remove({Id: user}, function () {
-            //@todo delete booking from vm.bookings
+            for (var i = 0; i < vm.allUsers.length; i++) {
+              if (vm.allUsers[i].crsid === user) {
+                vm.allUsers.splice(i, 1);
+                break;
+              }
+            }
             logger.success('User deleted Successfully');
           }, function () {
             logger.error('Something went wrong deleting the user');
@@ -142,6 +148,7 @@
     }
 
     function disableUser(users) {
+      vm.viewForm.user = [];
       var modalOptions = {
         closeButtonText: 'Cancel',
         actionButtonText: 'Submit',
@@ -149,7 +156,6 @@
       };
 
       users.forEach(function (user) {
-        // @todo get current admin status and swap it
         var authorised = search(user, vm.allUsers).authorised === '0';
         modalOptions.bodyText = ['Authorise',
           user,
@@ -158,7 +164,12 @@
         ].join(' ');
         modalService.showModal({}, modalOptions).then(function () {
           UserServices.update({Id: user}, {authorised: authorised}, function () {
-            //@todo delete booking from vm.bookings
+            for (var i = 0; i < vm.allUsers.length; i++) {
+              if (vm.allUsers[i].crsid === user) {
+                vm.allUsers[i].authorised = authorised ? '1' : '0';
+                break;
+              }
+            }
             logger.success('User updated Successfully');
           }, function () {
             logger.error('Something went wrong updating the user');
@@ -168,6 +179,7 @@
     }
 
     function addUser(users) {
+      vm.addForm = [];
       var modalOptions = {
         closeButtonText: 'Cancel',
         actionButtonText: 'Add Users',
@@ -191,7 +203,10 @@
 
       modalService.showModal({}, modalOptions).then(function () {
         UserServices.save({users: userList, type: users.type}, function () {
-          //@todo delete booking from vm.bookings
+          userList.forEach(function (user) {
+            //@todo can we get the insertids?
+            vm.allUsers.push({crsid: user, type: users.type, admin: '0', authorised: '1'});
+          });
           logger.success('Users Added Successfully');
         }, function () {
           logger.error('Something went wrong adding the users');
@@ -200,6 +215,7 @@
     }
 
     function adminUser(users) {
+      vm.viewForm.user = [];
       var modalOptions = {
         closeButtonText: 'Cancel',
         actionButtonText: 'Submit',
@@ -207,7 +223,6 @@
       };
 
       users.forEach(function (user) {
-        // @todo get current admin status and swap it
         var admin = search(user, vm.allUsers).admin === '0';
         modalOptions.bodyText = ['Make',
           user,
@@ -216,7 +231,12 @@
         ].join(' ');
         modalService.showModal({}, modalOptions).then(function () {
           UserServices.update({Id: user}, {admin: admin}, function () {
-            //@todo delete booking from vm.bookings
+            for (var i = 0; i < vm.allUsers.length; i++) {
+              if (vm.allUsers[i].crsid === user) {
+                vm.allUsers[i].admin = admin ? '1' : '0';
+                break;
+              }
+            }
             logger.success('User updated Successfully');
           }, function () {
             logger.error('Something went wrong updating the user');
@@ -226,6 +246,7 @@
     }
 
     function purgeUsers(type) {
+      vm.deleteForm = [];
       var modalOptions = {
         closeButtonText: 'Cancel',
         actionButtonText: 'Purge Users',
