@@ -117,8 +117,8 @@
     return function (input) {
       var output = '';
       if (input) {
-        var from = $filter('date')(new Date(input.timeFrom), 'shortTime');
-        var to = $filter('date')(new Date(input.timeTo), 'shortTime');
+        var from = $filter('date')(new Date(input.timeFrom), 'shortTime', 'UTC');
+        var to = $filter('date')(new Date(input.timeTo), 'shortTime', 'UTC');
         output = input.booker + ': ' + from + ' - ' + to;
       }
       return output;

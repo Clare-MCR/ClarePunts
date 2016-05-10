@@ -15,7 +15,7 @@
       backdrop: true,
       keyboard: true,
       modalFade: true,
-      templateUrl: '/app/blocks/modal/modal.html'
+      templateUrl: 'app/blocks/modal/modal.html'
     };
 
     var modalOptions = {
@@ -45,14 +45,19 @@
       angular.extend(tempModalOptions, modalOptions, customModalOptions);
 
       if (!tempModalDefaults.controller) {
-        tempModalDefaults.controller = function ($scope, $uibModalInstance) {
-          $scope.modalOptions = tempModalOptions;
-          $scope.modalOptions.ok = function (result) {
-            $uibModalInstance.close(result);
-          };
-          $scope.modalOptions.close = function () {
-            $uibModalInstance.dismiss('cancel');
-          };
+        tempModalDefaults.controller = tempModalDefaultsCtrl;
+      }
+
+      tempModalDefaultsCtrl.$inject = ['$scope', '$uibModalInstance'];
+
+      /* @ngInject */
+      function tempModalDefaultsCtrl($scope, $uibModalInstance) {
+        $scope.modalOptions = tempModalOptions;
+        $scope.modalOptions.ok = function (result) {
+          $uibModalInstance.close(result);
+        };
+        $scope.modalOptions.close = function (result) {
+          $uibModalInstance.dismiss('cancel');
         };
       }
 

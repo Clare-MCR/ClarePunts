@@ -11,13 +11,15 @@
   function conflictBookings() {
     /*jshint camelcase: false */
     return function (bookings, from, to) {
-      to = new Date(to);
       from = new Date(from);
-      if (from.getTime() === to.getTime()) {
-        to.setHours(24, 0, 0, 0);
+      if (!to) {
+        from = new Date(from).setUTCHours(0, 0, 0, 0);
+        to = new Date(from).setUTCHours(24, 0, 0, 0);
+      } else {
+        to = new Date(to);
       }
       bookings = bookings.filter(function (booking) {
-        return new Date(booking.timeFrom) <= to && new Date(booking.timeTo) >= from;
+        return new Date(booking.timeFrom) < to && new Date(booking.timeTo) > from;
       });
       return bookings;
     };

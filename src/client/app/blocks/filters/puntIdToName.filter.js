@@ -11,6 +11,7 @@
   function puntidToName() {
     return function (puntid, punts) {
       for (var i = 0; i < punts.length; i++) {
+        console.log({puntid: [puntid, typeof(puntid)], punt: [punts[i].id, typeof(punts[i].id)]});
         if (punts[i].id === puntid) {
           return punts[i].name;
         }
