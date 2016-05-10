@@ -12,11 +12,21 @@
         </ul>
 
         <h2>TODO:</h2>
-        <ul>
-          <li ng-repeat="item in vm.todo">{{item}}</li>
-        </ul>
-      </div>
+        <form ng-submit="vm.todoAdd()">
+          <input type="text" ng-model="vm.todoInput" size="50" placeholder="Add New">
+          <input type="submit" value="Add New">
+        </form>
 
+        <br>
+
+        <div ng-repeat="x in vm.todoList">
+          <input type="checkbox" ng-model="x.done"> <span ng-bind="x.todoText"></span>
+        </div>
+
+        <p>
+          <button ng-click="vm.remove()">Remove marked</button>
+        </p>
+      </div>
     </cp-widget-container>
   </div>
 </div>

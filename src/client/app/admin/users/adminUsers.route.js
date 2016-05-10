@@ -26,7 +26,7 @@
             userPrepService: userPrepService
           },
           settings: {
-            nav: 3,
+            nav: 4,
             content: '<i class="fa fa-lock"></i> Admin Users',
             admin: true
           }

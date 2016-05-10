@@ -5,11 +5,11 @@
     .module('app.bookings')
     .controller('MyBookingsController', MyBookingsController);
 
-  MyBookingsController.$inject = ['BookingServices', 'bookingsPrepService',
+  MyBookingsController.$inject = ['BookingServices', 'bookingsPrepService', 'modalService',
     'puntsPrepService', 'userPrepService', 'logger'];
 
   /* @ngInject */
-  function MyBookingsController(BookingServices, bookingsPrepService, puntsPrepService,
+  function MyBookingsController(BookingServices, bookingsPrepService, modalService, puntsPrepService,
                                 userPrepService, logger) {
     var vm = this;
 
@@ -44,20 +44,28 @@
       if (vm.form.length < 1) {
         logger.error('Nothing selected');
       } else {
-        vm.form.forEach(
-          function (id) {
-            BookingServices.remove({Id: id, from: null}, function () {
+        var modalOptions = {
+          closeButtonText: 'Cancel',
+          actionButtonText: 'Delete Booking',
+          bodyText: 'Delete Booking(s): ' + vm.form.join(', '),
+          headerText: 'Are you sure you want to delete this booking?'
+        };
+
+        modalService.showModal({}, modalOptions).then(function () {
+          vm.form.forEach(function (booking) {
+            BookingServices.remove({Id: booking, from: null, to: null}, function () {
               for (var i = 0; i < vm.user.bookings.length; i++) {
-                if (vm.user.bookings[i].id === id) {
+                if (vm.user.bookings[i].id === booking) {
                   vm.user.bookings.splice(i, 1);
                   break;
                 }
               }
-              logger.success('Booking Deleted');
+              logger.success('Booking Deleted Successfully');
             }, function () {
               logger.error('Something went wrong deleting the booking');
             });
           });
+        });
       }
     }
   }
