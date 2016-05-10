@@ -1,0 +1,39 @@
+Index: src/client/app/Bookings/bookAPunt.controller.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/client/app/Bookings/bookAPunt.controller.js	(date 1462921124000)
++++ src/client/app/Bookings/bookAPunt.controller.js	(revision )
+@@ -1,0 +1,0 @@
+Index: src/client/styles/styles.less
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/client/styles/styles.less	(date 1462921124000)
++++ src/client/styles/styles.less	(revision )
+@@ -712,7 +712,6 @@
+   //overflow: visible;
+ }
+ 
+-
+ /* Pagination*/
+ 
+ .pagination {
+Index: src/client/app/charts/myCharts.controller.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/client/app/charts/myCharts.controller.js	(date 1462921124000)
++++ src/client/app/charts/myCharts.controller.js	(revision )
+@@ -139,7 +139,7 @@
+     }
+ 
+     function forceChartRedraw() {
+-      //$rootScope.$emit('resizeMsg');
++      $rootScope.$emit('resizeMsg');
+     }
+   }
+ })();
