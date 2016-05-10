@@ -16,7 +16,7 @@
       data: {
         cols: [
           {type: 'date', id: 'Date'},
-          {type: 'number', id: 'Won/Loss'}
+          {type: 'number', id: 'Bookings'}
         ],
         rows: []
       },
