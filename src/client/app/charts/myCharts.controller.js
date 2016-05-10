@@ -139,7 +139,7 @@
     }
 
     function forceChartRedraw() {
-      //$rootScope.$emit('resizeMsg');
+      $rootScope.$emit('resizeMsg');
     }
   }
 })();
