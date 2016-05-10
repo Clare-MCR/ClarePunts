@@ -1,7 +1,7 @@
 {
   "name": "Clare Punts",
   "description": "Clare Punts Project",
-  "version": "0.1.11",
+  "version": "0.2.1",
   "scripts": {
     "init": "npm install",
     "install": "bower install",

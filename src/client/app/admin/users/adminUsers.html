@@ -2,11 +2,12 @@
   <div class="row ">
     <cp-widget-container class="col-sm-6" label-text="vm.title.add">
       <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
-      <formly-form model="vm.addForm" fields="vm.addFormFields" class="form-horizontal padded-container" novalidate>
+      <formly-form form="vm.addFormModel" model="vm.addForm" fields="vm.addFormFields"
+                   class="form-horizontal padded-container" novalidate>
         <div class="form-group row">
           <div class="text-center col-xs-12">
             <!--suppress HtmlUnknownAttribute -->
-            <button type="submit" class="btn btn-primary" ng-disabled="vm.addForm.$invalid"
+            <button type="submit" class="btn btn-primary" ng-disabled="vm.addFormModel.$invalid"
                     ng-click="vm.addUser(vm.addForm)">Add Users
             </button>
           </div>
@@ -18,12 +19,13 @@
         <em>Does not delete admin users</em>
       </div>
       <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
-      <formly-form model="vm.deleteForm" fields="vm.deleteFormFields" class="form-horizontal padded-container"
+      <formly-form form="vm.deleteFormModel" model="vm.deleteForm" fields="vm.deleteFormFields"
+                   class="form-horizontal padded-container"
                    novalidate>
         <div class="form-group row">
           <div class="text-center col-xs-12">
             <!--suppress HtmlUnknownAttribute -->
-            <button type="submit" ng-disabled="vm.deleteForm.$invalid" class="btn btn-danger"
+            <button type="submit" ng-disabled="vm.deleteFormModel.$invalid" class="btn btn-danger"
                     ng-click="vm.purgeUsers(vm.deleteForm.type)">Delete Users
             </button>
           </div>

@@ -60,9 +60,14 @@
 
       modalService.showModal({}, modalOptions).then(function () {
         vm.form.booking.forEach(function (booking) {
-
           BookingServices.remove({Id: booking, from: null, to: null}, function () {
-            //@todo delete booking from vm.bookings
+            //@todo test if booking deleting correctly
+            for (var i = 0; i < vm.bookings.length; i++) {
+              if (vm.bookings[i].id === booking) {
+                vm.bookings.splice(i, 1);
+                break;
+              }
+            }
             logger.success('Booking Deleted Successfully');
           }, function () {
             logger.error('Something went wrong deleting the booking');

@@ -28,7 +28,7 @@
             bookingsPrepService: bookingsPrepService
           },
           settings: {
-            nav: 3,
+            nav: 2,
             content: '<i class="fa fa-lock"></i> Admin bookings',
             admin: true
           }
