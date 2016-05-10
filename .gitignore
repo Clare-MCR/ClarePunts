@@ -8,3 +8,5 @@ report/
 
 # other
 .tmp
+
+src/rest/config.php
