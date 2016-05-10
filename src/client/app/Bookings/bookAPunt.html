@@ -1,5 +1,5 @@
 <section id="book-a-punt-view">
-  <pre>{{vm.form |json}}</pre>
+  <!--<pre>{{vm.form |json}}</pre>-->
   <div class="container-fluid">
     <div class="row topbuffer">
       <cp-widget-container class="col-sm-12" label-text="vm.title.dates">
@@ -29,7 +29,7 @@
     <div class="row topbuffer">
       <cp-widget-container class="col-sm-6" label-text="vm.title.calendar">
         <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
-        <uib-datepicker ng-model="vm.form.timeFrom" class="well well-sm cp-calendar"
+        <uib-datepicker ng-model="vm.dt" class="well well-sm cp-calendar" cp-widget-datetimepicker-patch
                         datepicker-options="vm.options" ng-change="vm.changeInDate()"></uib-datepicker>
       </cp-widget-container>
 
@@ -37,11 +37,13 @@
         <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute, HtmlUnknownAttribute -->
         <formly-form form="vm.thisForm" model="vm.form" fields="vm.formFields"
                      class="padded-container form-horizontal" novalidate>
-          <span class="has-error" ng-if="!vm.canBook">{{vm.bookingErrorMessage}}</span>
+          <div ng-if="!vm.canBook" class="padded-container has-error">
+            <span class="help-block">{{vm.bookingErrorMessage}}</span>
+          </div>
           <div class="form-group">
             <div class="text-center col-sm-12">
               <!--suppress HtmlUnknownAttribute -->
-              <button type="submit" ng-disabled="vm.thisForm.$invalid || !vm.canBook" ng-click="vm.onSubmit(vm.form)"
+              <button type="submit" ng-disabled="vm.thisForm.$invalid || !vm.canBook " ng-click="vm.onSubmit(vm.form)"
                       class="btn btn-primary submit-button">Submit
               </button>
             </div>
@@ -63,11 +65,11 @@
           </thead>
           <tbody>
           <tr
-            ng-repeat="booking in vm.bookings| conflictBookings:vm.form.timeFrom:vm.form.timeTo | bookingsByPunt:vm.form.punt | orderBy:'time_from'">
+            ng-repeat="booking in vm.bookings| conflictBookings:vm.form.timeFrom:vm.form.timeTo | bookingsByPunt:vm.form.punt | orderBy:'timeFrom'">
             <td>{{ booking.puntid | puntidToName:vm.punts }}</td>
-            <td>{{ booking.user_type }}</td>
-            <td>{{ booking.time_from |dateParse |date:'shortTime'}}</td>
-            <td>{{ booking.time_to |dateParse |date:'shortTime'}}</td>
+            <td>{{ booking.userType }}</td>
+            <td>{{ booking.timeFrom |dateParse |date:'shortTime':'UTC'}}</td>
+            <td>{{ booking.timeTo |dateParse |date:'shortTime':'UTC'}}</td>
           </tr>
           </tbody>
         </table>

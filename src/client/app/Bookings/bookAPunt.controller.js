@@ -7,6 +7,7 @@
 
   BookAPuntController.$inject = ['$filter', 'BookingServices', 'bookingsPrepService',
     'puntsPrepService', 'userPrepService', 'logger'];
+
   /* @ngInject */
   function BookAPuntController($filter, BookingServices, bookingsPrepService,
                                puntsPrepService, userPrepService, logger) {
@@ -22,6 +23,7 @@
       dates: 'Term Dates'
     };
     vm.now = new Date();
+    vm.dt = new Date(vm.now.getTime() - (60000 * vm.now.getTimezoneOffset()));
     vm.MichaelmasTerm = {start: '', end: ''};
     vm.LentTerm = {start: '', end: ''};
     vm.EasterTerm = {start: '', end: ''};
@@ -52,14 +54,14 @@
     vm.form = {
       name: vm.user.name,
       phone: vm.user.phone,
-      timeFrom: new Date(),
-      timeTo: new Date(),
-      puntid: '',
+      timeFrom: vm.dt,
+      // timeFrom: new Date(vm.now.getTime() - (60000 * vm.now.getTimezoneOffset())),
+      // timeTo: new Date(vm.now.getTime() - (60000 * vm.now.getTimezoneOffset())),
       booker: vm.user.crsid,
       type: vm.user.type
     };
-    vm.form.timeFrom.setHours(0, 0, 0, 0);
-    vm.form.timeTo.setHours(7, 0, 0, 0);
+    // vm.form.timeFrom.setMinutes(0, 0, 0);
+    // vm.form.timeTo.setMinutes(0, 0, 0);
 
     vm.options = {
       datepickerMode: 'day',
@@ -158,92 +160,185 @@
         expressionProperties: {
           'templateOptions.options': function ($viewValue, $modelValue, scope) {
             var availablePunts = $filter('puntActive')(vm.punts, scope.model.timeFrom);
+
+            if (scope.model.timeFrom && scope.model.timeTo) {
+              var usedPunts = [];
+              var bookings = $filter('conflictBookings')(vm.bookings, scope.model.timeFrom, scope.model.timeTo);
+              for (var i = 0; i < bookings.length; i++) {
+                usedPunts.push(bookings[i].puntid);
+              }
+              availablePunts = availablePunts.filter(function (punt) {
+                return usedPunts.indexOf(punt.id) < 0;
+              });
+            }
             availablePunts.forEach(function (punt) {
               punt.value = punt.id;
             });
             return availablePunts;
           }
         }
+
       },
+      // {
+      //   key: 'timeFrom',
+      //   type: 'timepicker',
+      //   templateOptions: {
+      //     label: 'Start Time:',
+      //     hourStep: 1,
+      //     minuteStep: 15,
+      //     showMeridian: true,
+      //     min: new Date(),
+      //     max: new Date().setHours(24, 0, 0, 0),
+      //     readonlyInput: true
+      //   },
+      //   watcher: {
+      //     listener: function (field, newValue) {
+      //       if (newValue) {
+      //         bookingAllowed();
+      //       }
+      //     }
+      //   },
+      //   expressionProperties: {
+      //     'templateOptions.max': function ($viewValue, $modelValue, scope) {
+      //       return new Date(scope.model.timeFrom).setHours(24, 0, 0, 0);
+      //     }
+      //   }
+      // },
       {
         key: 'timeFrom',
-        type: 'timepicker',
+        type: 'horizontalSelect',
         templateOptions: {
           label: 'Start Time:',
-          hourStep: 1,
-          minuteStep: 15,
-          showMeridian: true,
-          min: new Date(),
-          max: new Date().setHours(24, 0, 0, 0),
-          readonlyInput: true
-        },
-        watcher: {
-          listener: function (field, newValue) {
-            if (newValue) {
-              bookingAllowed();
-            }
-          }
+          options: [],
+          required: true
         },
         expressionProperties: {
-          'templateOptions.max': function ($viewValue, $modelValue, scope) {
-            return new Date(scope.model.timeFrom).setHours(24, 0, 0, 0);
+          'templateOptions.options': function () {
+            return [
+              {name: '00:00am', value: new Date(vm.dt).setUTCHours(0, 0, 0, 0)},
+              {name: '07:00am', value: new Date(vm.dt).setUTCHours(7, 0, 0, 0)},
+              {name: '08:00am', value: new Date(vm.dt).setUTCHours(8, 0, 0, 0)},
+              {name: '09:00am', value: new Date(vm.dt).setUTCHours(9, 0, 0, 0)},
+              {name: '10:00am', value: new Date(vm.dt).setUTCHours(10, 0, 0, 0)},
+              {name: '11:00am', value: new Date(vm.dt).setUTCHours(11, 0, 0, 0)},
+              {name: '12:00pm', value: new Date(vm.dt).setUTCHours(12, 0, 0, 0)},
+              {name: '01:00pm', value: new Date(vm.dt).setUTCHours(13, 0, 0, 0)},
+              {name: '02:00pm', value: new Date(vm.dt).setUTCHours(14, 0, 0, 0)},
+              {name: '03:00pm', value: new Date(vm.dt).setUTCHours(15, 0, 0, 0)},
+              {name: '04:00pm', value: new Date(vm.dt).setUTCHours(16, 0, 0, 0)},
+              {name: '05:00pm', value: new Date(vm.dt).setUTCHours(17, 0, 0, 0)},
+              {name: '06:00pm', value: new Date(vm.dt).setUTCHours(18, 0, 0, 0)},
+              {name: '07:00pm', value: new Date(vm.dt).setUTCHours(19, 0, 0, 0)},
+              {name: '08:00pm', value: new Date(vm.dt).setUTCHours(20, 0, 0, 0)},
+              {name: '09:00pm', value: new Date(vm.dt).setUTCHours(21, 0, 0, 0)},
+              {name: '10:00pm', value: new Date(vm.dt).setUTCHours(22, 0, 0, 0)},
+              {name: '11:00pm', value: new Date(vm.dt).setUTCHours(23, 0, 0, 0)}
+            ];
           }
         }
       },
-
       {
         key: 'timeTo',
-        type: 'timepicker',
+        type: 'horizontalSelect',
         templateOptions: {
-          label: 'Finish Time:',
-          hourStep: 1,
-          minuteStep: 15,
-          showMeridian: true,
-          readonlyInput: true
-        },
-        watcher: {
-          listener: function (field, newValue) {
-            if (newValue) {
-              bookingAllowed();
-            }
-          }
+          label: 'Duration:',
+          options: [],
+          required: true
         },
         expressionProperties: {
-          // @todo fix min max restrictions
-          'templateOptions.max': function ($viewValue, $modelValue, scope) {
+          'templateOptions.options': function ($viewValue, $modelValue, scope) {
             var startTime = new Date(scope.model.timeFrom);
-            var endtTime = new Date(scope.model.timeTo);
-            var nightTime = new Date(endtTime);
-            var midnight = new Date(endtTime);
-
-            endtTime.setHours(startTime.getHours() + 3);
-            nightTime.setHours(7, 0, 0, 0);
-            midnight.setHours(24, 0, 0, 0);
-
-            if (endtTime >= midnight) {
-              return midnight;
+            var endTime = new Date(startTime);
+            var nightTime = new Date(startTime);
+            var midnight = new Date(startTime);
+            endTime.setUTCHours(startTime.getUTCHours() + 3);
+            nightTime.setUTCHours(7, 0, 0, 0);
+            midnight.setUTCHours(24, 0, 0, 0);
+            if (startTime < nightTime) {
+              return [{name: '7hr', value: new Date(vm.dt).setUTCHours(7, 0, 0, 0)}];
             }
-            if (startTime <= nightTime && endtTime <= nightTime) {
-              return nightTime;
+            var output;
+            switch (new Date(midnight - startTime).getHours()) {
+              case 0:
+                output = [];
+                break;
+              case 1:
+                output = [{name: '1hr', value: midnight.setUTCHours(23, 59, 59)}];
+                break;
+              case 2:
+                output = [
+                  {name: '1hr', value: new Date(startTime).setUTCHours(23, 0, 0, 0)},
+                  {name: '2hr', value: midnight.setUTCHours(23, 59, 59)}];
+                break;
+              case 3:
+                output = [
+                  {name: '1hr', value: new Date(startTime).setUTCHours(22, 0, 0, 0)},
+                  {name: '2hr', value: new Date(startTime).setUTCHours(23, 0, 0, 0)},
+                  {name: '3hr', value: midnight.setUTCHours(23, 59, 59)}];
+                break;
+              default:
+                output = [
+                  {name: '1hr', value: endTime.setUTCHours(startTime.getUTCHours() + 1)},
+                  {name: '2hr', value: endTime.setUTCHours(startTime.getUTCHours() + 2)},
+                  {name: '3hr', value: endTime.setUTCHours(startTime.getUTCHours() + 3)}
+                ];
+                break;
             }
-            return endtTime;
-          },
-          'templateOptions.min': function ($viewValue, $modelValue, scope) {
-            var time = new Date(scope.model.timeFrom);
-            var nightTime = new Date(scope.model.timeFrom);
-            nightTime.setHours(7, 0, 0, 0);
-            if (time < nightTime) {
-              time.setHours(7, 0, 0, 0);
-            } else {
-              time.setMinutes(time.getMinutes() + 30);
-            }
-            return time;
+            return output;
           }
         }
       }
+      // {
+      //   key: 'timeTo',
+      //   type: 'timepicker',
+      //   templateOptions: {
+      //     label: 'Finish Time:',
+      //     hourStep: 1,
+      //     minuteStep: 15,
+      //     showMeridian: true,
+      //     readonlyInput: true
+      //   },
+      //   watcher: {
+      //     listener: function (field, newValue) {
+      //       if (newValue) {
+      //         bookingAllowed();
+      //       }
+      //     }
+      //   },
+      //   expressionProperties: {
+      //     // @todo fix min max restrictions
+      //     'templateOptions.max': function ($viewValue, $modelValue, scope) {
+      //       var startTime = new Date(scope.model.timeFrom);
+      //       var endtTime = new Date(scope.model.timeTo);
+      //       var nightTime = new Date(endtTime);
+      //       var midnight = new Date(endtTime);
+      //
+      //       endtTime.setHours(startTime.getHours() + 3);
+      //       nightTime.setHours(7, 0, 0, 0);
+      //       midnight.setHours(24, 0, 0, 0);
+      //
+      //       if (endTime >= midnight) {
+      //         return midnight;
+      //       }
+      //       if (startTime <= nightTime && endtTime <= nightTime) {
+      //         return nightTime;
+      //       }
+      //       return endtTime;
+      //     },
+      //     'templateOptions.min': function ($viewValue, $modelValue, scope) {
+      //       var time = new Date(scope.model.timeFrom);
+      //       var nightTime = new Date(scope.model.timeFrom);
+      //       nightTime.setHours(7, 0, 0, 0);
+      //       if (time < nightTime) {
+      //         time.setHours(7, 0, 0, 0);
+      //       } else {
+      //         time.setMinutes(time.getMinutes() + 30);
+      //       }
+      //       return time;
+      //     }
+      //   }
+      // }
     ];
-
-    activate();
 
     function activate() {
       logger.info('Viewing Book A Punt');
@@ -254,16 +349,24 @@
     function userHasUpcoming(crsid) {
       return vm.bookings.filter(function (booking) {
           /*jshint camelcase: false */
-          return new Date(booking.time_to) >= vm.now && booking.booker === crsid;
+          //@todo check timezone offset
+          return new Date(booking.timeTo) >= vm.now && booking.booker === crsid;
+        }).length !== 0;
+    }
+
+    function userBookingOnDay(crsid) {
+      return vm.bookings.filter(function (booking) {
+          //@todo check timezone offset
+          var today0 = new Date(vm.dt);
+          var today24 = new Date(vm.dt);
+          today0.setUTCHours(0, 0, 0, 0);
+          today24.setUTCHours(24, 0, 0, 0);
+          return new Date(booking.timeTo) >= today0 && new Date(booking.timeFrom) < today24 && booking.booker === crsid;
         }).length !== 0;
     }
 
     function conflictBookings() {
-      return vm.bookings.filter(function (booking) {
-        /*jshint camelcase: false */
-        return new Date(booking.time_from) <= vm.form.timeTo &&
-          new Date(booking.time_to) >= vm.form.timeFrom;
-      });
+      return $filter('conflictBookings')(vm.bookings, vm.form.timeFrom, vm.form.timeTo);
     }
 
     function conflictBookingsType(userType) {
@@ -322,19 +425,33 @@
     }
 
     function bookingAllowed() {
-      // Check if the user has any upcoming bookings
+      //is user authorised
+      if (!vm.user.authorised) {
+        vm.bookingErrorMessage = 'You are not authorised!';
+        vm.canBook = false;
+        return;
+      }
+      //@todo check for bookings on day
       if (vm.form.type !== 'PORTER') {
-        if (userHasUpcoming(vm.form.booker)) {
-          vm.bookingErrorMessage = 'Users are restricted to 1 upcoming booking';
+        if (userBookingOnDay(vm.form.booker)) {
+          vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
           vm.canBook = false;
           return;
         }
       }
+      // Check if the user has any upcoming bookings
+      // if (vm.form.type !== 'PORTER') {
+      //   if (userHasUpcoming(vm.form.booker)) {
+      //     vm.bookingErrorMessage = 'Users are restricted to 1 upcoming booking!';
+      //     vm.canBook = false;
+      //     return;
+      //   }
+      // }
       // check for conflicts/ 3 boat restriction
       vm.conflicts = conflictBookings();
       if (vm.conflicts.length > 0) {
         if (conflictBookingsType(vm.form.type).length >= 3) {
-          vm.bookingErrorMessage = 'At most 3 punts can be concurrently booked by ' + vm.form.type;
+          vm.bookingErrorMessage = 'At most 3 punts can be concurrently booked by ' + vm.form.type + '!';
           vm.canBook = false;
           return;
         }
@@ -342,7 +459,7 @@
       // check for term time restrictions (Only applicable to staff and Fellows)
       if (vm.form.type === 'STAFF' || vm.form.type === 'FELLOW') {
         if (termRestrictions(vm.form.booker)) {
-          vm.bookingErrorMessage = 'Staff and Fellows are restricted to 1 booking each during term time';
+          vm.bookingErrorMessage = 'Staff and Fellows are restricted to 1 booking each during term time!';
           vm.canBook = false;
         }
       } else {
@@ -351,19 +468,41 @@
     }
 
     function changeInDate() {
-      vm.form.timeFrom = new Date(vm.form.timeFrom).setHours(0, 0, 0, 0);
-      vm.form.timeTo = new Date(vm.form.timeFrom).setHours(7, 0, 0, 0);
+      vm.form.timeFrom = new Date(vm.form.timeFrom)
+        .setUTCFullYear(vm.dt.getUTCFullYear(), vm.dt.getUTCMonth(), vm.dt.getUTCDate());
+      if (vm.form.type !== 'PORTER') {
+        if (userBookingOnDay(vm.form.booker)) {
+          vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
+          vm.canBook = false;
+        }
+      }
     }
 
     function onSubmit(data) {
-      data.timeFrom = data.timeFrom.getTime() / 1000;
-      data.timeTo = data.timeTo.getTime() / 1000;
+      //@todo adjust timezone
+      var puntid = data.puntid;
+      bookingAllowed();
+      if (!vm.canBook) {
+        logger.error('Booking not allowed');
+        return;
+      }
+      if (new Date(data.timeFrom) < vm.now) {
+        logger.error('You can\'t make bookings in the past');
+        return;
+      }
+      data.timeFrom = data.timeFrom / 1000;
+      data.timeTo = data.timeTo / 1000;
       BookingServices.save({Id: null, from: null, to: null}, data, function () {
+        data.timeFrom = new Date(data.timeFrom * 1000);
+        data.timeTo = new Date(data.timeTo * 1000);
+        data.userType = data.type;
+        //@todo work out why puntid is undefined if viewed
+        data.puntid = puntid;
         vm.bookings.push(data);
         bookingAllowed();
-        logger.success('Booking Submitted Successfully');
-      }, function () {
-        logger.error('Something went wrong with the Booking');
+        logger.success('Booking submitted successfully!', data);
+      }, function (err) {
+        logger.error('Something went wrong with the booking!', err);
       });
     }
   }

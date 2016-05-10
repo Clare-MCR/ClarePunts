@@ -10,11 +10,11 @@
   /* @ngInject */
   function BookingServices($resource) {
     // return $resource('http://rjg70.user.srcf.net/rest/booking/:Id/:from/:to',
+    var date = new Date();
+    date.setUTCHours(0, 0, 0, 0);
+    var unixtime = Math.floor(date.getTime() / 1000);
     return $resource('rest/booking/:Id/:from/:to',
-      {Id: '*', from: new Date().getTime() / 1000},
-      {
-        'get': {method: 'GET', isArray: true}
-      });
+      {Id: '*', from: unixtime, to: null});
   }
 
 })();
