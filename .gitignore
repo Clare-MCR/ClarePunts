@@ -5,8 +5,11 @@ bower_components/
 build/
 report/
 .idea/
+src/rest/vendor/ 
 
 # other
 .tmp
 
 src/rest/config.php
+
+*.phar
