@@ -10,8 +10,8 @@
     'app.bookings',
     'app.layout',
     'app.data',
-    'app.info'
-    // 'app.charts'
+    'app.info',
+    'app.charts'
   ]);
 
 })();
