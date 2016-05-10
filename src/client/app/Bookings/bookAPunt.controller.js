@@ -55,20 +55,16 @@
       name: vm.user.name,
       phone: vm.user.phone,
       timeFrom: vm.dt,
-      // timeFrom: new Date(vm.now.getTime() - (60000 * vm.now.getTimezoneOffset())),
-      // timeTo: new Date(vm.now.getTime() - (60000 * vm.now.getTimezoneOffset())),
       booker: vm.user.crsid,
       type: vm.user.type
     };
-    // vm.form.timeFrom.setMinutes(0, 0, 0);
-    // vm.form.timeTo.setMinutes(0, 0, 0);
 
     vm.options = {
       datepickerMode: 'day',
       minDate: new Date(),
       showWeeks: false
     };
-    vm.options.minDate.setHours(0, 0, 0, 0);
+    vm.options.minDate.setUTCHours(0, 0, 0, 0);
 
     // note, these field types will need to be
     // pre-defined. See the pre-built and custom templates
@@ -179,31 +175,6 @@
         }
 
       },
-      // {
-      //   key: 'timeFrom',
-      //   type: 'timepicker',
-      //   templateOptions: {
-      //     label: 'Start Time:',
-      //     hourStep: 1,
-      //     minuteStep: 15,
-      //     showMeridian: true,
-      //     min: new Date(),
-      //     max: new Date().setHours(24, 0, 0, 0),
-      //     readonlyInput: true
-      //   },
-      //   watcher: {
-      //     listener: function (field, newValue) {
-      //       if (newValue) {
-      //         bookingAllowed();
-      //       }
-      //     }
-      //   },
-      //   expressionProperties: {
-      //     'templateOptions.max': function ($viewValue, $modelValue, scope) {
-      //       return new Date(scope.model.timeFrom).setHours(24, 0, 0, 0);
-      //     }
-      //   }
-      // },
       {
         key: 'timeFrom',
         type: 'horizontalSelect',
@@ -288,56 +259,6 @@
           }
         }
       }
-      // {
-      //   key: 'timeTo',
-      //   type: 'timepicker',
-      //   templateOptions: {
-      //     label: 'Finish Time:',
-      //     hourStep: 1,
-      //     minuteStep: 15,
-      //     showMeridian: true,
-      //     readonlyInput: true
-      //   },
-      //   watcher: {
-      //     listener: function (field, newValue) {
-      //       if (newValue) {
-      //         bookingAllowed();
-      //       }
-      //     }
-      //   },
-      //   expressionProperties: {
-      //     // @todo fix min max restrictions
-      //     'templateOptions.max': function ($viewValue, $modelValue, scope) {
-      //       var startTime = new Date(scope.model.timeFrom);
-      //       var endtTime = new Date(scope.model.timeTo);
-      //       var nightTime = new Date(endtTime);
-      //       var midnight = new Date(endtTime);
-      //
-      //       endtTime.setHours(startTime.getHours() + 3);
-      //       nightTime.setHours(7, 0, 0, 0);
-      //       midnight.setHours(24, 0, 0, 0);
-      //
-      //       if (endTime >= midnight) {
-      //         return midnight;
-      //       }
-      //       if (startTime <= nightTime && endtTime <= nightTime) {
-      //         return nightTime;
-      //       }
-      //       return endtTime;
-      //     },
-      //     'templateOptions.min': function ($viewValue, $modelValue, scope) {
-      //       var time = new Date(scope.model.timeFrom);
-      //       var nightTime = new Date(scope.model.timeFrom);
-      //       nightTime.setHours(7, 0, 0, 0);
-      //       if (time < nightTime) {
-      //         time.setHours(7, 0, 0, 0);
-      //       } else {
-      //         time.setMinutes(time.getMinutes() + 30);
-      //       }
-      //       return time;
-      //     }
-      //   }
-      // }
     ];
 
     function activate() {
@@ -348,15 +269,12 @@
 
     function userHasUpcoming(crsid) {
       return vm.bookings.filter(function (booking) {
-          /*jshint camelcase: false */
-          //@todo check timezone offset
           return new Date(booking.timeTo) >= vm.now && booking.booker === crsid;
         }).length !== 0;
     }
 
     function userBookingOnDay(crsid) {
       return vm.bookings.filter(function (booking) {
-          //@todo check timezone offset
           var today0 = new Date(vm.dt);
           var today24 = new Date(vm.dt);
           today0.setUTCHours(0, 0, 0, 0);
@@ -429,14 +347,14 @@
       if (!vm.user.authorised) {
         vm.bookingErrorMessage = 'You are not authorised!';
         vm.canBook = false;
-        return;
+        return false;
       }
-      //@todo check for bookings on day
+      // check for bookings on day
       if (vm.form.type !== 'PORTER') {
         if (userBookingOnDay(vm.form.booker)) {
           vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
           vm.canBook = false;
-          return;
+          return false;
         }
       }
       // Check if the user has any upcoming bookings
@@ -465,6 +383,7 @@
       } else {
         vm.canBook = true;
       }
+      return true;
     }
 
     function changeInDate() {
@@ -479,7 +398,6 @@
     }
 
     function onSubmit(data) {
-      //@todo adjust timezone
       var puntid = data.puntid;
       bookingAllowed();
       if (!vm.canBook) {

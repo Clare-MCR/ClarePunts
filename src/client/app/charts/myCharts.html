@@ -2,9 +2,14 @@
   <div class="container-fluid">
     <div class="row">
       <cp-widget-container class="col-xs-12" label-text="vm.title">
+        <div class="padded-container">
+        <formly-form class="clearfix" model="vm.form" fields="vm.formFields">
+        </formly-form>
         <!--suppress HtmlUnknownAttribute -->
-        <div google-chart chart="vm.myChartObject" class="googleChart padded-container"></div>
+        <div google-chart chart="vm.myChartObject" class="googleChart "></div>
+        </div>
       </cp-widget-container>
     </div>
   </div>
 </section>
+<!--<pre>{{ vm.myChartObject |json }}</pre>-->

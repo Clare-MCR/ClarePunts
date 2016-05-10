@@ -192,13 +192,13 @@
         headerText: 'Are you sure you want to add these users?'
       };
 
+      var crsidPatt = /[a-z]{2,6}[0-9]+/i;
       var userList = users.crsid.split(',');
       for (var i = 0; i < userList.length; i++) {
         userList[i] = userList[i].trim();
-        if (userList[i] === '') {
+        if (userList[i] === '' || !crsidPatt.test(userList[i])) {
           userList.splice(i, 1);
         }
-        //@todo validate as crsid
       }
 
       modalService.showModal({}, modalOptions).then(function () {
