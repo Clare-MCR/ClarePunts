@@ -1,10 +1,10 @@
 /* jshint ignore:start */
-(function () {
-  "use strict";
+(function(){
+"use strict";
 
-  angular.module("app.core")
+angular.module("app.core")
 
-    .constant("version", "0.2.1")
-  ;
+.constant("version", "1.0.0")
+;
 })();
 /* jshint ignore:end */
