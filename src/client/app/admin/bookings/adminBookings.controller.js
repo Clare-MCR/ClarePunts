@@ -61,7 +61,6 @@
       modalService.showModal({}, modalOptions).then(function () {
         vm.form.booking.forEach(function (booking) {
           BookingServices.remove({Id: booking, from: null, to: null}, function () {
-            //@todo test if booking deleting correctly
             for (var i = 0; i < vm.bookings.length; i++) {
               if (vm.bookings[i].id === booking) {
                 vm.bookings.splice(i, 1);
