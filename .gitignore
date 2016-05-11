@@ -9,7 +9,8 @@ src/rest/vendor/
 
 # other
 .tmp
+*.phar
 
 src/rest/config.php
 
-*.phar
+
