@@ -49,7 +49,8 @@
 
       function getStatus() {
         var now = new Date();
-        var midnight = new Date().setUTCHours(24, 0, 0, 0);
+        var midnight = new Date(now);
+        midnight.setUTCHours(31, 0, 0, 0);
         var currentBookings = vm.bookings.filter(function (booking) {
           return new Date(booking.timeFrom) <= now && new Date(booking.timeTo) >= now;
         });
