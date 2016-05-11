@@ -6,6 +6,9 @@
  * Time: 19:20
  */
 
+// fix for dirname not matching url due to silent redirect
+$_SERVER['DOCUMENT_ROOT']=dirname(dirname(__FILE__));
+
 require 'vendor/autoload.php';
 require 'puntsController.php';
 

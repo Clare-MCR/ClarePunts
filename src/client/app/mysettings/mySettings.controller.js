@@ -18,6 +18,12 @@
       phone: vm.user.phone //@todo standardise phone/mobile across databases
     };
 
+    activate();
+
+    function activate() {
+      logger.info('Viewing My Settings');
+    }
+
     vm.formFields = [
       {
         key: 'name',
