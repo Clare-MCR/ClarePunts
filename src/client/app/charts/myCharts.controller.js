@@ -24,8 +24,8 @@
         rows: []
       },
       options: {title: '',
-        Height: '500px',
-        width: '350px',
+        Height: '1000px',
+        width: '100%',
         calendar: { cellSize: 12 }
       }
     };
