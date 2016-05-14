@@ -379,10 +379,10 @@
         if (termRestrictions(vm.form.booker)) {
           vm.bookingErrorMessage = 'Staff and Fellows are restricted to 1 booking each during term time!';
           vm.canBook = false;
+          return;
         }
-      } else {
-        vm.canBook = true;
       }
+      vm.canBook = true;
       return true;
     }
 
