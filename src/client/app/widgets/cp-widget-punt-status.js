@@ -48,7 +48,8 @@
       }
 
       function getStatus() {
-        var now = new Date();
+        var dt = new Date();
+        var now = new Date(dt.getTime() - (60000 * dt.getTimezoneOffset()));
         var midnight = new Date(now);
         midnight.setUTCHours(31, 0, 0, 0); // 7am
         var currentBookings = vm.bookings.filter(function (booking) {
