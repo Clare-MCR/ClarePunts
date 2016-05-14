@@ -16,7 +16,7 @@
     vm.navline = {
       title: config.appTitle,
       text: 'Created by Richard Gunning',
-      link: 'http://twitter.com/rjgunning'
+      link: 'http://rjgunning.com'
     };
 
     activate();
