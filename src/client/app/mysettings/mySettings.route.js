@@ -21,10 +21,10 @@
           controller: 'MySettingsController',
           controllerAs: 'vm',
           title: 'mySettings',
-          resolve: {
-            /* @ngInject */
-            userPrepService: userPrepService
-          },
+          // resolve: {
+          //   /* @ngInject */
+          //   userPrepService: userPrepService
+          // },
           settings: {
             nav: 3,
             content: '<i class="fa fa-gear"></i> My Settings'
@@ -34,9 +34,9 @@
     ];
   }
 
-  /* @ngInject */
-  function userPrepService(UserServices) {
-    return UserServices.get().$promise;
-  }
+  // /* @ngInject */
+  // function userPrepService(UserServices) {
+  //   return UserServices.get();
+  // }
 
 })();

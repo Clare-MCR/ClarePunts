@@ -5,14 +5,12 @@
     .module('app.data')
     .factory('SettingsServices', SettingsServices);
 
-  SettingsServices.$inject = ['$resource'];
+  SettingsServices.$inject = ['cachedResource'];
 
   /* @ngInject */
-  function SettingsServices($resource) {
+  function SettingsServices(cachedResource) {
     // return $resource('http://rjg70.user.srcf.net/rest/settings/:Type', {Type: 'rules'}, {
-    return $resource('rest/settings/:Type', {Type: 'rules'}, {
-      update: {method: 'PUT'}
-    });
+    return cachedResource('rest/settings/:Type', {Type: 'rules'}, {});
   }
 
 })();

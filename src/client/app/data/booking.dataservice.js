@@ -5,15 +5,15 @@
     .module('app.data')
     .factory('BookingServices', BookingServices);
 
-  BookingServices.$inject = ['$resource'];
+  BookingServices.$inject = ['cachedResource'];
 
   /* @ngInject */
-  function BookingServices($resource) {
+  function BookingServices(cachedResource) {
     // return $resource('http://rjg70.user.srcf.net/rest/booking/:Id/:from/:to',
     var date = new Date();
     date.setUTCHours(0, 0, 0, 0);
     var unixtime = Math.floor(date.getTime() / 1000);
-    return $resource('rest/booking/:Id/:from/:to',
+    return cachedResource('rest/booking/:Id/:from/:to',
       {Id: '*', from: unixtime, to: null});
   }
 
