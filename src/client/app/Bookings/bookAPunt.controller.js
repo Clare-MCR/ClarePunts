@@ -89,7 +89,7 @@
           placeholder: 'Enter CRSID'
         },
         hideExpression: function () {
-          return vm.user.type !== 'PORTER' || vm.user.admin !== '1';
+          return vm.user.type !== 'PORTER' && vm.user.admin !== '1';
         },
         validators: {
           crsid: {
@@ -108,7 +108,7 @@
         },
         expressionProperties: {
           'templateOptions.required': function () {
-            return vm.user.type === 'PORTER' || vm.user.admin !== '1';
+            return vm.user.type === 'PORTER' || vm.user.admin === '1';
           }
         }
       },
@@ -120,7 +120,7 @@
           options: vm.userTypes
         },
         hideExpression: function () {
-          return vm.user.type !== 'PORTER' || vm.user.admin !== '1';
+          return vm.user.type !== 'PORTER' && vm.user.admin !== '1';
         },
         watcher: {
           listener: function (field, newValue) {
@@ -131,7 +131,7 @@
         },
         expressionProperties: {
           'templateOptions.required': function () {
-            return vm.user.type === 'PORTER' || vm.user.admin !== '1';
+            return vm.user.type === 'PORTER' || vm.user.admin === '1';
           }
         }
       },
@@ -393,6 +393,16 @@
       }
     }
 
+    function resetForm() {
+      vm.form = {
+        name: vm.user.name,
+        phone: vm.user.phone,
+        timeFrom: vm.dt,
+        booker: vm.user.crsid,
+        type: vm.user.type
+      };
+    }
+
     function onSubmit(data) {
       var puntid = data.puntid;
       bookingAllowed();
@@ -413,6 +423,7 @@
         //@todo work out why puntid is undefined if viewed
         data.puntid = puntid;
         vm.bookings.push(data);
+        resetForm();
         bookingAllowed();
         logger.success('Booking submitted successfully!', data);
       }, function (err) {
