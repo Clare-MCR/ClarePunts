@@ -89,7 +89,7 @@
           placeholder: 'Enter CRSID'
         },
         hideExpression: function () {
-          return vm.user.type !== 'PORTER';
+          return vm.user.type !== 'PORTER' || vm.user.admin !== '1';
         },
         validators: {
           crsid: {
@@ -108,7 +108,7 @@
         },
         expressionProperties: {
           'templateOptions.required': function () {
-            return vm.user.type === 'PORTER';
+            return vm.user.type === 'PORTER' || vm.user.admin !== '1';
           }
         }
       },
@@ -120,7 +120,7 @@
           options: vm.userTypes
         },
         hideExpression: function () {
-          return vm.user.type !== 'PORTER';
+          return vm.user.type !== 'PORTER' || vm.user.admin !== '1';
         },
         watcher: {
           listener: function (field, newValue) {
@@ -131,7 +131,7 @@
         },
         expressionProperties: {
           'templateOptions.required': function () {
-            return vm.user.type === 'PORTER';
+            return vm.user.type === 'PORTER' || vm.user.admin !== '1';
           }
         }
       },
@@ -350,12 +350,10 @@
         return false;
       }
       // check for bookings on day
-      if (vm.form.type !== 'PORTER') {
-        if (userBookingOnDay(vm.form.booker)) {
-          vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
-          vm.canBook = false;
-          return false;
-        }
+      if (userBookingOnDay(vm.form.booker)) {
+        vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
+        vm.canBook = false;
+        return false;
       }
       // Check if the user has any upcoming bookings
       // if (vm.form.type !== 'PORTER') {
@@ -389,11 +387,9 @@
     function changeInDate() {
       vm.form.timeFrom = new Date(vm.form.timeFrom)
         .setUTCFullYear(vm.dt.getUTCFullYear(), vm.dt.getUTCMonth(), vm.dt.getUTCDate());
-      if (vm.form.type !== 'PORTER') {
-        if (userBookingOnDay(vm.form.booker)) {
-          vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
-          vm.canBook = false;
-        }
+      if (userBookingOnDay(vm.form.booker)) {
+        vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
+        vm.canBook = false;
       }
     }
 
