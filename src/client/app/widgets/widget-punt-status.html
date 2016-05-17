@@ -2,6 +2,7 @@
   <thead>
   <tr>
     <th>Punt</th>
+    <th>Previous Booking</th>
     <th>Current Booking</th>
     <th>Next Booking</th>
   </tr>
@@ -16,11 +17,17 @@
     </td>
     <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
     <td tooltip-placement="bottom" tooltip-append-to-body="true"
+        uib-tooltip="{{punt.previousBooking | bookingTooltip}}">
+      {{punt.previousBooking | bookingSimple}}
+    </td>
+    <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
+    <td tooltip-placement="bottom" tooltip-append-to-body="true"
         uib-tooltip="{{punt.currentBooking | bookingTooltip}}">
       {{punt.currentBooking | bookingSimple}}
     </td>
     <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
-    <td tooltip-placement="bottom" tooltip-append-to-body="true" uib-tooltip="{{punt.nextBooking | bookingTooltip}}">
+    <td tooltip-placement="bottom" tooltip-append-to-body="true"
+        uib-tooltip="{{punt.nextBooking | bookingTooltip}}">
       {{punt.nextBooking | bookingSimple}}
     </td>
   </tr>
