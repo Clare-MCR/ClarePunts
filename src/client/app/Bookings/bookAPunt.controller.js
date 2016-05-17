@@ -89,7 +89,7 @@
           placeholder: 'Enter CRSID'
         },
         hideExpression: function () {
-          return vm.user.type !== 'PORTER';
+          return vm.user.type !== 'PORTER' && vm.user.admin !== '1';
         },
         validators: {
           crsid: {
@@ -108,7 +108,7 @@
         },
         expressionProperties: {
           'templateOptions.required': function () {
-            return vm.user.type === 'PORTER';
+            return vm.user.type === 'PORTER' || vm.user.admin === '1';
           }
         }
       },
@@ -120,7 +120,7 @@
           options: vm.userTypes
         },
         hideExpression: function () {
-          return vm.user.type !== 'PORTER';
+          return vm.user.type !== 'PORTER' && vm.user.admin !== '1';
         },
         watcher: {
           listener: function (field, newValue) {
@@ -131,7 +131,7 @@
         },
         expressionProperties: {
           'templateOptions.required': function () {
-            return vm.user.type === 'PORTER';
+            return vm.user.type === 'PORTER' || vm.user.admin === '1';
           }
         }
       },
@@ -274,13 +274,21 @@
     }
 
     function userBookingOnDay(crsid) {
-      return vm.bookings.filter(function (booking) {
-          var today0 = new Date(vm.dt);
-          var today24 = new Date(vm.dt);
-          today0.setUTCHours(0, 0, 0, 0);
-          today24.setUTCHours(24, 0, 0, 0);
-          return new Date(booking.timeTo) >= today0 && new Date(booking.timeFrom) < today24 && booking.booker === crsid;
-        }).length !== 0;
+      var bookings = vm.bookings.filter(function (booking) {
+        var today0 = new Date(vm.dt);
+        var today24 = new Date(vm.dt);
+        today0.setUTCHours(0, 0, 0, 0);
+        today24.setUTCHours(24, 0, 0, 0);
+        return new Date(booking.timeTo) >= today0 && new Date(booking.timeFrom) < today24 && booking.booker === crsid;
+      });
+      if (bookings.length !== 0) {
+        vm.canBook = false;
+        vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
+      } else {
+        vm.canBook = true;
+        vm.bookingErrorMessage = '';
+      }
+      return vm.canBook;
     }
 
     function conflictBookings() {
@@ -350,12 +358,8 @@
         return false;
       }
       // check for bookings on day
-      if (vm.form.type !== 'PORTER') {
-        if (userBookingOnDay(vm.form.booker)) {
-          vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
-          vm.canBook = false;
-          return false;
-        }
+      if (!userBookingOnDay(vm.form.booker)) {
+        return false;
       }
       // Check if the user has any upcoming bookings
       // if (vm.form.type !== 'PORTER') {
@@ -389,12 +393,17 @@
     function changeInDate() {
       vm.form.timeFrom = new Date(vm.form.timeFrom)
         .setUTCFullYear(vm.dt.getUTCFullYear(), vm.dt.getUTCMonth(), vm.dt.getUTCDate());
-      if (vm.form.type !== 'PORTER') {
-        if (userBookingOnDay(vm.form.booker)) {
-          vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
-          vm.canBook = false;
-        }
-      }
+      userBookingOnDay(vm.form.booker);
+    }
+
+    function resetForm() {
+      vm.form = {
+        name: vm.user.name,
+        phone: vm.user.phone,
+        timeFrom: vm.dt,
+        booker: vm.user.crsid,
+        type: vm.user.type
+      };
     }
 
     function onSubmit(data) {
@@ -417,6 +426,7 @@
         //@todo work out why puntid is undefined if viewed
         data.puntid = puntid;
         vm.bookings.push(data);
+        resetForm();
         bookingAllowed();
         logger.success('Booking submitted successfully!', data);
       }, function (err) {
