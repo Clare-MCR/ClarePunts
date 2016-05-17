@@ -5,11 +5,11 @@
     .module('app.charts')
     .controller('ChartsController', ChartsController);
 
-  ChartsController.$inject = ['$filter', 'BookingServices', 'UserServices', '$rootScope', 'logger'];
+  ChartsController.$inject = ['$filter', 'BookingServices', 'UserServices', '$rootScope', 'logger', '$state'];
   /* @ngInject */
-  function ChartsController($filter, BookingServices, UserServices, $rootScope, logger) {
+  function ChartsController($filter, BookingServices, UserServices, $rootScope, logger, $state) {
     var vm = this;
-    vm.title = 'My Usage';
+    vm.title = $state.current.title;
     vm.user = {};
     vm.form = {chartType:1,group:1};
     vm.formFields = [];
@@ -75,7 +75,7 @@
     ];
 
     function activate() {
-      logger.info('Viewing my Charts');
+      logger.info('Viewing ' + $state.current.title);
       getUser();
     }
 

@@ -5,9 +5,9 @@
     .module('app.admin')
     .controller('AdminSettingsController', AdminSettingsController);
 
-  AdminSettingsController.$inject = ['userPrepService', 'modalService', 'SettingsServices', 'logger'];
+  AdminSettingsController.$inject = ['userPrepService', 'modalService', 'SettingsServices', 'logger', '$state'];
   /* @ngInject */
-  function AdminSettingsController(userPrepService, modalService, SettingsServices, logger) {
+  function AdminSettingsController(userPrepService, modalService, SettingsServices, logger, $state) {
     var vm = this;
 
     vm.updateOptions = updateOptions;
@@ -19,7 +19,7 @@
     activate();
 
     function activate() {
-      logger.info('Activated Admin Punt Rules View');
+      logger.info('Viewing ' + $state.current.title);
     }
 
     function updateOptions(option, data) {

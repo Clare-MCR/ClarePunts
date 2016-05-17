@@ -6,11 +6,11 @@
     .controller('BookAPuntController', BookAPuntController);
 
   BookAPuntController.$inject = ['$filter', 'BookingServices', 'bookingsPrepService',
-    'puntsPrepService', 'userPrepService', 'logger'];
+    'puntsPrepService', 'userPrepService', 'logger', '$state'];
 
   /* @ngInject */
   function BookAPuntController($filter, BookingServices, bookingsPrepService,
-                               puntsPrepService, userPrepService, logger) {
+                               puntsPrepService, userPrepService, logger, $state) {
     var vm = this;
 
     vm.changeInDate = changeInDate;
@@ -18,7 +18,7 @@
 
     vm.title = {
       calendar: 'Choose A Date',
-      form: 'Book A Punt',
+      form: $state.current.title,
       conflicts: 'Conflicts',
       dates: 'Term Dates'
     };
@@ -262,7 +262,7 @@
     ];
 
     function activate() {
-      logger.info('Viewing Book A Punt');
+      logger.info('Viewing ' + $state.current.title);
       setTerm();
       bookingAllowed();
     }

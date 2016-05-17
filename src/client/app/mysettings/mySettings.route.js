@@ -20,7 +20,7 @@
           templateUrl: 'app/mySettings/mySettings.html',
           controller: 'MySettingsController',
           controllerAs: 'vm',
-          title: 'mySettings',
+          title: 'My Settings',
           resolve: {
             /* @ngInject */
             userPrepService: userPrepService

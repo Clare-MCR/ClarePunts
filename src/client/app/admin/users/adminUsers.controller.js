@@ -5,9 +5,9 @@
     .module('app.admin')
     .controller('AdminUsersController', AdminUsersController);
 
-  AdminUsersController.$inject = ['userPrepService', 'UserServices', 'modalService', 'logger'];
+  AdminUsersController.$inject = ['userPrepService', 'UserServices', 'modalService', 'logger', '$state'];
   /* @ngInject */
-  function AdminUsersController(userPrepService, UserServices, modalService, logger) {
+  function AdminUsersController(userPrepService, UserServices, modalService, logger, $state) {
     var vm = this;
 
     vm.deleteUser = deleteUser;
@@ -20,9 +20,9 @@
     vm.allUsers = [];
     vm.title = {
       add: 'Add Users',
-      edit: 'Edit users',
-      delete: 'purge users',
-      view: 'View users'
+      edit: 'Edit Users',
+      delete: 'Purge Users',
+      view: 'View Users'
     };
     vm.viewForm = {type: 'admin', user: []};
     vm.addForm = {};
@@ -110,7 +110,7 @@
     ];
 
     function activate() {
-      logger.info('Activated Admin View');
+      logger.info('Viewing ' + $state.current.title);
       getUsers();
     }
 

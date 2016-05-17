@@ -20,7 +20,7 @@
           templateUrl: 'app/bookings/bookAPunt.html',
           controller: 'BookAPuntController',
           controllerAs: 'vm',
-          title: 'bookAPunt',
+          title: 'Book A Punt',
           resolve: {
             /* @ngInject */
             puntsPrepService: puntsPrepService,

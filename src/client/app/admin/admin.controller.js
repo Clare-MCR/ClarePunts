@@ -5,12 +5,12 @@
     .module('app.admin')
     .controller('AdminController', AdminController);
 
-  AdminController.$inject = ['routerHelper', 'userPrepService', 'SettingsServices', 'logger'];
+  AdminController.$inject = ['routerHelper', 'userPrepService', 'SettingsServices', 'logger', '$state'];
   /* @ngInject */
-  function AdminController(routerHelper, userPrepService, SettingsServices, logger) {
+  function AdminController(routerHelper, userPrepService, SettingsServices, logger, $state) {
     var vm = this;
     vm.user = userPrepService;
-    vm.title = 'Admin home';
+    vm.title = $state.current.title;
     vm.adminRoutes = [];
     vm.todoAdd = todoAdd;
     vm.remove = remove;
@@ -21,7 +21,7 @@
     activate();
 
     function activate() {
-      logger.info('Activated Admin View');
+      logger.info('Viewing ' + $state.current.title);
       getNavRoutes();
       getTodo();
     }

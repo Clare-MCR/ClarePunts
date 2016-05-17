@@ -5,9 +5,9 @@
     .module('app.dashboard')
     .controller('DashboardController', DashboardController);
 
-  DashboardController.$inject = ['bookingsPrepService', 'puntsPrepService', 'logger'];
+  DashboardController.$inject = ['bookingsPrepService', 'puntsPrepService', 'logger', '$state'];
   /* @ngInject */
-  function DashboardController(bookingsPrepService, puntsPrepService, logger) {
+  function DashboardController(bookingsPrepService, puntsPrepService, logger, $state) {
     var vm = this;
     vm.title = 'Status Today';
     vm.punts = puntsPrepService;
@@ -16,7 +16,7 @@
     activate();
 
     function activate() {
-      logger.info('Viewing Punt Status');
+      logger.info('Viewing ' + $state.current.title);
     }
   }
 })();

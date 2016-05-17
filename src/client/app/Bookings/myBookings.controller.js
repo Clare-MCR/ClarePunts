@@ -6,15 +6,15 @@
     .controller('MyBookingsController', MyBookingsController);
 
   MyBookingsController.$inject = ['BookingServices', 'bookingsPrepService', 'modalService',
-    'puntsPrepService', 'userPrepService', 'logger'];
+    'puntsPrepService', 'userPrepService', 'logger', '$state'];
 
   /* @ngInject */
   function MyBookingsController(BookingServices, bookingsPrepService, modalService, puntsPrepService,
-                                userPrepService, logger) {
+                                userPrepService, logger, $state) {
     var vm = this;
 
     vm.now = new Date();
-    vm.title = 'My bookings';
+    vm.title = $state.current.title;
     vm.deleteBooking = deleteBooking;
     vm.punts = puntsPrepService;
     vm.bookings = bookingsPrepService;
@@ -24,7 +24,7 @@
     activate();
 
     function activate() {
-      logger.info('Viewing My bookings');
+      logger.info('Viewing ' + $state.current.title);
       vm.user.bookings = hasUpcoming();
     }
 

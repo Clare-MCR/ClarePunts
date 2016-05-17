@@ -20,7 +20,7 @@
           templateUrl: 'app/info/rules.html',
           controller: 'RulesController',
           controllerAs: 'vm',
-          title: 'rules',
+          title: 'Punt Rules',
           resolve: {
             /* @ngInject */
             settingsPrepServices: settingsPrepServices

@@ -20,7 +20,7 @@
           templateUrl: 'app/admin/admin.html',
           controller: 'AdminController',
           controllerAs: 'vm',
-          title: 'Admin',
+          title: 'Admin Home',
           resolve: {
             /* @ngInject */
             userPrepService: userPrepService
