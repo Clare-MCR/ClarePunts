@@ -20,7 +20,7 @@
           templateUrl: 'app/info/contact.html',
           controller: 'ContactController',
           controllerAs: 'vm',
-          title: 'contact',
+          title: 'Punt Committee',
           resolve: {
             /* @ngInject */
             settingsPrepServices: settingsPrepServices

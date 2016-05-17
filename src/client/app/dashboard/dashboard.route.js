@@ -20,7 +20,7 @@
           templateUrl: 'app/dashboard/dashboard.html',
           controller: 'DashboardController',
           controllerAs: 'vm',
-          title: 'dashboard',
+          title: 'Punt Status',
           resolve: {
             /* @ngInject */
             puntsPrepService: puntsPrepService,

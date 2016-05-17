@@ -6,17 +6,17 @@
     .controller('AdminBookingsController', AdminBookingsController);
 
   AdminBookingsController.$inject = ['userPrepService', 'puntsPrepService', 'bookingsPrepService',
-    'BookingServices', 'modalService', 'logger'];
+    'BookingServices', 'modalService', 'logger', '$state'];
   /* @ngInject */
   function AdminBookingsController(userPrepService, puntsPrepService, bookingsPrepService,
-                                   BookingServices, modalService, logger) {
+                                   BookingServices, modalService, logger, $state) {
     var vm = this;
 
     vm.deleteBooking = deleteBooking;
     vm.user = userPrepService;
     vm.punts = puntsPrepService;
     vm.bookings = bookingsPrepService;
-    vm.title = 'Admin bookings';
+    vm.title = $state.current.title;
     vm.form = {booking: []};
     vm.formFields = [];
 
@@ -43,7 +43,7 @@
     ];
 
     function activate() {
-      logger.info('Activated Admin View');
+      logger.info('Viewing ' + $state.current.title);
       vm.punts.forEach(function (punt) {
         punt.value = punt.id;
       });
