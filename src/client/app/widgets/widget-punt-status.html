@@ -2,6 +2,7 @@
   <thead>
   <tr>
     <th>Punt</th>
+    <th>Previous Booking</th>
     <th>Current Booking</th>
     <th>Next Booking</th>
   </tr>
@@ -13,6 +14,11 @@
         uib-tooltip="{{punt.currentStatus}}">
       <div class="{{punt.currentStatus|statusCircle}}"></div>
       {{punt.name}}
+    </td>
+    <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
+    <td tooltip-placement="bottom" tooltip-append-to-body="true"
+        uib-tooltip="{{punt.previousBooking | bookingTooltip}}">
+      {{punt.previousBooking | bookingSimple}}
     </td>
     <!--suppress HtmlUnknownAttribute, HtmlUnknownAttribute -->
     <td tooltip-placement="bottom" tooltip-append-to-body="true"
