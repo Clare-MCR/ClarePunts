@@ -25,8 +25,8 @@
     function updateOptions(option, data) {
       var modalOptions = {
         closeButtonText: 'Cancel',
-        actionButtonText: 'Update' + toTitleCase(option),
-        headerText: 'Update' + toTitleCase(option),
+        actionButtonText: 'Update ' + toTitleCase(option),
+        headerText: 'Update ' + toTitleCase(option),
         bodyText: 'Are you sure you want to update the ' + toTitleCase(option) + '?'
       };
 
