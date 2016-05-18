@@ -5,12 +5,12 @@
     .module('app.mySettings')
     .controller('MySettingsController', MySettingsController);
 
-  MySettingsController.$inject = ['UserServices', 'logger'];
+  MySettingsController.$inject = ['UserServices', 'logger', '$state'];
 
   /* @ngInject */
-  function MySettingsController(UserServices, logger) {
+  function MySettingsController(UserServices, logger, $state) {
     var vm = this;
-    vm.title = 'My Settings';
+    vm.title = $state.current.title;
     vm.updateUser = updateUser;
     vm.form = {};
     vm.user = UserServices.get(function () {
