@@ -51,6 +51,7 @@
     return function (exception, cause) {
       var appErrorPrefix = exceptionHandler.config.appErrorPrefix || '';
       var errorData = {exception: exception, cause: cause};
+      //@todo notify if raven has timed out
       exception.message = appErrorPrefix + exception.message;
       $delegate(exception, cause);
       /**
