@@ -52,7 +52,6 @@
       function getuser() {
         vm.user = UserServices.get(function () {
           vm.admin = Boolean(vm.user.admin);
-          console.log(vm.user);
         });
       }
 
