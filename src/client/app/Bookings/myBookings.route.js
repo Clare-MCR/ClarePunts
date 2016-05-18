@@ -20,7 +20,7 @@
           templateUrl: 'app/bookings/myBookings.html',
           controller: 'MyBookingsController',
           controllerAs: 'vm',
-          title: 'myBookings',
+          title: 'My Bookings',
           resolve: {
             /* @ngInject */
             puntsPrepService: puntsPrepService,
@@ -29,7 +29,7 @@
           },
           settings: {
             nav: 2,
-            content: '<i class="fa fa-calendar-o"></i> My bookings'
+            content: '<i class="fa fa-calendar-o"></i> My Bookings'
           }
         }
       }

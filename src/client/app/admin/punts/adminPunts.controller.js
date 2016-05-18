@@ -6,10 +6,10 @@
     .controller('AdminPuntsController', AdminPuntsController);
 
   AdminPuntsController.$inject = ['userPrepService', 'PuntsServices', 'puntsPrepService',
-    'bookingsPrepService', 'logger', 'modalService'];
+    'bookingsPrepService', 'logger', 'modalService', '$state'];
   /* @ngInject */
   function AdminPuntsController(userPrepService, PuntsServices, puntsPrepService,
-                                bookingsPrepService, logger, modalService) {
+                                bookingsPrepService, logger, modalService, $state) {
     var vm = this;
 
     vm.deletePunt = deletePunt;
@@ -83,7 +83,7 @@
     ];
 
     function activate() {
-      logger.info('Activated Admin Punts View');
+      logger.info('Viewing ' + $state.current.title);
     }
 
     function onSubmit(data) {

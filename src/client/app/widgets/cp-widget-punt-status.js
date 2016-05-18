@@ -52,6 +52,9 @@
         var now = new Date(dt.getTime() - (60000 * dt.getTimezoneOffset()));
         var midnight = new Date(now);
         midnight.setUTCHours(31, 0, 0, 0); // 7am
+        var previousBookings = vm.bookings.filter(function (booking) {
+          return new Date(booking.timeTo) <= now;
+        });
         var currentBookings = vm.bookings.filter(function (booking) {
           return new Date(booking.timeFrom) <= now && new Date(booking.timeTo) >= now;
         });
@@ -63,12 +66,20 @@
           function (punt) {
             punt.currentStatus = '';
             punt.currentBooking = '';
+            punt.previousBooking = '';
             punt.nextBooking = '';
 
             var availableFrom = new Date(punt.availableFrom);
             var availableTo = new Date(punt.availableTo);
 
             if (now > availableFrom && now < availableTo) {
+              punt.previousBooking = previousBookings.filter(function (booking) {
+                return booking.puntid === punt.id;
+              });
+              punt.previousBooking = punt.previousBooking.sort(function (a, b) {
+                return new Date(a.timeFrom) + new Date(b.timeFrom);
+              })[0];
+
               punt.currentBooking = currentBookings.filter(function (booking) {
                 return booking.puntid === punt.id;
               })[0];

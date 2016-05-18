@@ -5,19 +5,19 @@
     .module('app.info')
     .controller('ContactController', ContactController);
 
-  ContactController.$inject = ['settingsPrepServices', 'logger'];
+  ContactController.$inject = ['settingsPrepServices', 'logger', '$state'];
 
   /* @ngInject */
-  function ContactController(settingsPrepServices, logger) {
+  function ContactController(settingsPrepServices, logger, $state) {
     var vm = this;
 
-    vm.title = 'Punt Committee';
+    vm.title = $state.current.title;
     vm.contact = settingsPrepServices;
 
     activate();
 
     function activate() {
-      logger.info('Viewing Punt Committee');
+      logger.info('Viewing ' + $state.current.title);
     }
   }
 })();
