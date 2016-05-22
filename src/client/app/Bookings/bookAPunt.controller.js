@@ -350,7 +350,7 @@
           var output = data.filter(function (item) {
             return item.booker === crsid;
           });
-          logger.info('User has ' + output.length + ' scheduled bookings this term', output);
+          //logger.info('User has ' + output.length + ' scheduled bookings this term', output);
           if (output.length >= 1) {
             vm.bookingErrorMessage = 'Staff and Fellows are restricted to 1 booking each during term time!';
             vm.canBook = false;
@@ -369,7 +369,7 @@
         return false;
       }
       // check for bookings on day
-      if (!userBookingOnDay(vm.form.booker)) {
+      if (!userBookingOnDay(vm.form.booker) && vm.user.admin !== '1') {
         return false;
       }
       // Check if the user has any upcoming bookings
@@ -382,7 +382,7 @@
       // }
       // check for conflicts/ 3 boat restriction
       vm.conflicts = conflictBookings();
-      if (vm.conflicts.length > 0) {
+      if (vm.conflicts.length > 0 && vm.user.admin !== '1') {
         if (conflictBookingsType(vm.form.type).length >= 3) {
           vm.bookingErrorMessage = 'At most 3 punts can be concurrently booked by ' + vm.form.type + '!';
           vm.canBook = false;
@@ -390,7 +390,7 @@
         }
       }
       // check for term time restrictions (Only applicable to staff and Fellows)
-      if (vm.form.type === 'STAFF' || vm.form.type === 'FELLOW') {
+      if ((vm.form.type === 'STAFF' || vm.form.type === 'FELLOW') && vm.user.admin !== '1') {
         termRestrictions(vm.form.booker);
       }
     }
