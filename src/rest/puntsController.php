@@ -66,25 +66,25 @@ class puntsController
         }
 
         if ($id == '*') {
-          $this->db->query('SELECT * FROM user');
-          $row = $this->db->resultset();
-          return $row;
+            $this->db->query('SELECT * FROM user');
+            $row = $this->db->resultset();
+            return $row;
         } else {
-          $this->db->query('SELECT * FROM user WHERE crsid = :id');
-          $this->db->bind(':id', $id);
-          $row = $this->db->single();
+            $this->db->query('SELECT * FROM user WHERE crsid = :id');
+            $this->db->bind(':id', $id);
+            $row = $this->db->single();
 
-          if (!$row["name"]) {
-              $ds = ldap_connect("ldap.lookup.cam.ac.uk");
-              $lsearch = ldap_search($ds, "ou=people,o=University of Cambridge,dc=cam,dc=ac,dc=uk", "uid=" . $id . "");
-              $info = ldap_get_entries($ds, $lsearch);
-              $name = $info[0]["cn"][0];
-              $this->db->query('UPDATE user SET name=:name WHERE crsid=:id');
-              $this->db->bind(':id', $id);
-              $this->db->bind(':name', $name);
-              $this->db->execute();
-          }
-          return $row;
+            if (!$row["name"]) {
+                $ds = ldap_connect("ldap.lookup.cam.ac.uk");
+                $lsearch = ldap_search($ds, "ou=people,o=University of Cambridge,dc=cam,dc=ac,dc=uk", "uid=" . $id . "");
+                $info = ldap_get_entries($ds, $lsearch);
+                $name = $info[0]["cn"][0];
+                $this->db->query('UPDATE user SET name=:name WHERE crsid=:id');
+                $this->db->bind(':id', $id);
+                $this->db->bind(':name', $name);
+                $this->db->execute();
+            }
+            return $row;
         }
     }
 
@@ -107,14 +107,14 @@ class puntsController
         if ($this->admin && $id != $this->user) {
             // Updating permissions
             if (isset($data->admin) && isset($data->authorised)) {
-                $this->db->query('update user set authorised=:authorised, admin=:admin  where crsid=:id;');
+                $this->db->query('UPDATE user SET authorised=:authorised, admin=:admin  WHERE crsid=:id;');
                 $this->db->bind(':authorised', test_input($data->authorised));
                 $this->db->bind(':admin', test_input($data->admin));
             } elseif (isset($data->admin)) {
-                $this->db->query('update user set admin=:admin  where crsid=:id;');
+                $this->db->query('UPDATE user SET admin=:admin  WHERE crsid=:id;');
                 $this->db->bind(':admin', test_input($data->admin));
             } elseif (isset($data->authorised)) {
-                $this->db->query('update user set authorised=:authorised  where crsid=:id;');
+                $this->db->query('UPDATE user SET authorised=:authorised  WHERE crsid=:id;');
                 $this->db->bind(':authorised', test_input($data->authorised));
             } else {
                 throw new RestException(204, 'No Content');
@@ -122,14 +122,14 @@ class puntsController
         } else {
             // Updating Name or Mobile
             if ($data->name && $data->phone) {
-                $this->db->query('update user set name=:name, phone=:phone  where crsid=:id;');
+                $this->db->query('UPDATE user SET name=:name, phone=:phone  WHERE crsid=:id;');
                 $this->db->bind(':name', test_input($data->name));
                 $this->db->bind(':phone', test_input($data->phone));
             } elseif ($data->name) {
-                $this->db->query('update user set name=:name  where crsid=:id;');
+                $this->db->query('UPDATE user SET name=:name  WHERE crsid=:id;');
                 $this->db->bind(':name', test_input($data->name));
             } elseif ($data->phone) {
-                $this->db->query('update user set phone=:phone  where crsid=:id;');
+                $this->db->query('UPDATE user SET phone=:phone  WHERE crsid=:id;');
                 $this->db->bind(':phone', test_input($data->phone));
             } else {
                 throw new RestException(204, 'No Content');
@@ -194,17 +194,17 @@ class puntsController
         }
 
         if (!isset($id)) {
-          throw new RestException(204, 'No Content');
+            throw new RestException(204, 'No Content');
         }
 
-        if ($id === '*' && isset($type)){
-            $this->db->query('DELETE FROM user WHERE type=:type and admin=0');
+        if ($id === '*' && isset($type)) {
+            $this->db->query('DELETE FROM user WHERE type=:type AND admin=0');
             $this->db->bind('type', test_input($type));
             $this->db->execute();
-        } elseif ($id === '*' && !isset($type)){
-          $this->db->query('DELETE FROM user WHERE admin=0');
-          $this->db->execute();
-        }else{
+        } elseif ($id === '*' && !isset($type)) {
+            $this->db->query('DELETE FROM user WHERE admin=0');
+            $this->db->execute();
+        } else {
             $this->db->query('DELETE FROM user WHERE crsid=:crsid');
             $this->db->bind(':crsid', $id);
             try {
@@ -225,38 +225,17 @@ class puntsController
      * @url GET /settings
      * @url GET /settings/$type
      */
-    public function getRules($type = "rules") {
-        if (!isset($type)){
-          $type = "rules";
+    public function getRules($type = "rules")
+    {
+        if (!isset($type)) {
+            $type = "rules";
         }
         $this->db->query('SELECT value FROM options WHERE item=:type');
-        $this->db->bind(':type',$type);
+        $this->db->bind(':type', $type);
         $row = $this->db->single();
         return $row;
     }
 
-    /**
-     * Update the punt rules
-     *
-     * @url PUT /settings
-     * @url PUT /settings/$type
-     */
-    public function putRules($type = "rules" ,$data)
-    {
-        if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Settings');
-        }
-
-        if (!isset($type) || !$data->value) {
-            throw new RestException(204, 'No Content received');
-        }
-
-        $this->db->query('update options set  value=:value  where item=:type;');
-        $this->db->bind(':value', $data->value);
-        $this->db->bind(':type', $type);
-        $this->db->execute();
-        return;
-    }
 
     /**
      * Saves a booking to the database
@@ -283,7 +262,7 @@ class puntsController
         }
 
         if ($this->type === "PORTER" || $this->admin) {
-            $permissions = (bool) $this->getPunts($puntid, $timeFrom, $timeTo) && !(bool) $this->getBookings($puntid, $timeFrom, $timeTo);
+            $permissions = (bool)$this->getPunts($puntid, $timeFrom, $timeTo) && !(bool)$this->getBookings($puntid, $timeFrom, $timeTo);
         } else {
 //            $upcoming = $this->getBookings(null, $timeFrom, null, null, $booker);
             $notAtLimit = true;
@@ -357,38 +336,40 @@ class puntsController
         if ($to) {
             $to = gmdate('Y-m-d H:i:s', $to);
         }
-        if ($id === '*'){$id = null;}
+        if ($id === '*') {
+            $id = null;
+        }
 
         if ($id && $from && $to) {
-            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE puntid=:puntid AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type AS userType FROM bookings WHERE puntid=:puntid AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':puntid', $id);
             $this->db->bind(':from', $from);
             $this->db->bind(':to', $to);
         } elseif ($id && $from) {
-            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE puntid=:puntid AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type AS userType FROM bookings WHERE puntid=:puntid AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':puntid', $id);
             $this->db->bind(':from', $from);
         } elseif ($id) {
-            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE puntid=:puntid ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type AS userType FROM bookings WHERE puntid=:puntid ORDER BY time_from DESC');
             $this->db->bind(':puntid', $id);
-        } elseif ($from && $to ) {
-            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
+        } elseif ($from && $to) {
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type AS userType FROM bookings WHERE time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':from', $from);
             $this->db->bind(':to', $to);
-        } elseif ($from ) {
-           $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE time_to>=:from ORDER BY time_from DESC');
-           $this->db->bind(':from', $from);
+        } elseif ($from) {
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type AS userType FROM bookings WHERE time_to>=:from ORDER BY time_from DESC');
+            $this->db->bind(':from', $from);
         } elseif ($type && $from && $to) {
-            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE user_type=:type AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type AS userType FROM bookings WHERE user_type=:type AND time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':type', $type);
             $this->db->bind(':from', $from);
             $this->db->bind(':to', $to);
         } elseif ($user && $from) {
-            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE booker=:crsid AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type AS userType FROM bookings WHERE booker=:crsid AND time_to>=:from ORDER BY time_from DESC');
             $this->db->bind(':crsid', $user);
             $this->db->bind(':from', $from);
         } else {
-            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings ORDER BY time_from DESC');
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type AS userType FROM bookings ORDER BY time_from DESC');
         }
         $rows = $this->db->resultset();
         return $rows; // serializes object into JSON
@@ -435,6 +416,29 @@ class puntsController
     }
 
     /**
+     * Update the punt rules
+     *
+     * @url PUT /settings
+     * @url PUT /settings/$type
+     */
+    public function putRules($type = "rules", $data)
+    {
+        if (!$this->admin) {
+            throw new RestException(404, 'User Must be admin to modify Punt Settings');
+        }
+
+        if (!isset($type) || !$data->value) {
+            throw new RestException(204, 'No Content received');
+        }
+
+        $this->db->query('UPDATE options SET  value=:value  WHERE item=:type;');
+        $this->db->bind(':value', $data->value);
+        $this->db->bind(':type', $type);
+        $this->db->execute();
+        return;
+    }
+
+    /**
      * Add new punt
      *
      * @url POST /punts
@@ -460,7 +464,7 @@ class puntsController
         $this->db->bind(':from', gmdate('Y-m-d H:i:s', test_input($data->from)));
         $this->db->bind(':to', gmdate('Y-m-d H:i:s', test_input($data->to)));
         $this->db->execute();
-        return array("id"=>$this->db->lastInsertId());
+        return array("id" => $this->db->lastInsertId());
     }
 
     /**
