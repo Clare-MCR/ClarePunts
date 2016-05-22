@@ -236,6 +236,28 @@ class puntsController
         return $row;
     }
 
+    /**
+     * Update the punt rules
+     *
+     * @url PUT /settings
+     * @url PUT /settings/$type
+     */
+    public function putRules($type = "rules", $data)
+    {
+        if (!$this->admin) {
+            throw new RestException(404, 'User Must be admin to modify Punt Settings');
+        }
+
+        if (!isset($type) || !$data->value) {
+            throw new RestException(204, 'No Content received');
+        }
+
+        $this->db->query('UPDATE options SET  value=:value  WHERE item=:type;');
+        $this->db->bind(':value', $data->value);
+        $this->db->bind(':type', $type);
+        $this->db->execute();
+        return;
+    }
 
     /**
      * Saves a booking to the database
@@ -415,28 +437,6 @@ class puntsController
         return;
     }
 
-    /**
-     * Update the punt rules
-     *
-     * @url PUT /settings
-     * @url PUT /settings/$type
-     */
-    public function putRules($type = "rules", $data)
-    {
-        if (!$this->admin) {
-            throw new RestException(404, 'User Must be admin to modify Punt Settings');
-        }
-
-        if (!isset($type) || !$data->value) {
-            throw new RestException(204, 'No Content received');
-        }
-
-        $this->db->query('UPDATE options SET  value=:value  WHERE item=:type;');
-        $this->db->bind(':value', $data->value);
-        $this->db->bind(':type', $type);
-        $this->db->execute();
-        return;
-    }
 
     /**
      * Add new punt
