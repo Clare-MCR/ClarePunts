@@ -262,10 +262,10 @@ class puntsController
      * Saves a booking to the database
      *
      * @url POST /booking
+     * @url POST /booking/
      */
     public function saveBooking($data)
     {
-        var_dump($data);
         $puntid = test_input($data->puntid);
         $booker = test_input($data->booker);
         $type = test_input($data->type);
@@ -285,7 +285,7 @@ class puntsController
         if ($this->type === "PORTER" || $this->admin) {
             $permissions = (bool) $this->getPunts($puntid, $timeFrom, $timeTo) && !(bool) $this->getBookings($puntid, $timeFrom, $timeTo);
         } else {
-            $upcoming = $this->getBookings(null, $timeFrom, null, null, $booker);
+//            $upcoming = $this->getBookings(null, $timeFrom, null, null, $booker);
             $notAtLimit = true;
             if ($this->type === "MCR" || $this->type === "UCS") {
                 $typeLimit = $this->getBookings(null, $timeFrom, $timeTo, $type, null);
@@ -293,7 +293,7 @@ class puntsController
                     $notAtLimit = false;
                 }
             }
-            $permissions = !(bool) $upcoming && $notAtLimit && (bool) $this->getPunts($puntid, $timeFrom, $timeTo) && !(bool) $this->getBookings($puntid, $timeFrom, $timeTo);
+            $permissions = $notAtLimit && (bool)$this->getPunts($puntid, $timeFrom, $timeTo) && !(bool)$this->getBookings($puntid, $timeFrom, $timeTo);
         }
         if ($permissions) {
             $this->db->query('INSERT INTO bookings (puntid, booker, name, user_type, phone, time_from, time_to)
@@ -306,17 +306,40 @@ class puntsController
             $this->db->bind(':from', gmdate('Y-m-d H:i:s', $timeFrom));
             $this->db->bind(':to', gmdate('Y-m-d H:i:s', $timeTo));
             $this->db->execute();
-
             sendConfirmation($booker, $timeFrom, $timeTo);
-
         } else {
             throw new RestException(409, 'Permissions Invalid');
         }
-        //breaking with return value
-        //return array('id'=>$this->db->lastinsertId());
-        return;
+        return array('id' => $this->db->lastinsertId());
     }
 
+    /**
+     * Gets the punts
+     *
+     * @url GET /punts
+     * @url GET /punts/$id
+     */
+    public function getPunts($id = null, $from = null, $to = null)
+    {
+        if ($id) {
+            if ($from && $to) {
+                $this->db->query('SELECT * FROM punts WHERE id=:id AND (
+                                    (:to BETWEEN available_from AND available_to)
+                                    OR
+								    (:from BETWEEN available_from AND available_to)
+									)');
+                $this->db->bind(':from', gmdate('Y-m-d H:i:s', $from));
+                $this->db->bind(':to', gmdate('Y-m-d H:i:s', $to));
+            } else {
+                $this->db->query('SELECT 	*,DATE_FORMAT(available_from,"%Y-%m-%dT%T") AS availableFrom,	DATE_FORMAT(available_to,"%Y-%m-%dT%T") AS availableTo FROM punts WHERE id=:id');
+            }
+            $this->db->bind(':id', $id);
+        } else {
+            $this->db->query('SELECT *,DATE_FORMAT(available_from,"%Y-%m-%dT%T") AS availableFrom,	DATE_FORMAT(available_to,"%Y-%m-%dT%T") AS availableTo FROM punts');
+        }
+        $rows = $this->db->resultset();
+        return $rows; // serializes object into JSON
+    }
 
     /**
      * Gets the user by id or current user
@@ -410,36 +433,6 @@ class puntsController
         }
         return;
     }
-
-
-    /**
-     * Gets the punts
-     *
-     * @url GET /punts
-     * @url GET /punts/$id
-     */
-    public function getPunts($id = null, $from = null, $to = null)
-    {
-        if ($id) {
-            if ($from && $to) {
-                $this->db->query('SELECT * FROM punts WHERE id=:id AND (
-                                    (:to Between available_from AND available_to)
-                                    OR
-								    (:from Between available_from AND available_to)
-									)');
-                $this->db->bind(':from', gmdate('Y-m-d H:i:s', $from));
-                $this->db->bind(':to', gmdate('Y-m-d H:i:s', $to));
-            } else {
-                $this->db->query('SELECT 	*,DATE_FORMAT(available_from,"%Y-%m-%dT%T") AS availableFrom,	DATE_FORMAT(available_to,"%Y-%m-%dT%T") AS availableTo FROM punts WHERE id=:id');
-            }
-            $this->db->bind(':id', $id);
-        } else {
-            $this->db->query('SELECT *,DATE_FORMAT(available_from,"%Y-%m-%dT%T") AS availableFrom,	DATE_FORMAT(available_to,"%Y-%m-%dT%T") AS availableTo FROM punts');
-        }
-        $rows = $this->db->resultset();
-        return $rows; // serializes object into JSON
-    }
-
 
     /**
      * Add new punt
