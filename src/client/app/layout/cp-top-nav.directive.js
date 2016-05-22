@@ -52,7 +52,7 @@
       function getuser() {
         vm.user = UserServices.get(
           function (data) {
-            vm.admin = Boolean(data.admin);
+            vm.admin = data.admin === '1';
           }
         );
       }
