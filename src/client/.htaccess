@@ -1,0 +1,22 @@
+AuthType Ucam-WebAuth
+Require valid-user
+order deny,allow
+deny from all
+Satisfy any
+
+<files rest/config.php>
+    order allow,deny
+    deny from all
+</files>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    RewriteRule ^rest/(.*) rest/index.php [NC,L]
+
+    RewriteCond %{REQUEST_FILENAME} -s [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^.*$ - [NC,L]
+    RewriteRule ^(.*) index.html [NC,L]
+</IfModule>

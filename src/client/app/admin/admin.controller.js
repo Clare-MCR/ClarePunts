@@ -54,7 +54,6 @@
     function getTodo() {
       SettingsServices.get({Type: 'todo'}, function (data) {
         vm.todoList = JSON.parse(data.value);
-        console.log(vm.todoList);
         logger.success('Todo list received successfully');
       }, function () {
         logger.error('Something went wrong getting the todo\'s');
