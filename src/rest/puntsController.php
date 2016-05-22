@@ -348,6 +348,10 @@ class puntsController
         } elseif ($id) {
             $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE puntid=:puntid ORDER BY time_from DESC');
             $this->db->bind(':puntid', $id);
+        } elseif ($from && $to ) {
+            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE time_from<=:to AND time_to>=:from ORDER BY time_from DESC');
+            $this->db->bind(':from', $from);
+            $this->db->bind(':to', $to);
         } elseif ($from ) {
            $this->db->query('SELECT *,DATE_FORMAT(time_from,"%Y-%m-%dT%T") AS timeFrom,DATE_FORMAT(time_to,"%Y-%m-%dT%T") AS timeTo,user_type as userType FROM bookings WHERE time_to>=:from ORDER BY time_from DESC');
            $this->db->bind(':from', $from);
