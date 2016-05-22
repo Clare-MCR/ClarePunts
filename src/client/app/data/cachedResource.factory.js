@@ -13,7 +13,7 @@
 
     var interceptor = {
       response: function (response) {
-        // cache.remove(response.config.url); @todo fix to only delete relevant caches
+        //cache.remove(response.config.url); //@todo fix to only delete relevant caches
         cache.removeAll();
         console.log(response.status);
         console.log('cache removed', response.config.url);
