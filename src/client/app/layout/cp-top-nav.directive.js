@@ -50,9 +50,11 @@
       }
 
       function getuser() {
-        vm.user = UserServices.get(function () {
-          vm.admin = Boolean(vm.user.admin);
-        });
+        vm.user = UserServices.get(
+          function (data) {
+            vm.admin = data.admin === '1';
+          }
+        );
       }
 
       function isCurrent(route) {
