@@ -303,14 +303,14 @@
 
     function setTerm() {
       var year = vm.now.getFullYear();
-      vm.MichaelmasTerm.start = new Date(year, 9, 1, 0, 0, 0, 0);
-      vm.MichaelmasTerm.end = new Date(year, 11, 19, 0, 0, 0, 0);
+      vm.MichaelmasTerm.start = new Date().setUTCFullYear(year, 9, 1);
+      vm.MichaelmasTerm.end = new Date().setUTCFullYear(year, 11, 19);
 
-      vm.LentTerm.start = new Date(year, 0, 5, 0, 0, 0, 0);
-      vm.LentTerm.end = new Date(year, 2, 25, 0, 0, 0, 0);
+      vm.LentTerm.start = new Date().setUTCFullYear(year, 0, 5);
+      vm.LentTerm.end = new Date().setUTCFullYear(year, 2, 25);
 
-      vm.EasterTerm.start = new Date(year, 3, 10, 0, 0, 0, 0);
-      vm.EasterTerm.end = new Date(year, 5, 18, 0, 0, 0, 0);
+      vm.EasterTerm.start = new Date().setUTCFullYear(year, 3, 10);
+      vm.EasterTerm.end = new Date().setUTCFullYear(year, 5, 18);
 
       var michaelmas = (vm.MichaelmasTerm.start <= vm.now && vm.MichaelmasTerm.end >= vm.now);
       var lent = (vm.LentTerm.start <= vm.now && vm.LentTerm.end >= vm.now);
@@ -342,15 +342,26 @@
           default:
             term = {start: null, end: null};
         }
-        return BookingServices.query({Id: '*', from: term.start, to: term.end}, function (data) {
-          return data.filter(function (item) {
-              return item.booker === crsid;
-            }) >= 0;
+        return BookingServices.query({
+          Id: '*',
+          from: parseInt(term.start / 1000),
+          to: parseInt(term.end / 1000)
+        }).$promise.then(function (data) {
+          var output = data.filter(function (item) {
+            return item.booker === crsid;
+          });
+          logger.info('User has ' + output.length + ' scheduled bookings this term', output);
+          if (output.length >= 1) {
+            vm.bookingErrorMessage = 'Staff and Fellows are restricted to 1 booking each during term time!';
+            vm.canBook = false;
+          }
+          return output;
         });
       }
     }
 
     function bookingAllowed() {
+      vm.canBook = true;
       //is user authorised
       if (!vm.user.authorised) {
         vm.bookingErrorMessage = 'You are not authorised!';
@@ -380,14 +391,8 @@
       }
       // check for term time restrictions (Only applicable to staff and Fellows)
       if (vm.form.type === 'STAFF' || vm.form.type === 'FELLOW') {
-        if (termRestrictions(vm.form.booker)) {
-          vm.bookingErrorMessage = 'Staff and Fellows are restricted to 1 booking each during term time!';
-          vm.canBook = false;
-          return;
-        }
+        termRestrictions(vm.form.booker);
       }
-      vm.canBook = true;
-      return true;
     }
 
     function changeInDate() {
@@ -417,8 +422,8 @@
         logger.error('You can\'t make bookings in the past');
         return;
       }
-      data.timeFrom = data.timeFrom / 1000;
-      data.timeTo = data.timeTo / 1000;
+      data.timeFrom = parseInt(data.timeFrom / 1000);
+      data.timeTo = parseInt(data.timeTo / 1000);
       BookingServices.save({Id: null, from: null, to: null}, data, function () {
         data.timeFrom = new Date(data.timeFrom * 1000);
         data.timeTo = new Date(data.timeTo * 1000);
