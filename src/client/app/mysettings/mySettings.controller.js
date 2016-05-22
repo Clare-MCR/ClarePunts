@@ -5,23 +5,23 @@
     .module('app.mySettings')
     .controller('MySettingsController', MySettingsController);
 
-  MySettingsController.$inject = ['UserServices', 'userPrepService', 'logger', '$state'];
+  MySettingsController.$inject = ['UserServices', 'logger', '$state'];
 
   /* @ngInject */
-  function MySettingsController(UserServices, userPrepService, logger, $state) {
+  function MySettingsController(UserServices, logger, $state) {
     var vm = this;
     vm.title = $state.current.title;
     vm.updateUser = updateUser;
-    vm.user = userPrepService;
-    vm.form = {
-      name: vm.user.name,
-      phone: vm.user.phone //@todo standardise phone/mobile across databases
-    };
+    vm.form = {};
+    vm.user = UserServices.get(function () {
+      vm.form.name = vm.user.name;
+      vm.form.phone = vm.user.phone; //@todo standardise phone/mobile across databases
+    });
 
     activate();
 
     function activate() {
-      logger.info('Viewing ' + $state.current.title);
+      logger.info('Viewing My Settings');
     }
 
     vm.formFields = [
@@ -53,7 +53,8 @@
     ];
 
     function updateUser(data) {
-      UserServices.update({Id: vm.user.crsid}, data, function () {
+      data.crsid = vm.user.crsid;
+      UserServices.update(data, function () {
         logger.success('Settings Updated');
       }, function () {
         logger.error('Something went wrong updating your settings');

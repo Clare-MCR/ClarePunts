@@ -163,7 +163,7 @@
           authorised
         ].join(' ');
         modalService.showModal({}, modalOptions).then(function () {
-          UserServices.update({Id: user}, {authorised: authorised}, function () {
+          UserServices.update({crsid: user, authorised: authorised}, function () {
             for (var i = 0; i < vm.allUsers.length; i++) {
               if (vm.allUsers[i].crsid === user) {
                 vm.allUsers[i].authorised = authorised ? '1' : '0';
@@ -230,7 +230,7 @@
           admin
         ].join(' ');
         modalService.showModal({}, modalOptions).then(function () {
-          UserServices.update({Id: user}, {admin: admin}, function () {
+          UserServices.update({crsid: user, admin: admin}, function () {
             for (var i = 0; i < vm.allUsers.length; i++) {
               if (vm.allUsers[i].crsid === user) {
                 vm.allUsers[i].admin = admin ? '1' : '0';
