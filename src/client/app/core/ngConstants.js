@@ -4,7 +4,7 @@
 
 angular.module("app.core")
 
-  .constant("version", "1.3.6")
+    .constant("version", "1.4.2")
 ;
 })();
 /* jshint ignore:end */
