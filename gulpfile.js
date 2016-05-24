@@ -7,8 +7,6 @@ var gulp = require('gulp');
 var path = require('path');
 var _ = require('lodash');
 var $ = require('gulp-load-plugins')({lazy: true});
-var iife = require("gulp-iife");
-
 
 var colors = $.util.colors;
 var envenv = $.util.env;
