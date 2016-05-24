@@ -72,6 +72,9 @@ var mockData = (function () {
   }
 
   function getMockPunts() {
+    /* jshint camelcase: false */
+    /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
+
     return [
       {
         id: '1',
@@ -113,6 +116,9 @@ var mockData = (function () {
   }
 
   function getMockBookings() {
+    /*jshint camelcase: false */
+    /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
+
     return [
       {
         id: '7142',
@@ -174,7 +180,7 @@ var mockData = (function () {
         time_from: '2016-06-12 07:00:00',
         time_to: '2016-06-12 10:00:00'
       }
-    ]
+    ];
   }
 
 })();

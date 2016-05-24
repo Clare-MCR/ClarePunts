@@ -206,6 +206,13 @@
               {name: '11:00pm', value: new Date(vm.dt).setUTCHours(23, 0, 0, 0)}
             ];
           }
+        },
+        watcher: {
+          listener: function (field, newValue) {
+            if (newValue) {
+              bookingAllowed();
+            }
+          }
         }
       },
       {
@@ -257,6 +264,13 @@
             }
             return output;
           }
+        },
+        watcher: {
+          listener: function (field, newValue) {
+            if (newValue) {
+              bookingAllowed();
+            }
+          }
         }
       }
     ];
@@ -297,7 +311,7 @@
 
     function conflictBookingsType(userType) {
       return vm.conflicts.filter(function (booking) {
-        return booking.type === userType;
+        return booking.userType === userType;
       });
     }
 
@@ -326,37 +340,31 @@
       }
     }
 
-    function termRestrictions(crsid) {
-      if (vm.inTerm) {
-        var term = {};
-        switch (vm.currentTerm) {
-          case 'Michaelmas':
-            term = vm.MichaelmasTerm;
+    function termRestrictions() {
+      vm.conflicts = conflictBookings();
+      if (vm.inTerm && vm.conflicts.length > 0 && vm.user.admin !== '1') {
+        var typeConflicts = conflictBookingsType(vm.form.type).length;
+        switch (vm.form.type) {
+          case 'MCR':
+          case 'UCS':
+            if (typeConflicts >= 3) {
+              vm.bookingErrorMessage = 'At most 3 punts can be concurrently booked by ' + vm.form.type + ' members!';
+              vm.canBook = false;
+            }
             break;
-          case 'Lent':
-            term = vm.LentTerm;
+          case 'STAFF':
+            if (typeConflicts >= 1) {
+              vm.bookingErrorMessage = 'At most 1 punts can be concurrently booked by staff!';
+              vm.canBook = false;
+            }
             break;
-          case 'Easter':
-            term = vm.EasterTerm;
+          case 'FELLOW':
+            if (typeConflicts >= 1) {
+              vm.bookingErrorMessage = 'At most 1 punts can be concurrently booked by Fellows!';
+              vm.canBook = false;
+            }
             break;
-          default:
-            term = {start: null, end: null};
         }
-        return BookingServices.query({
-          Id: '*',
-          from: parseInt(term.start / 1000),
-          to: parseInt(term.end / 1000)
-        }).$promise.then(function (data) {
-          var output = data.filter(function (item) {
-            return item.booker === crsid;
-          });
-          //logger.info('User has ' + output.length + ' scheduled bookings this term', output);
-          if (output.length >= 1) {
-            vm.bookingErrorMessage = 'Staff and Fellows are restricted to 1 booking each during term time!';
-            vm.canBook = false;
-          }
-          return output;
-        });
       }
     }
 
@@ -372,27 +380,8 @@
       if (!userBookingOnDay(vm.form.booker) && vm.user.admin !== '1') {
         return false;
       }
-      // Check if the user has any upcoming bookings
-      // if (vm.form.type !== 'PORTER') {
-      //   if (userHasUpcoming(vm.form.booker)) {
-      //     vm.bookingErrorMessage = 'Users are restricted to 1 upcoming booking!';
-      //     vm.canBook = false;
-      //     return;
-      //   }
-      // }
-      // check for conflicts/ 3 boat restriction
-      vm.conflicts = conflictBookings();
-      if (vm.conflicts.length > 0 && vm.user.admin !== '1') {
-        if (conflictBookingsType(vm.form.type).length >= 3) {
-          vm.bookingErrorMessage = 'At most 3 punts can be concurrently booked by ' + vm.form.type + '!';
-          vm.canBook = false;
-          return;
-        }
-      }
-      // check for term time restrictions (Only applicable to staff and Fellows)
-      if ((vm.form.type === 'STAFF' || vm.form.type === 'FELLOW') && vm.user.admin !== '1') {
-        termRestrictions(vm.form.booker);
-      }
+      // check for conflicts/ 3 boat restriction during term
+      termRestrictions();
     }
 
     function changeInDate() {
