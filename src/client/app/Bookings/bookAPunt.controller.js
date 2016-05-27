@@ -45,6 +45,7 @@
 
     vm.userTypes = [
       {name: 'Porter', value: 'PORTER'},
+      {name: 'Alumnus', value: 'ALUMNI'},
       {name: 'Staff', value: 'STAFF'},
       {name: 'Fellow', value: 'FELLOW'},
       {name: 'MCR member', value: 'MCR'},
