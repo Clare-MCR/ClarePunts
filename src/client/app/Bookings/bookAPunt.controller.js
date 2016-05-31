@@ -278,7 +278,7 @@
 
     function activate() {
       logger.info('Viewing ' + $state.current.title);
-      setTerm();
+      setTerm(vm.now);
       bookingAllowed();
     }
 
@@ -289,21 +289,24 @@
     }
 
     function userBookingOnDay(crsid) {
-      var bookings = vm.bookings.filter(function (booking) {
-        var today0 = new Date(vm.dt);
-        var today24 = new Date(vm.dt);
-        today0.setUTCHours(0, 0, 0, 0);
-        today24.setUTCHours(24, 0, 0, 0);
-        return new Date(booking.timeTo) >= today0 && new Date(booking.timeFrom) < today24 && booking.booker === crsid;
-      });
-      if (bookings.length !== 0) {
-        vm.canBook = false;
-        vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
-      } else {
-        vm.canBook = true;
-        vm.bookingErrorMessage = '';
+      //only run if not admin and not in term
+      if (vm.user.admin !== '1' && vm.inTerm) {
+        var bookings = vm.bookings.filter(function (booking) {
+          var today0 = new Date(vm.dt);
+          var today24 = new Date(vm.dt);
+          today0.setUTCHours(0, 0, 0, 0);
+          today24.setUTCHours(24, 0, 0, 0);
+          return new Date(booking.timeTo) >= today0 && new Date(booking.timeFrom) < today24 && booking.booker === crsid;
+        });
+        if (bookings.length !== 0) {
+          vm.canBook = false;
+          vm.bookingErrorMessage = 'Users are restricted to 1 booking per day!';
+        } else {
+          vm.canBook = true;
+          vm.bookingErrorMessage = '';
+        }
+        return vm.canBook;
       }
-      return vm.canBook;
     }
 
     function conflictBookings() {
@@ -316,8 +319,9 @@
       });
     }
 
-    function setTerm() {
-      var year = vm.now.getFullYear();
+    function setTerm(date) {
+      date = new Date(date);
+      var year = date.getFullYear();
       vm.MichaelmasTerm.start = new Date().setUTCFullYear(year, 9, 1);
       vm.MichaelmasTerm.end = new Date().setUTCFullYear(year, 11, 19);
 
@@ -327,9 +331,9 @@
       vm.EasterTerm.start = new Date().setUTCFullYear(year, 3, 10);
       vm.EasterTerm.end = new Date().setUTCFullYear(year, 5, 18);
 
-      var michaelmas = (vm.MichaelmasTerm.start <= vm.now && vm.MichaelmasTerm.end >= vm.now);
-      var lent = (vm.LentTerm.start <= vm.now && vm.LentTerm.end >= vm.now);
-      var easter = (vm.EasterTerm.start <= vm.now && vm.EasterTerm.end >= vm.now);
+      var michaelmas = (vm.MichaelmasTerm.start <= date && vm.MichaelmasTerm.end >= date);
+      var lent = (vm.LentTerm.start <= date && vm.LentTerm.end >= date);
+      var easter = (vm.EasterTerm.start <= date && vm.EasterTerm.end >= date);
       vm.inTerm = michaelmas || lent || easter;
 
       if (michaelmas) {
@@ -338,10 +342,13 @@
         vm.currentTerm = 'Lent';
       } else if (easter) {
         vm.currentTerm = 'Easter';
+      } else {
+        vm.currentTerm = '';
       }
     }
 
     function termRestrictions() {
+      //update inTerm
       vm.conflicts = conflictBookings();
       if (vm.inTerm && vm.conflicts.length > 0 && vm.user.admin !== '1') {
         var typeConflicts = conflictBookingsType(vm.form.type).length;
@@ -377,8 +384,9 @@
         vm.canBook = false;
         return false;
       }
-      // check for bookings on day
-      if (!userBookingOnDay(vm.form.booker) && vm.user.admin !== '1') {
+      setTerm(vm.form.timeFrom);
+      // check for bookings on day if not admin
+      if (!userBookingOnDay(vm.form.booker)) {
         return false;
       }
       // check for conflicts/ 3 boat restriction during term
@@ -388,6 +396,7 @@
     function changeInDate() {
       vm.form.timeFrom = new Date(vm.form.timeFrom)
         .setUTCFullYear(vm.dt.getUTCFullYear(), vm.dt.getUTCMonth(), vm.dt.getUTCDate());
+      setTerm(vm.form.timeFrom);
       userBookingOnDay(vm.form.booker);
     }
 
