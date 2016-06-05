@@ -233,7 +233,6 @@
             endTime.setUTCHours(startTime.getUTCHours() + 3);
             nightTime.setUTCHours(7, 0, 0, 0);
             midnight.setUTCHours(24, 0, 0, 0);
-            console.log(midnight);
             if (startTime < nightTime) {
               return [{name: '7hr', value: new Date(vm.dt).setUTCHours(7, 0, 0, 0)}];
             }
@@ -244,7 +243,6 @@
                 break;
               case 1:
                 output = [{name: '1hr', value: new Date(startTime).setUTCHours(23, 59, 59)}];
-                console.log(midnight);
                 break;
               case 2:
                 output = [
