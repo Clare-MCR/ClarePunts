@@ -13,12 +13,13 @@
           </thead>
           <tbody>
           <tr>
-            <td><span>{{vm.MichaelmasTerm.start | date:'fullDate'}}</span> - <span>{{vm.MichaelmasTerm.end | date:'mediumDate'}}</span>
+            <td><span>{{vm.MichaelmasTerm.start | date:'mediumDate':'UTC'}}</span> -
+              <span>{{vm.MichaelmasTerm.end | date:'mediumDate':'UTC'}}</span>
             </td>
-            <td><span>{{vm.LentTerm.start| date:'mediumDate'}}</span> -
-              <span>{{vm.LentTerm.end| date:'mediumDate'}}</span></td>
-            <td><span>{{vm.EasterTerm.start| date:'mediumDate'}}</span> -
-              <span>{{vm.EasterTerm.end| date:'mediumDate'}}</span>
+            <td><span>{{vm.LentTerm.start| date:'mediumDate':'UTC'}}</span> -
+              <span>{{vm.LentTerm.end| date:'mediumDate':'UTC'}}</span></td>
+            <td><span>{{vm.EasterTerm.start| date:'mediumDate':'UTC'}}</span> -
+              <span>{{vm.EasterTerm.end| date:'mediumDate':'UTC'}}</span>
             </td>
           </tr>
           </tbody>
