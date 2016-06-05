@@ -1,6 +1,6 @@
 {
   "name": "rgunning/clarePunts",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "type": "project",
   "description": "clare Punts AngularJS project",
   "keywords": [
@@ -12,7 +12,7 @@
     "json",
     "mit"
   ],
-  "homepage": "https://github.com/Clare-MCR/punts-angular",
+  "homepage": "https://github.com/Clare-MCR/ClarePunts",
   "license": "MIT",
   "authors": [
     {
