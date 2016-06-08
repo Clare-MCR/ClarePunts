@@ -16,6 +16,7 @@
       info: info,
       success: success,
       warning: warning,
+      banner: banner,
 
       // straight to console; bypass toastr
       log: $log.log
@@ -42,6 +43,16 @@
     function warning(message, data, title) {
       toastr.warning(message, title);
       $log.warn('Warning: ' + message, data);
+    }
+
+    function banner(message, data, title) {
+      toastr.info(message, title, {
+        closeButton: true,
+        timeOut: '0',
+        extendedTimeOut: '0',
+        positionClass: 'toast-top-right'
+      });
+      $log.info('Info: ' + message, data);
     }
   }
 }());

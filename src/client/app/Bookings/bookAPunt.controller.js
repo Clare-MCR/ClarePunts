@@ -278,6 +278,11 @@
 
     function activate() {
       logger.info('Viewing ' + $state.current.title);
+      var availableTo = new Date(1970, 0, 1);
+      for (var i = 0; i < vm.punts.length; i++) {
+        availableTo = new Date(vm.punts[i].availableTo) > availableTo ? new Date(vm.punts[i].availableTo) : availableTo;
+      }
+      logger.banner('Punts available to book until: ' + $filter('date')(availableTo, 'medium', 'UTC'));
       setTerm(vm.now);
       bookingAllowed();
     }
