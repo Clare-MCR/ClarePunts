@@ -24,9 +24,9 @@
     };
     vm.now = new Date();
     vm.dt = new Date(vm.now.getTime() - (60000 * vm.now.getTimezoneOffset()));
-    vm.MichaelmasTerm = {start: '', end: ''};
-    vm.LentTerm = {start: '', end: ''};
-    vm.EasterTerm = {start: '', end: ''};
+    vm.MichaelmasTerm = {start: new Date(), end: new Date()};
+    vm.LentTerm = {start: new Date(), end: new Date()};
+    vm.EasterTerm = {start: new Date(), end: new Date()};
     vm.inTerm = true;
     vm.currentTerm = '';
     vm.punts = puntsPrepService;
@@ -278,7 +278,7 @@
 
     function activate() {
       logger.info('Viewing ' + $state.current.title);
-      var availableTo = new Date(1970, 0, 1);
+      var availableTo = new Date(1980, 1, 1);
       for (var i = 0; i < vm.punts.length; i++) {
         availableTo = new Date(vm.punts[i].availableTo) > availableTo ? new Date(vm.punts[i].availableTo) : availableTo;
       }
@@ -327,14 +327,20 @@
     function setTerm(date) {
       date = new Date(date);
       var year = date.getFullYear();
-      vm.MichaelmasTerm.start = new Date().setUTCFullYear(year, 9, 1);
-      vm.MichaelmasTerm.end = new Date().setUTCFullYear(year, 11, 19);
+      vm.MichaelmasTerm.start = new Date();
+      vm.MichaelmasTerm.start.setUTCFullYear(year, 9, 1);
+      vm.MichaelmasTerm.end = new Date();
+      vm.MichaelmasTerm.end.setUTCFullYear(year, 11, 19);
 
-      vm.LentTerm.start = new Date().setUTCFullYear(year, 0, 5);
-      vm.LentTerm.end = new Date().setUTCFullYear(year, 2, 25);
+      vm.LentTerm.start = new Date();
+      vm.LentTerm.start.setUTCFullYear(year, 0, 5);
+      vm.LentTerm.end = new Date();
+      vm.LentTerm.end.setUTCFullYear(year, 2, 25);
 
-      vm.EasterTerm.start = new Date().setUTCFullYear(year, 3, 10);
-      vm.EasterTerm.end = new Date().setUTCFullYear(year, 5, 18);
+      vm.EasterTerm.start = new Date();
+      vm.EasterTerm.start.setUTCFullYear(year, 3, 10);
+      vm.EasterTerm.end = new Date();
+      vm.EasterTerm.end.setUTCFullYear(year, 5, 18);
 
       var michaelmas = (vm.MichaelmasTerm.start <= date && vm.MichaelmasTerm.end >= date);
       var lent = (vm.LentTerm.start <= date && vm.LentTerm.end >= date);

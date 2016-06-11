@@ -79,26 +79,26 @@ var mockData = (function () {
       {
         id: '1',
         name: 'Silence of the Cam',
-        available_from: '2016-05-03 00:00:00',
-        available_to: '2016-06-23 23:59:59'
+        availableFrom: '2016-05-03 00:00:00',
+        availableTo: '2016-06-23 23:59:59'
       },
       {
         id: '2',
         name: 'MCArk',
-        available_from: '2016-04-13 00:00:00',
-        available_to: '2016-05-08 00:00:00'
+        availableFrom: '2016-04-13 00:00:00',
+        availableTo: '2016-05-08 00:00:00'
       },
       {
         id: '3',
         name: 'Clare De lune',
-        available_from: '2016-04-22 00:00:00',
-        available_to: '2016-05-06 00:00:00'
+        availableFrom: '2016-04-22 00:00:00',
+        availableTo: '2016-05-06 00:00:00'
       },
       {
         id: '4',
         name: 'clarebuoyant',
-        available_from: '2016-04-13 00:00:00',
-        available_to: '2016-05-04 00:00:00'
+        availableFrom: '2016-04-13 00:00:00',
+        availableTo: '2016-05-04 00:00:00'
       }
     ];
   }
@@ -123,62 +123,62 @@ var mockData = (function () {
       {
         id: '7142',
         puntid: '1',
-        user_type: 'MCR',
+        userType: 'MCR',
         booker: 'rjg70',
         name: 'R. Gunning',
         phone: '07557090952',
-        time_from: '2016-05-08 11:00:00',
-        time_to: '2016-05-08 13:00:00'
+        timeFrom: '2016-05-08 11:00:00',
+        timeTo: '2016-05-08 13:00:00'
       },
       {
         id: '714865',
         puntid: '4',
-        user_type: 'MCR',
+        userType: 'MCR',
         booker: 'bu211',
         name: 'B. Umapathysarma',
         phone: '07772865777',
-        time_from: '2016-06-23 11:00:00',
-        time_to: '2016-06-23 13:00:00'
+        timeFrom: '2016-06-23 11:00:00',
+        timeTo: '2016-06-23 13:00:00'
       },
       {
         id: '714859',
         puntid: '2',
-        user_type: 'UCS',
+        userType: 'UCS',
         booker: 'hc414',
         name: 'H. Casement',
         phone: '7593712854',
-        time_from: '2016-06-23 11:00:00',
-        time_to: '2016-06-23 13:00:00'
+        timeFrom: '2016-06-23 11:00:00',
+        timeTo: '2016-06-23 13:00:00'
       },
       {
         id: '714864',
         puntid: '1',
-        user_type: 'UCS',
+        userType: 'UCS',
         booker: 'jr591',
         name: 'J. Robertson',
         phone: '07950620990',
-        time_from: '2016-06-21 15:00:00',
-        time_to: '2016-06-21 17:00:00'
+        timeFrom: '2016-06-21 15:00:00',
+        timeTo: '2016-06-21 17:00:00'
       },
       {
         id: '714863',
         puntid: '4',
-        user_type: 'UCS',
+        userType: 'UCS',
         booker: 'rja74',
         name: 'R.J. Andrews',
         phone: '07592066535',
-        time_from: '2016-06-21 14:00:00',
-        time_to: '2016-06-21 17:00:00'
+        timeFrom: '2016-06-21 14:00:00',
+        timeTo: '2016-06-21 17:00:00'
       },
       {
         id: '714851',
         puntid: '2',
-        user_type: 'MCR',
+        userType: 'MCR',
         booker: 'tb405',
         name: 'T. Beeson-Jones',
         phone: '07761452919',
-        time_from: '2016-06-12 07:00:00',
-        time_to: '2016-06-12 10:00:00'
+        timeFrom: '2016-06-12 07:00:00',
+        timeTo: '2016-06-12 10:00:00'
       }
     ];
   }
