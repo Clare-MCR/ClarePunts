@@ -328,19 +328,19 @@
       date = new Date(date);
       var year = date.getFullYear();
       vm.MichaelmasTerm.start = new Date();
-      vm.MichaelmasTerm.start.setFullYear(year, 9, 1);
+      vm.MichaelmasTerm.start.setUTCFullYear(year, 9, 1);
       vm.MichaelmasTerm.end = new Date();
-      vm.MichaelmasTerm.end.setFullYear(year, 11, 19);
+      vm.MichaelmasTerm.end.setUTCFullYear(year, 11, 19);
 
       vm.LentTerm.start = new Date();
-      vm.LentTerm.start.setFullYear(year, 0, 5);
+      vm.LentTerm.start.setUTCFullYear(year, 0, 5);
       vm.LentTerm.end = new Date();
-      vm.LentTerm.end.setFullYear(year, 2, 25);
+      vm.LentTerm.end.setUTCFullYear(year, 2, 25);
 
       vm.EasterTerm.start = new Date();
-      vm.EasterTerm.start.setFullYear(year, 3, 10);
+      vm.EasterTerm.start.setUTCFullYear(year, 3, 10);
       vm.EasterTerm.end = new Date();
-      vm.EasterTerm.end.setFullYear(year, 5, 18);
+      vm.EasterTerm.end.setUTCFullYear(year, 5, 18);
 
       var michaelmas = (vm.MichaelmasTerm.start <= date && vm.MichaelmasTerm.end >= date);
       var lent = (vm.LentTerm.start <= date && vm.LentTerm.end >= date);
